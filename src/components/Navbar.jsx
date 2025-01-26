@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { FaDownload } from "react-icons/fa";
 import Swb from "../assets/swblogo.png";
 
 function Navbar() {
@@ -11,9 +12,23 @@ function Navbar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleDownload = () => {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    if (/android/i.test(userAgent)) {
+      window.location.href =
+        "https://play.google.com/store/apps/details?id=com.omarnaous.swb";
+    } else if (/iPad|iPhone|iPod|Macintosh/.test(userAgent) && !window.MSStream) {
+      window.location.href =
+        "https://apps.apple.com/lb/app/student-with-benefits/id6590629020";
+    } else {
+      alert("This app is only available for Android and iOS devices.");
+    }
+  };
+
   return (
     <div className="bg-white shadow-md h-20 fixed top-0 w-full z-50">
-      <div className="container mx-auto py-2 flex justify-between items-center w-[100%]">
+      <div className="container mx-auto px- py-2 flex justify-between items-center">
         {/* Logo Section */}
         <div className="flex">
           <Link to="/">
@@ -28,43 +43,43 @@ function Navbar() {
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex space-x-6 items-center">
           <Link
-            to="/"
-            className={`font-medium ${
-              location.pathname === "/" ? "text-[#10758B]" : "text-gray-600"
-            } hover:text-[#10758B]`}
-          >
-            Home
-          </Link>
-          <Link
             to="/partner"
             className={`font-medium ${
-              location.pathname === "/partner"
-                ? "text-[#10758B]"
-                : "text-gray-600"
+              location.pathname === "/partner" ? "text-[#10758B]" : "text-gray-600"
             } hover:text-[#10758B]`}
           >
             Become a Partner
           </Link>
           <Link
+            to="/privacy"
+            className={`font-medium ${
+              location.pathname === "/privacy" ? "text-[#10758B]" : "text-gray-600"
+            } hover:text-[#10758B]`}
+          >
+            Privacy
+          </Link>
+          <Link
+            to="/media"
+            className={`font-medium ${
+              location.pathname === "/media" ? "text-[#10758B]" : "text-gray-600"
+            } hover:text-[#10758B]`}
+          >
+            About Us
+          </Link>
+          <Link
             to="/jobs"
             className={`font-medium ${
-              location.pathname === "/jobs"
-                ? "text-[#10758B]"
-                : "text-gray-600"
+              location.pathname === "/jobs" ? "text-[#10758B]" : "text-gray-600"
             } hover:text-[#10758B]`}
           >
             Student Jobs
           </Link>
-        </div>
-
-        {/* Desktop Sign Up & Log In */}
-        <div className="hidden md:flex flex-row items-center">
-          <div className="h-10 w-[1px] bg-gray-300"></div>
-          <div className="text-white rounded-lg px-4 py-2 flex items-center cursor-pointer">
-            <p className="text-[#5842aa] font-medium">Sign up</p>
-          </div>
-          <div className="text-white rounded-lg px-4 py-2 flex items-center cursor-pointer">
-            <p className="text-[#02afde] font-medium">Log in</p>
+          <div
+            className="bg-[#5842aa] border border-[#5842aa] text-white rounded-lg px-4 py-2 flex items-center cursor-pointer"
+            onClick={handleDownload}
+          >
+            <FaDownload className="mr-2 text-lg" />
+            <p className="text-white font-medium">Download Now</p>
           </div>
         </div>
 
@@ -119,45 +134,37 @@ function Navbar() {
         </button>
         <nav className="flex flex-col p-4 space-y-4">
           <Link
-            to="/"
-            className={`font-medium ${
-              location.pathname === "/" ? "text-[#10758B]" : "text-gray-600"
-            } hover:text-[#10758B]`}
-            onClick={() => setIsMenuOpen(false)} // Close menu on click
-          >
-            Home
-          </Link>
-          <Link
             to="/partner"
             className={`font-medium ${
-              location.pathname === "/partner"
-                ? "text-[#10758B]"
-                : "text-gray-600"
-            } hover:text-[#10758B]`}
-            onClick={() => setIsMenuOpen(false)} // Close menu on click
+              location.pathname === "/partner" ? "text-[#d0522f]" : "text-gray-600"
+            } hover:text-[#d0522f]`}
           >
             Become a Partner
           </Link>
           <Link
+            to="/privacy"
+            className={`font-medium ${
+              location.pathname === "/privacy" ? "text-[#d0522f]" : "text-gray-600"
+            } hover:text-[#d0522f]`}
+          >
+            Privacy
+          </Link>
+          <Link
+            to="/media"
+            className={`font-medium ${
+              location.pathname === "/media" ? "text-[#d0522f]" : "text-gray-600"
+            } hover:text-[#d0522f]`}
+          >
+            About Us
+          </Link>
+          <Link
             to="/jobs"
             className={`font-medium ${
-              location.pathname === "/jobs"
-                ? "text-[#10758B]"
-                : "text-gray-600"
-            } hover:text-[#10758B]`}
-            onClick={() => setIsMenuOpen(false)} // Close menu on click
+              location.pathname === "/jobs" ? "text-[#d0522f]" : "text-gray-600"
+            } hover:text-[#d0522f]`}
           >
             Student Jobs
           </Link>
-          {/* Mobile Sign Up & Log In */}
-          <div className="flex flex-col space-y-2 mt-4">
-            <div className="text-[#5842aa] font-medium border border-[#5842aa] rounded-lg px-4 py-2 text-center">
-              Sign up
-            </div>
-            <div className="text-[#02afde] font-medium border border-[#02afde] rounded-lg px-4 py-2 text-center">
-              Log in
-            </div>
-          </div>
         </nav>
       </div>
     </div>

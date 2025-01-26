@@ -69,7 +69,7 @@ const Partner = () => {
       >
         <button
           onClick={openModal}
-          className="absolute bottom-20 left-1/2 transform -translate-x-1/2 px-6 py-3 bg-white text-black rounded-lg shadow-lg hover:bg-[#02afde] transition duration-300"
+          className="absolute bottom-20 left-1/2 transform -translate-x-1/2 px-6 py-3 bg-white text-black rounded-lg shadow-lg hover:bg-[#d05229] transition duration-300"
         >
           Become a Partner
         </button>
@@ -97,7 +97,7 @@ const Partner = () => {
                   name="contactName"
                   value={formData.contactName}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#02afde]"
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#d05229]"
                   placeholder="Enter contact name"
                 />
               </div>
@@ -112,7 +112,7 @@ const Partner = () => {
                   name="businessName"
                   value={formData.businessName}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#02afde]"
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#d05229]"
                   placeholder="Enter business name"
                 />
               </div>
@@ -127,7 +127,7 @@ const Partner = () => {
                   name="phoneNumber"
                   value={formData.phoneNumber}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#02afde]"
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#d05229]"
                   placeholder="Enter phone number"
                 />
               </div>
@@ -142,7 +142,7 @@ const Partner = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#02afde]"
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#d05229]"
                   placeholder="Enter email"
                 />
               </div>
@@ -157,7 +157,7 @@ const Partner = () => {
                   name="location"
                   value={formData.location}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#02afde]"
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#d05229]"
                   placeholder="Enter location"
                 />
               </div>
@@ -173,7 +173,7 @@ const Partner = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#02afde] text-white rounded-lg hover:bg-[#5843aa]"
+                  className="px-4 py-2 bg-[#d05229] text-white rounded-lg hover:bg-[#b3451f]"
                 >
                   Submit
                 </button>
