@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/system/static/css/main.1bb8e6cf.css",
-    "main.js": "/system/static/js/main.592e4f00.js",
+    "main.css": "/static/css/main.1bb8e6cf.css",
+    "main.js": "/static/js/main.592e4f00.js",
     "static/media/mobile1.mp4": "/system/static/media/mobile1.510459e0b6cf09669ead.mp4",
     "static/media/partners.png": "/system/static/media/partners.0d8f6f7170c4612b305e.png",
     "static/media/mainbackground.png": "/system/static/media/mainbackground.6508755493aa09c8f916.png",
