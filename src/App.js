@@ -114,10 +114,13 @@ function Dashboard() {
 
       
 <div className="mt-5 flex flex-col items-center justify-center text-center">
-<h1 className="text-[#5843aa] italic">Student Life Made Easy</h1>
-  <h1 className="text-4xl font-bold">About Us</h1>
+  <h1 className="text-[#5843aa] italic text-lg sm:text-xl mt-5">
+    Student Life Made Easy
+  </h1>
+  <h1 className="text-3xl sm:text-4xl font-bold mt-5">About Us</h1>
 </div>
-<div className="flex flex-col justify-center items-center w-[50%] mt-5 text-center mb-5">
+
+<div className="flex flex-col justify-center items-center w-[90%] sm:w-[80%] md:w-1/2 lg:w-1/2 mt-5 text-center mb-5 text-base sm:text-lg md:text-xl leading-relaxed">
   At Student with Benefits, we are dedicated to empowering university students
   by providing them with a platform designed to make their lives more
   affordable, connected, and convenient.
@@ -127,6 +130,7 @@ function Dashboard() {
   phases of their lives, Student with Benefits is more than just an app, it’s a
   movement.
 </div>
+
 <MissionVision/>
 <BubbleAnimation/>
 

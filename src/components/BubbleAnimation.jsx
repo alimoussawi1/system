@@ -9,6 +9,7 @@ const titles = [
   "Music Hub",
   "Per-Vurt",
   "Chicks A Lot",
+  "Miniguette",
   "Fitness Zone",
   "Dr Kafta",
   "Multiverse",
@@ -25,31 +26,38 @@ const titles = [
   "Club House",
   "The Nook",
   "Kibbe Kitchen",
+  "Kitchen Lab",
   "Beeway Scooter",
   "Padel 961",
   "Wingman",
+  "MX Academy",
   "Cloudy Bites",
+  "Hamra Urban Gardens",
   "Kurv Pilates",
   "Bayt em Nazih",
   "Sloppy Joes",
+  "TUC TACO",
   "Mob’s Burger",
   "Crepaway",
-  "Appetito Beirut",
   "Hayat Doner",
   "Agonista",
   "Beit Al Shawarma",
-  
+  "The Koozpace"
 ];
+
+// Duplicate the titles array to create a seamless loop
+const loopedTitles = [...titles, ...titles];
 
 function BubbleAnimation() {
   return (
-    <div className="relative w-full overflow-x-auto whitespace-nowrap scrollbar-hide py-6">
+    <div className="relative w-full overflow-hidden whitespace-nowrap py-6">
       <motion.div
         className="flex gap-4 px-6"
         animate={{ x: ["0%", "-100%"] }}
-        transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+        transition={{ repeat: Infinity, duration: 100, ease: "linear" }}
+        style={{ display: "flex", width: "max-content" }} // Ensures smooth looping
       >
-        {titles.map((title, index) => (
+        {loopedTitles.map((title, index) => (
           <div
             key={index}
             className={`flex-shrink-0 px-6 py-3 rounded-full shadow-md text-center text-white ${

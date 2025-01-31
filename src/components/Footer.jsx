@@ -1,14 +1,16 @@
 import React from "react";
 import apple from "../assets/appstore.webp";
 import android from "../assets/playstore.webp";
-import vid from "../assets/footervideo.mov"
+import vid from "../assets/footerVideo.MP4"
+import { Link } from 'react-router-dom';
+
 
 function Footer() {
   return (
-    <footer className="bg-gray-100 py-8">
-      <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-center">
+    <footer className="bg-gray-100">
+      <div className="max-w-6xl flex flex-row justify-between items-center text-center">
         {/* Video Section */}
-        <div className="mb-4 md:mb-0">
+        <div className=" md:mb-0">
           <video
             src={vid}
             className="w-[100px] h-[100px] rounded-lg h-[200px]"
@@ -17,30 +19,30 @@ function Footer() {
             muted
           ></video>
         </div>
-        <div>
-          <h3 className="text-lg font-bold text-gray-800 mb-4">Quick Links</h3>
+        <div className="sm:ml-1">
+          <h3 className="text-lg font-bold text-gray-800 mb-4">Contact</h3>
           <p className="text-gray-600">
-            <a href="/contactUs" className="hover:text-[#10758B]">
-              Contact Us
-            </a>
+          <Link to="/contactUs" className="hover:text-[#10758B]">
+  Contact Us
+</Link>
           </p>
         </div>
 
         <div>
           <h3 className="text-lg font-bold text-gray-800 mb-4">Legal</h3>
           <p className="text-gray-600">
-            <a href="/privacy" className="hover:text-[#10758B]">
-              Privacy Policy
-            </a>
+          <Link to="/privacy" className="hover:text-[#10758B]">
+  Privacy Policy
+</Link>
           </p>
         </div>
 
 
         {/* Download Our App Section */}
         <div>
-          <h3 className="text-lg font-bold text-gray-800 mb-4">
+          {/* <h3 className="text-lg font-bold text-gray-800 mb-4">
             Download Our App
-          </h3>
+          </h3> */}
           <div className="flex flex-col gap-4">
             <a
               href="https://apps.apple.com/lb/app/student-with-benefits/id6590629020"

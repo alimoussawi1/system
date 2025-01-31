@@ -15,15 +15,16 @@ function Navbar() {
     <div className="bg-white shadow-md h-20 fixed top-0 w-full z-50">
       <div className="container mx-auto py-2 flex justify-between items-center w-[100%]">
         {/* Logo Section */}
-        <div className="flex">
-          <Link to="/">
-            <img
-              src={Swb}
-              alt="Student With Benefits Logo"
-              className="h-14 object-contain"
-            />
-          </Link>
-        </div>
+        <div className="flex flex-row items-center">
+  <Link to="/" className="flex items-center space-x-2">
+    <img
+      src={Swb}
+      alt="Student With Benefits Logo"
+      className="h-14 object-contain"
+    />
+    <p className="font-bold">SWB</p>
+  </Link>
+</div>
 
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex space-x-6 items-center">

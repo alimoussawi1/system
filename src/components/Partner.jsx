@@ -85,16 +85,17 @@ const Partner = () => {
     <>
       {/* Background Section */}
       <div
-        className="relative w-full h-[600px] bg-cover bg-center"
-        style={{ backgroundImage: `url(${Partners})` }}
-      >
-        <button
-          onClick={openModal}
-          className="absolute bottom-20 left-1/2 transform -translate-x-1/2 px-6 py-3 bg-white text-black rounded-lg shadow-lg hover:bg-[#02afde] transition duration-300"
-        >
-          Become a Partner
-        </button>
-      </div>
+  className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center flex justify-center items-center"
+  style={{ backgroundImage: `url(${Partners})` }}
+>
+  <button
+    onClick={openModal}
+    className="px-6 py-3 text-sm sm:text-base md:text-lg bg-white text-black rounded-lg shadow-lg hover:bg-[#02afde] transition duration-300"
+  >
+    Become a Partner
+  </button>
+</div>
+
       <PictureWithText/>
       <PictureWithText1/>
       <PictureWithText2/>
