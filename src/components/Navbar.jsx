@@ -75,7 +75,7 @@ function Navbar() {
             onClick={toggleMenu}
           >
             <svg
-              className="w-6 h-6"
+              className="w-10 h-10"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"

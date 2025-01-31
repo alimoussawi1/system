@@ -11,9 +11,10 @@ import Partner from "./components/Partner";
 import Affordable from "./assets/affordable.png";
 import PictureWithText from "./components/PictureWithText";
 import AboutUs from "./assets/aboutus.png";
-import JobPic from "./assets/job.png";
+import JobPic from "./assets/comingsoon.jpeg";
 import { FaDownload } from "react-icons/fa";
 import BubbleAnimation from "./components/BubbleAnimation";
+import ContactUs from "./components/Contacts";
 const handleDownload = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -88,11 +89,12 @@ function Media() {
 function Jobs() {
   return (
     <div
-      className="relative w-full h-[600px] bg-cover bg-center"
+      className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${JobPic})` }}
     ></div>
   );
 }
+
 
 function Dashboard() {
   return (
@@ -102,7 +104,7 @@ function Dashboard() {
   style={{ backgroundImage: `url(${Main})` }}
 >
   <div
-    className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-[#02afde] border border-[#02afde] text-white rounded-lg px-4 py-2 flex items-center cursor-pointer "
+ className="absolute bottom-[-10%] left-1/2 transform -translate-x-1/2 bg-[#02afde] border border-[#02afde] text-white rounded-lg px-6 py-3 flex items-center cursor-pointer shadow-lg mb-10"
     onClick={handleDownload}
   >
     <FaDownload className="mr-2 text-lg" />
@@ -113,7 +115,7 @@ function Dashboard() {
       
 <div className="mt-5 flex flex-col items-center justify-center text-center">
 <h1 className="text-[#5843aa] italic">Student Life Made Easy</h1>
-  <h1 className="text-5xl font-bold">About Us</h1>
+  <h1 className="text-4xl font-bold">About Us</h1>
 </div>
 <div className="flex flex-col justify-center items-center w-[50%] mt-5 text-center mb-5">
   At Student with Benefits, we are dedicated to empowering university students
@@ -213,6 +215,19 @@ function App() {
                   exit="exit"
                 >
                   <Careers />
+                </motion.div>
+              }
+            />
+             <Route
+              path="/contactUs"
+              element={
+                <motion.div
+                  variants={pageVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                >
+                  <ContactUs/>
                 </motion.div>
               }
             />

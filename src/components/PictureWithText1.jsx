@@ -5,9 +5,9 @@ const PictureWithText1 = () => {
   return (
     <div className="flex flex-col md:flex-row items-center bg-white rounded-lg p-6 space-y-6 md:space-y-0 md:space-x-6">
       {/* Text on the Left */}
-      <div className="w-full md:w-2/3 flex flex-col justify-center">
+      <div className="w-full md:w-2/3 text-center md:text-left">
         <h2 className="text-2xl font-semibold text-gray-800 mb-3">
-          POSITIVE BRAND ASSOCIATION
+          Positive Brand Association
         </h2>
         <p className="text-gray-600">
           Enhance your brand's reputation by supporting education and gaining recognition through a platform dedicated to helping students.

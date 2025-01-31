@@ -2,6 +2,10 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const titles = [
+  "Appetito",
+  "Mayrig",
+  "Batchig",
+  "Ahwet Ras Beirut",
   "Music Hub",
   "Per-Vurt",
   "Chicks A Lot",
@@ -34,34 +38,28 @@ const titles = [
   "Hayat Doner",
   "Agonista",
   "Beit Al Shawarma",
+  
 ];
 
 function BubbleAnimation() {
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-gray-50">
-      {titles.map((title, index) => (
-        <motion.div
-          key={index}
-          className="absolute bg-[#5843aa] text-white flex items-center justify-center px-4 py-2 rounded-full shadow-lg font-medium"
-          style={{
-            width: "120px",
-            height: "120px",
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            x: [0, Math.random() * 300 - 150],
-            y: [0, Math.random() * 300 - 150],
-          }}
-          transition={{
-            repeat: Infinity,
-            repeatType: "reverse",
-            duration: Math.random() * 5 + 4,
-          }}
-        >
-          <p className="text-center text-sm">{title}</p>
-        </motion.div>
-      ))}
+    <div className="relative w-full overflow-x-auto whitespace-nowrap scrollbar-hide py-6">
+      <motion.div
+        className="flex gap-4 px-6"
+        animate={{ x: ["0%", "-100%"] }}
+        transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+      >
+        {titles.map((title, index) => (
+          <div
+            key={index}
+            className={`flex-shrink-0 px-6 py-3 rounded-full shadow-md text-center text-white ${
+              index % 2 === 0 ? "bg-[#5843aa]" : "bg-[#02afde]"
+            }`}
+          >
+            {title}
+          </div>
+        ))}
+      </motion.div>
     </div>
   );
 }

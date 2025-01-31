@@ -9,36 +9,32 @@ function Footer() {
       <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-center">
         {/* Video Section */}
         <div className="mb-4 md:mb-0">
-  <video
-    src={vid}
-    className="w-[300px] rounded-lg h-[200px]"
-    autoPlay
-    loop
-    muted
-  ></video>
-</div>
-
-        {/* Quick Links and Legal Section */}
-        <div className="flex flex-col items-center mb-4 md:mb-0">
-          {/* Quick Links */}
-          <div className="mb-4">
-            <h3 className="text-lg font-bold text-gray-800 mb-4">Quick Links</h3>
-            <p className="text-gray-600">
-              <a href="/contact-us" className="hover:text-[#10758B]">
-                Contact Us
-              </a>
-            </p>
-          </div>
-          {/* Legal Section */}
-          <div>
-            <h3 className="text-lg font-bold text-gray-800 mb-4">Legal</h3>
-            <p className="text-gray-600">
-              <a href="/privacy" className="hover:text-[#10758B]">
-                Privacy Policy
-              </a>
-            </p>
-          </div>
+          <video
+            src={vid}
+            className="w-[100px] h-[100px] rounded-lg h-[200px]"
+            autoPlay
+            loop
+            muted
+          ></video>
         </div>
+        <div>
+          <h3 className="text-lg font-bold text-gray-800 mb-4">Quick Links</h3>
+          <p className="text-gray-600">
+            <a href="/contactUs" className="hover:text-[#10758B]">
+              Contact Us
+            </a>
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-bold text-gray-800 mb-4">Legal</h3>
+          <p className="text-gray-600">
+            <a href="/privacy" className="hover:text-[#10758B]">
+              Privacy Policy
+            </a>
+          </p>
+        </div>
+
 
         {/* Download Our App Section */}
         <div>

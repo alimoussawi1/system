@@ -3,13 +3,13 @@ import Paragraph3 from "../assets/paragraph3.png"
 
 const PictureWithText2 = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center bg-white rounded-lg  p-6 space-y-6 md:space-y-0 md:space-x-6">
+    <div className="flex flex-col-reverse md:flex-row items-center bg-white rounded-lg md:space-y-0 md:space-x-6">
       {/* Image on the Left */}
-      <div className="w-full md:w-1/3 flex justify-center">
+      <div className="w-full md:w-1/3 flex justify-start mb-10">
         <img
           src={Paragraph3} // Replace with your image URL
           alt="Sample Title"
-          className="rounded-lg object-cover max-h-72" // Increased max height
+          className="rounded-lg object-cover max-h-72 w-full" // Increased max height
         />
       </div>
 
