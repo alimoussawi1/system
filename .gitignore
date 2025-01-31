@@ -13,3 +13,7 @@ yarn-error.log
 # Ignore system files
 .DS_Store
 Thumbs.db
+node_modules/
+.cache/
+node_modules/
+.cache/
