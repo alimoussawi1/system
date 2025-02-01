@@ -88,12 +88,12 @@ const Partner = () => {
 {/* Show this div ONLY on large screens */}
 <div
   className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center hidden md:block"
-  style={{ backgroundImage: `url(${Partners})` }}
+  style={{ backgroundImage: `url(${PartnersSmall})` }}
 >
   {/* Button positioned at the bottom center */}
   <button
     onClick={openModal}
-    className="absolute bottom-6 left-1/2 transform -translate-x-1/2 px-6 py-3 text-sm sm:text-base md:text-lg bg-white text-black rounded-lg shadow-lg hover:bg-[#02afde] transition duration-300"
+    className="absolute bottom-24 left-1/2 transform -translate-x-1/2 px-6 py-3 text-sm sm:text-base md:text-lg bg-white text-black rounded-lg shadow-lg hover:bg-[#02afde] transition duration-300"
   >
     Become a Partner
   </button>
@@ -107,7 +107,7 @@ const Partner = () => {
 >
   <button
     onClick={openModal}
-    className="absolute bottom-6 left-1/2 transform -translate-x-1/2 px-6 py-3 text-sm sm:text-base md:text-lg bg-white text-black rounded-lg shadow-lg hover:bg-[#02afde] transition duration-300"
+    className="absolute bottom-20 left-1/2 transform -translate-x-1/2 px-6 py-3 text-sm sm:text-base md:text-lg bg-white text-black rounded-lg shadow-lg hover:bg-[#02afde] transition duration-300"
   >
     Become a Partner
   </button>

@@ -103,22 +103,22 @@ function Dashboard() {
   style={{ backgroundImage: `url(${Main})` }}
 >
 <div
-  className="absolute bottom-[-10%] left-1/2 transform -translate-x-1/2 bg-[#02afde] border border-[#02afde] text-white rounded-lg px-6 py-3 flex items-center cursor-pointer shadow-lg mb-10
+  className="absolute bottom-[-10%] left-1/2 transform -translate-x-1/2  bg-white hover:bg-[#02afde] text-black border border-white hover:border-[#02afde]  rounded-lg px-6 py-3 flex items-center cursor-pointer shadow-lg mb-10
   md:px-5 md:py-2.5 md:text-base lg:px-6 lg:py-3 lg:text-lg"
   onClick={handleDownload}
 >
   <FaDownload className="mr-2 text-lg md:text-base sm:text-sm" />
-  <p className="text-white font-medium md:text-base sm:text-sm">Download Now</p>
+  <p className=" font-medium md:text-base sm:text-sm">Download Now</p>
 </div>
 
 </div>
 
       
 <div className="mt-5 flex flex-col items-center justify-center text-center">
-  <h1 className="text-[#5843aa] italic text-lg sm:text-xl mt-5">
+  <h1 className=" italic text-lg sm:text-xl mt-5">
     Student Life Made Easy
   </h1>
-  <h1 className="text-3xl sm:text-4xl font-bold mt-5">About Us</h1>
+  <h1 className="text-3xl text-[#5843aa] sm:text-4xl font-bold mt-5">About Us</h1>
 </div>
 
 <div className="flex flex-col justify-center items-center w-[90%] sm:w-[80%] md:w-1/2 lg:w-1/2 mt-5 text-center mb-5 text-base sm:text-lg md:text-xl leading-relaxed">
