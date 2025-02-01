@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer"; // Import Footer component
-import Main from "./assets/mainbackground.png";
+import Main from "./assets/mainbackground.jpeg";
 import Privacy from "./components/Privacy";
 import VideoSection from "./components/VideoComponents";
 import PictureWithButton from "./components/PictureWithButton";
@@ -45,9 +45,8 @@ function MissionVision() {
       >
         <h2 className="text-xl font-bold mb-4 text-left">Our Mission</h2>
         <p className="flex-grow">
-          To empower university students by providing a platform that simplifies
-          their lives, offering exclusive deals and opportunities to make student
-          life more affordable, connected, and fulfilling.
+        Our mission is to simplify student life by offering exclusive opportunities that help students save money, build connections, and make the most of their university years. 
+We strive to create a supportive ecosystem that empowers students to thrive both socially and academically.
         </p>
       </div>
 
@@ -103,13 +102,15 @@ function Dashboard() {
   className="relative w-full bg-cover bg-center h-[300px] sm:h-[400px] lg:h-[500px] xl:h-[600px]"
   style={{ backgroundImage: `url(${Main})` }}
 >
-  <div
- className="absolute bottom-[-10%] left-1/2 transform -translate-x-1/2 bg-[#02afde] border border-[#02afde] text-white rounded-lg px-6 py-3 flex items-center cursor-pointer shadow-lg mb-10"
-    onClick={handleDownload}
-  >
-    <FaDownload className="mr-2 text-lg" />
-    <p className="text-white font-medium">Download Now</p>
-  </div>
+<div
+  className="absolute bottom-[-10%] left-1/2 transform -translate-x-1/2 bg-[#02afde] border border-[#02afde] text-white rounded-lg px-6 py-3 flex items-center cursor-pointer shadow-lg mb-10
+  md:px-5 md:py-2.5 md:text-base lg:px-6 lg:py-3 lg:text-lg"
+  onClick={handleDownload}
+>
+  <FaDownload className="mr-2 text-lg md:text-base sm:text-sm" />
+  <p className="text-white font-medium md:text-base sm:text-sm">Download Now</p>
+</div>
+
 </div>
 
       
@@ -121,14 +122,12 @@ function Dashboard() {
 </div>
 
 <div className="flex flex-col justify-center items-center w-[90%] sm:w-[80%] md:w-1/2 lg:w-1/2 mt-5 text-center mb-5 text-base sm:text-lg md:text-xl leading-relaxed">
-  At Student with Benefits, we are dedicated to empowering university students
-  by providing them with a platform designed to make their lives more
-  affordable, connected, and convenient.
+At Student with Benefits, we are committed to enhancing the university experience by making student life more connected, convenient and cost efficient.
+
   <br />
   <br />
-  Founded with the vision of supporting students during one of the most pivotal
-  phases of their lives, Student with Benefits is more than just an app, it’s a
-  movement.
+  More than just an app, we are a community-driven platform that bridges the gap between students and businesses, providing exclusive deals, resources, and opportunities that support students throughout their academic journey.
+
 </div>
 
 <MissionVision/>

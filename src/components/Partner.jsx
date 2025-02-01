@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import emailjs from "emailjs-com";
 import Partners from "../assets/partners.png";
+import PartnersSmall from "../assets/partnerwithussmall.jpeg";
 import PictureWithButton from "./PictureWithButton";
 import PictureWithText from "./PictureWithText";
 import PictureWithText1 from "./PictureWithText1";
@@ -84,17 +85,34 @@ const Partner = () => {
   return (
     <>
       {/* Background Section */}
-      <div
-  className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center flex justify-center items-center"
+{/* Show this div ONLY on large screens */}
+<div
+  className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center hidden md:block"
   style={{ backgroundImage: `url(${Partners})` }}
 >
+  {/* Button positioned at the bottom center */}
   <button
     onClick={openModal}
-    className="px-6 py-3 text-sm sm:text-base md:text-lg bg-white text-black rounded-lg shadow-lg hover:bg-[#02afde] transition duration-300"
+    className="absolute bottom-6 left-1/2 transform -translate-x-1/2 px-6 py-3 text-sm sm:text-base md:text-lg bg-white text-black rounded-lg shadow-lg hover:bg-[#02afde] transition duration-300"
   >
     Become a Partner
   </button>
 </div>
+
+
+{/* Show this div ONLY on small screens */}
+<div
+  className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center block md:hidden"
+  style={{ backgroundImage: `url(${PartnersSmall})` }}
+>
+  <button
+    onClick={openModal}
+    className="absolute bottom-6 left-1/2 transform -translate-x-1/2 px-6 py-3 text-sm sm:text-base md:text-lg bg-white text-black rounded-lg shadow-lg hover:bg-[#02afde] transition duration-300"
+  >
+    Become a Partner
+  </button>
+</div>
+
 
       <PictureWithText/>
       <PictureWithText1/>

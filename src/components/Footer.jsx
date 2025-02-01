@@ -10,15 +10,18 @@ function Footer() {
     <footer className="bg-gray-100">
       <div className="max-w-6xl flex flex-row justify-between items-center text-center">
         {/* Video Section */}
-        <div className=" md:mb-0">
-          <video
-            src={vid}
-            className="w-[100px] h-[100px] rounded-lg h-[200px]"
-            autoPlay
-            loop
-            muted
-          ></video>
-        </div>
+        <div className="w-[100px] h-[100px] rounded-lg overflow-hidden">
+  <video
+    src={vid}
+    className="w-full h-full object-cover"
+    autoPlay
+    loop
+    muted
+    playsInline
+    controls={false}
+  ></video>
+</div>
+
         <div className="sm:ml-1">
           <h3 className="text-lg font-bold text-gray-800 mb-4">Contact</h3>
           <p className="text-gray-600">

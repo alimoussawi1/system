@@ -16,10 +16,10 @@ const PictureWithText2 = () => {
       {/* Text on the Right */}
       <div className="w-full md:w-2/3 text-center md:text-left">
         <h2 className="text-2xl font-semibold text-gray-800 mb-3">
-        Brand Loyalty
+        Increased Foot Traffic
         </h2>
         <p className="text-gray-600">
-        Enhance your brand's reputation by supporting education and gaining recognition through a platform dedicated to helping students.
+        Attract a steady stream of young, enthusiastic customers eager to discover and support local businesses.
         </p>
       </div>
     </div>
