@@ -46,24 +46,26 @@ function Footer() {
           {/* <h3 className="text-lg font-bold text-gray-800 mb-4">
             Download Our App
           </h3> */}
-          <div className="flex flex-col gap-4">
-            <a
-              href="https://apps.apple.com/lb/app/student-with-benefits/id6590629020"
-              className="inline-block"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={apple} alt="apple" className="w-[150px]" />
-            </a>
-            <a
-              href="https://play.google.com/store/apps/details?id=com.omarnaous.swb"
-              className="inline-block"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={android} alt="android" className="w-[150px]" />
-            </a>
-          </div>
+<div className="flex flex-col md:flex-row gap-4 items-center">
+  <a
+    href="https://apps.apple.com/lb/app/student-with-benefits/id6590629020"
+    className="inline-block"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <img src={apple} alt="apple" className="w-[150px]" />
+  </a>
+  <a
+    href="https://play.google.com/store/apps/details?id=com.omarnaous.swb"
+    className="inline-block"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <img src={android} alt="android" className="w-[150px]" />
+  </a>
+</div>
+
+
         </div>
       </div>
     </footer>

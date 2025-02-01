@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer"; // Import Footer component
-import Main from "./assets/mainbackground.jpeg";
+import Main from "./assets/dashboard.png";
 import Privacy from "./components/Privacy";
 import VideoSection from "./components/VideoComponents";
 import PictureWithButton from "./components/PictureWithButton";
@@ -45,7 +45,7 @@ function MissionVision() {
       >
         <h2 className="text-xl font-bold mb-4 text-left">Our Mission</h2>
         <p className="flex-grow">
-        Our mission is to simplify student life by offering exclusive opportunities that help students save money, build connections, and make the most of their university years. 
+        Simplify student life by offering exclusive opportunities that help students save money, build connections, and make the most of their university years. 
 We strive to create a supportive ecosystem that empowers students to thrive both socially and academically.
         </p>
       </div>
@@ -57,7 +57,7 @@ We strive to create a supportive ecosystem that empowers students to thrive both
       >
         <h2 className="text-xl font-bold mb-4 text-left">Our Vision</h2>
         <p className="flex-grow">
-          To become the go-to platform for university students worldwide,
+          Become the go-to platform for university students worldwide,
           fostering a community that bridges the gap between students and
           businesses, while creating opportunities that extend beyond education.
         </p>
