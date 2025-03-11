@@ -56,7 +56,7 @@ function Footer() {
     <img src={apple} alt="apple" className="w-[150px]" />
   </a>
   <a
-    href="https://play.google.com/store/apps/details?id=com.omarnaous.swb"
+    href="https://play.google.com/store/apps/details?id=com.alimoussawi.swb&pcampaignid=web_share"
     className="inline-block"
     target="_blank"
     rel="noopener noreferrer"
