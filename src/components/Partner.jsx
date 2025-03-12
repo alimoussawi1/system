@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import emailjs from "emailjs-com";
 import Partners from "../assets/partners.png";
-import PartnersSmall from "../assets/partnerwithussmall.jpeg";
+import PartnersSmall from "../assets/partnerwithussmall.png";
 import PictureWithButton from "./PictureWithButton";
 import PictureWithText from "./PictureWithText";
 import PictureWithText1 from "./PictureWithText1";
@@ -16,6 +16,7 @@ const Partner = () => {
     phoneNumber: "",
     email: "",
     location: "",
+    description: "",
   });
 
   const openModal = () => {
@@ -40,9 +41,10 @@ const Partner = () => {
       phoneNumber: formData.phoneNumber,
       email: formData.email,
       location: formData.location,
+      description: formData.description,
     };
     const toastId = toast.loading("Sending message...", {
-      
+
     });
 
     emailjs
@@ -66,7 +68,7 @@ const Partner = () => {
           setTimeout(() => {
             closeModal();
           }, 3000);
-         
+
         },
         (error) => {
           console.error("Failed to send email.", error);
@@ -85,55 +87,55 @@ const Partner = () => {
   return (
     <>
       {/* Background Section */}
-{/* Show this div ONLY on large screens */}
-<div
-  className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center hidden md:block"
-  style={{ backgroundImage: `url(${PartnersSmall})` }}
->
-  {/* Button positioned at the bottom center */}
-  <button
-    onClick={openModal}
-    className="absolute bottom-24 left-1/2 transform -translate-x-1/2 px-6 py-3 text-sm sm:text-base md:text-lg bg-white text-black rounded-lg shadow-lg hover:bg-[#02afde] transition duration-300"
-  >
-    Become a Partner
-  </button>
-</div>
+      {/* Show this div ONLY on large screens */}
+      <div
+        className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center hidden md:block"
+        style={{ backgroundImage: `url(${PartnersSmall})` }}
+      >
+        {/* Button positioned at the bottom center */}
+        <button
+          onClick={openModal}
+          className="absolute bottom-24 left-1/2 transform -translate-x-1/2 px-6 py-3 text-sm sm:text-base md:text-lg bg-[#02afde] text-black rounded-lg shadow-lg hover:bg-[#02afde] transition duration-300"
+        >
+          Become a Partner
+        </button>
+      </div>
 
 
-{/* Show this div ONLY on small screens */}
-<div
-  className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center block md:hidden"
-  style={{ backgroundImage: `url(${PartnersSmall})` }}
->
-  <button
-    onClick={openModal}
-    className="absolute bottom-20 left-1/2 transform -translate-x-1/2 px-6 py-3 text-sm sm:text-base md:text-lg bg-white text-black rounded-lg shadow-lg hover:bg-[#02afde] transition duration-300"
-  >
-    Become a Partner
-  </button>
-</div>
+      {/* Show this div ONLY on small screens */}
+      <div
+        className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center block md:hidden"
+        style={{ backgroundImage: `url(${PartnersSmall})` }}
+      >
+        <button
+          onClick={openModal}
+          className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-6 py-3 text-sm sm:text-base md:text-lg  bg-[#02afde] text-black rounded-lg shadow-lg hover:bg-[#02afde] transition duration-300"
+        >
+          Become a Partner
+        </button>
+      </div>
 
 
-      <PictureWithText/>
-      <PictureWithText1/>
-      <PictureWithText2/>
+      <PictureWithText />
+      <PictureWithText1 />
+      <PictureWithText2 />
 
 
       {/* Modal Section */}
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-[400px]">
-          <ToastContainer
-  position="top-right"
-  autoClose={3000}
-  hideProgressBar={false}
-  newestOnTop={false}
-  closeOnClick
-  pauseOnHover
-  draggable
-  theme="light"
-  progressStyle={{ background: "#5843aa" }} // Custom progress bar color
-/>
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              pauseOnHover
+              draggable
+              theme="light"
+              progressStyle={{ background: "#5843aa" }} // Custom progress bar color
+            />
             <h2 className="text-xl font-bold mb-4 text-center">
               Partner With Us
             </h2>
@@ -141,7 +143,7 @@ const Partner = () => {
               {/* Contact Name */}
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-2">
-                  Contact Name 
+                  Contact Name
                 </label>
                 <input
                   type="text"
@@ -197,6 +199,19 @@ const Partner = () => {
                   placeholder="Enter email"
                 />
               </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-2">Description (Max 500 chars)</label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded-lg focus:ring focus:ring-[#02afde] resize-none"
+                  placeholder="Provide a brief description..."
+                  maxLength="500"
+                  rows="4"
+                />
+                <p className="text-xs text-gray-500">{formData.description.length}/500 characters</p>
+              </div>
 
               {/* Location */}
               <div className="mb-4">
@@ -212,6 +227,7 @@ const Partner = () => {
                   placeholder="Enter location"
                 />
               </div>
+
 
               {/* Submit Button */}
               <div className="flex justify-end">

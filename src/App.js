@@ -15,6 +15,7 @@ import JobPic from "./assets/comingsoon.jpeg";
 import { FaDownload } from "react-icons/fa";
 import BubbleAnimation from "./components/BubbleAnimation";
 import ContactUs from "./components/Contacts";
+import Intro from "./assets/intro.mp4"
 const handleDownload = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -45,8 +46,8 @@ function MissionVision() {
       >
         <h2 className="text-xl font-bold mb-4 text-left">Our Mission</h2>
         <p className="flex-grow">
-        Simplify student life by offering exclusive opportunities that help students save money, build connections, and make the most of their university years. 
-We strive to create a supportive ecosystem that empowers students to thrive both socially and academically.
+          Simplify student life by offering exclusive opportunities that help students save money, build connections, and make the most of their university years.
+          We strive to create a supportive ecosystem that empowers students to thrive both socially and academically.
         </p>
       </div>
 
@@ -98,46 +99,46 @@ function Jobs() {
 function Dashboard() {
   return (
     <div className="flex flex-col items-center">
-    <div
-  className="relative w-full bg-cover bg-center h-[300px] sm:h-[400px] lg:h-[500px] xl:h-[600px]"
-  style={{ backgroundImage: `url(${Main})` }}
->
-<div
-  className="absolute bottom-[-10%] left-1/2 transform -translate-x-1/2  bg-white hover:bg-[#02afde] text-black border border-white hover:border-[#02afde]  rounded-lg px-6 py-3 flex items-center cursor-pointer shadow-lg mb-10
-  md:px-5 md:py-2.5 md:text-base lg:px-6 lg:py-3 lg:text-lg"
-  onClick={handleDownload}
->
-  <FaDownload className="mr-2 text-lg md:text-base sm:text-sm" />
-  <p className=" font-medium md:text-base sm:text-sm">Download Now</p>
-</div>
+      <div
+        className="relative w-full bg-cover bg-center h-[300px] sm:h-[400px] lg:h-[500px] xl:h-[600px]"
+      >
+        <video
+          src={Intro}
+          autoPlay
 
-</div>
+          muted
+          className="w-full h-full object-cover"
+        />
+        <div
+          className="absolute bottom-[-10%] left-1/2 transform -translate-x-1/2 bg-white hover:bg-[#02afde] text-black border border-white hover:border-[#02afde] rounded-lg px-6 py-3 flex items-center cursor-pointer shadow-lg mb-10
+          md:px-5 md:py-2.5 md:text-base lg:px-6 lg:py-3 lg:text-lg"
+          onClick={handleDownload}
+        >
+          <FaDownload className="mr-2 text-lg md:text-base sm:text-sm" />
+          <p className="font-medium md:text-base sm:text-sm">Download Now</p>
+        </div>
+      </div>
 
-      
-<div className="mt-5 flex flex-col items-center justify-center text-center">
-  <h1 className=" italic text-lg sm:text-xl mt-5">
-    Student Life Made Easy
-  </h1>
-  <h1 className="text-3xl text-[#5843aa] sm:text-4xl font-bold mt-5">About Us</h1>
-</div>
+      <div className="mt-5 flex flex-col items-center justify-center text-center">
+        <h1 className="italic text-lg sm:text-xl mt-5">
+          Student Life Made Easy
+        </h1>
+        <h1 className="text-3xl text-[#5843aa] sm:text-4xl font-bold mt-5">About Us</h1>
+      </div>
 
-<div className="flex flex-col justify-center items-center w-[90%] sm:w-[80%] md:w-1/2 lg:w-1/2 mt-5 text-center mb-5 text-base sm:text-lg md:text-xl leading-relaxed">
-At Student with Benefits, we are committed to enhancing the university experience by making student life more connected, convenient and cost efficient.
+      <div className="flex flex-col justify-center items-center w-[90%] sm:w-[80%] md:w-1/2 lg:w-1/2 mt-5 text-center mb-5 text-base sm:text-lg md:text-xl leading-relaxed">
+        At Student with Benefits, we are committed to enhancing the university experience by making student life more connected, convenient, and cost-efficient.
+        <br />
+        <br />
+        More than just an app, we are a community-driven platform that bridges the gap between students and businesses, providing exclusive deals, resources, and opportunities that support students throughout their academic journey.
+      </div>
 
-  <br />
-  <br />
-  More than just an app, we are a community-driven platform that bridges the gap between students and businesses, providing exclusive deals, resources, and opportunities that support students throughout their academic journey.
-
-</div>
-
-<MissionVision/>
-<BubbleAnimation/>
-
-
-    
+      <MissionVision />
+      <BubbleAnimation />
     </div>
   );
 }
+
 
 function App() {
   const location = useLocation();
@@ -221,7 +222,7 @@ function App() {
                 </motion.div>
               }
             />
-             <Route
+            <Route
               path="/contactUs"
               element={
                 <motion.div
@@ -230,7 +231,7 @@ function App() {
                   animate="animate"
                   exit="exit"
                 >
-                  <ContactUs/>
+                  <ContactUs />
                 </motion.div>
               }
             />

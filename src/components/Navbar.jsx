@@ -16,43 +16,40 @@ function Navbar() {
       <div className="container mx-auto py-2 flex justify-between items-center w-[100%]">
         {/* Logo Section */}
         <div className="flex flex-row items-center">
-  <Link to="/" className="flex items-center space-x-2">
-    <img
-      src={Swb}
-      alt="Student With Benefits Logo"
-      className="h-14 object-contain"
-    />
-    <p className="font-bold">SWB</p>
-  </Link>
-</div>
+          <Link to="/" className="flex items-center space-x-2">
+            <img
+              src={Swb}
+              alt="Student With Benefits Logo"
+              className="h-14 object-contain"
+            />
+            <p className="font-bold">SWB</p>
+          </Link>
+        </div>
 
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex space-x-6 items-center">
           <Link
             to="/"
-            className={`font-medium ${
-              location.pathname === "/" ? "text-[#10758B]" : "text-gray-600"
-            } hover:text-[#10758B]`}
+            className={`font-medium ${location.pathname === "/" ? "text-[#10758B]" : "text-gray-600"
+              } hover:text-[#10758B]`}
           >
             Home
           </Link>
           <Link
             to="/partner"
-            className={`font-medium ${
-              location.pathname === "/partner"
+            className={`font-medium ${location.pathname === "/partner"
                 ? "text-[#10758B]"
                 : "text-gray-600"
-            } hover:text-[#10758B]`}
+              } hover:text-[#10758B]`}
           >
             Become a Partner
           </Link>
           <Link
             to="/jobs"
-            className={`font-medium ${
-              location.pathname === "/jobs"
+            className={`font-medium ${location.pathname === "/jobs"
                 ? "text-[#10758B]"
                 : "text-gray-600"
-            } hover:text-[#10758B]`}
+              } hover:text-[#10758B]`}
           >
             Student Jobs
           </Link>
@@ -95,9 +92,8 @@ function Navbar() {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed top-0 right-0 h-full bg-white shadow-lg z-40 transition-transform transform ${
-          isMenuOpen ? "translate-x-0" : "translate-x-full"
-        } w-64`}
+        className={`fixed top-0 right-0 h-full bg-white shadow-lg z-40 transition-transform transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"
+          } w-64`}
       >
         <button
           className="text-gray-600 p-4 focus:outline-none"
@@ -121,31 +117,28 @@ function Navbar() {
         <nav className="flex flex-col p-4 space-y-4">
           <Link
             to="/"
-            className={`font-medium ${
-              location.pathname === "/" ? "text-[#10758B]" : "text-gray-600"
-            } hover:text-[#10758B]`}
+            className={`font-medium ${location.pathname === "/" ? "text-[#10758B]" : "text-gray-600"
+              } hover:text-[#10758B]`}
             onClick={() => setIsMenuOpen(false)} // Close menu on click
           >
             Home
           </Link>
           <Link
             to="/partner"
-            className={`font-medium ${
-              location.pathname === "/partner"
+            className={`font-medium ${location.pathname === "/partner"
                 ? "text-[#10758B]"
                 : "text-gray-600"
-            } hover:text-[#10758B]`}
+              } hover:text-[#10758B]`}
             onClick={() => setIsMenuOpen(false)} // Close menu on click
           >
             Become a Partner
           </Link>
           <Link
             to="/jobs"
-            className={`font-medium ${
-              location.pathname === "/jobs"
+            className={`font-medium ${location.pathname === "/jobs"
                 ? "text-[#10758B]"
                 : "text-gray-600"
-            } hover:text-[#10758B]`}
+              } hover:text-[#10758B]`}
             onClick={() => setIsMenuOpen(false)} // Close menu on click
           >
             Student Jobs

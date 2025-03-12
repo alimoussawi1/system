@@ -11,32 +11,32 @@ function Footer() {
       <div className="max-w-6xl flex flex-row justify-between items-center text-center">
         {/* Video Section */}
         <div className="w-[100px] h-[100px] rounded-lg overflow-hidden">
-  <video
-    src={vid}
-    className="w-full h-full object-cover"
-    autoPlay
-    loop
-    muted
-    playsInline
-    controls={false}
-  ></video>
-</div>
+          <video
+            src={vid}
+            className="w-full h-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+            controls={false}
+          ></video>
+        </div>
 
         <div className="sm:ml-1">
           <h3 className="text-lg font-bold text-gray-800 mb-4">Contact</h3>
           <p className="text-gray-600">
-          <Link to="/contactUs" className="hover:text-[#10758B]">
-  Contact Us
-</Link>
+            <Link to="/contactUs" className="hover:text-[#10758B]">
+              Contact Us
+            </Link>
           </p>
         </div>
 
         <div>
           <h3 className="text-lg font-bold text-gray-800 mb-4">Legal</h3>
           <p className="text-gray-600">
-          <Link to="/privacy" className="hover:text-[#10758B]">
-  Privacy Policy
-</Link>
+            <Link to="/privacy" className="hover:text-[#10758B]">
+              Privacy Policy
+            </Link>
           </p>
         </div>
 
@@ -46,24 +46,24 @@ function Footer() {
           {/* <h3 className="text-lg font-bold text-gray-800 mb-4">
             Download Our App
           </h3> */}
-<div className="flex flex-col md:flex-row gap-4 items-center">
-  <a
-    href="https://apps.apple.com/lb/app/student-with-benefits/id6590629020"
-    className="inline-block"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <img src={apple} alt="apple" className="w-[150px]" />
-  </a>
-  <a
-    href="https://play.google.com/store/apps/details?id=com.alimoussawi.swb&pcampaignid=web_share"
-    className="inline-block"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <img src={android} alt="android" className="w-[150px]" />
-  </a>
-</div>
+          <div className="flex flex-col md:flex-row gap-4 items-center">
+            <a
+              href="https://apps.apple.com/lb/app/student-with-benefits/id6590629020"
+              className="inline-block"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={apple} alt="apple" className="w-[150px]" />
+            </a>
+            <a
+              href="https://play.google.com/store/apps/details?id=com.alimoussawi.swb&pcampaignid=web_share"
+              className="inline-block"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={android} alt="android" className="w-[150px]" />
+            </a>
+          </div>
 
 
         </div>

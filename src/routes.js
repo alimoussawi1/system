@@ -32,6 +32,7 @@ function App() {
         <Route path="/careers" element={<Careers />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/media" element={<Media />} />
+        <Route path="/signup" element={<Privacy />} />
       </Routes>
     </div>
   );
