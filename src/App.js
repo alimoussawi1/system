@@ -16,6 +16,7 @@ import { FaDownload } from "react-icons/fa";
 import BubbleAnimation from "./components/BubbleAnimation";
 import ContactUs from "./components/Contacts";
 import Intro from "./assets/intro.mp4"
+import ScrollToTop from "./components/ScrollToTop";
 const handleDownload = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -106,7 +107,12 @@ function Dashboard() {
           src={Intro}
           autoPlay
 
+
           muted
+          playsInline
+          controls={false}
+
+
           className="w-full h-full object-cover"
         />
         <div
@@ -166,6 +172,7 @@ function App() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
+      <ScrollToTop />
       {/* Main content area */}
       <div className="flex-grow pt-20">
         <AnimatePresence mode="wait">
