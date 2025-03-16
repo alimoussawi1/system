@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.630b55a2.css",
-    "main.js": "/static/js/main.5b11c966.js",
+    "main.css": "/static/css/main.641bf2bc.css",
+    "main.js": "/static/js/main.45dfb2bf.js",
     "static/media/mobile1.mp4": "/static/media/mobile1.510459e0b6cf09669ead.mp4",
     "static/media/partners.png": "/static/media/partners.0d8f6f7170c4612b305e.png",
     "static/media/dashboard.png": "/static/media/dashboard.1145612828bd2f3db3b8.png",
@@ -58,7 +58,6 @@
     "static/media/appstore.webp": "/static/media/appstore.f52112f6be18c650f756.webp",
     "static/media/swblogo.png": "/static/media/swblogo.f6b48508bdb1f7e62800.png",
     "static/media/Pervurt.jpg": "/static/media/Pervurt.6039bc9963bd75b3deaa.jpg",
-    "static/media/XnDoughs.jpg": "/static/media/XnDoughs.dc28b963ce1bc35ff02a.jpg",
     "static/media/playstore.webp": "/static/media/playstore.d969cecabed5a8fc9a0f.webp",
     "static/media/Crave's Burger.jpg": "/static/media/Crave's Burger.475f713fa66d74eac7a6.jpg",
     "static/media/Music Hub.jpg": "/static/media/Music Hub.959c2c4645cbb82a6af4.jpg",
@@ -70,11 +69,11 @@
     "static/media/Dippers.jpg": "/static/media/Dippers.fc96e5d1564e4f2edbd7.jpg",
     "static/media/MY fit life.JPG": "/static/media/MY fit life.1773a40bbc946054bad0.JPG",
     "index.html": "/index.html",
-    "main.630b55a2.css.map": "/static/css/main.630b55a2.css.map",
-    "main.5b11c966.js.map": "/static/js/main.5b11c966.js.map"
+    "main.641bf2bc.css.map": "/static/css/main.641bf2bc.css.map",
+    "main.45dfb2bf.js.map": "/static/js/main.45dfb2bf.js.map"
   },
   "entrypoints": [
-    "static/css/main.630b55a2.css",
-    "static/js/main.5b11c966.js"
+    "static/css/main.641bf2bc.css",
+    "static/js/main.45dfb2bf.js"
   ]
 }
