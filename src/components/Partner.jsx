@@ -95,7 +95,7 @@ const Partner = () => {
         {/* Button positioned at the bottom center */}
         <button
           onClick={openModal}
-          className="absolute bottom-24 left-1/2 transform -translate-x-1/2 px-6 py-3 text-sm sm:text-base md:text-lg bg-[#02afde] text-black rounded-lg shadow-lg hover:bg-[#02afde] transition duration-300"
+          className="absolute bottom-24 left-1/2 transform -translate-x-1/2 px-6 py-3 text-sm sm:text-base md:text-lg bg-[#02afde] text-black rounded-lg shadow-lg hover:bg-[#02afde]  font-medium  transition duration-300"
         >
           Become a Partner
         </button>
@@ -109,7 +109,7 @@ const Partner = () => {
       >
         <button
           onClick={openModal}
-          className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-6 py-3 text-sm sm:text-base md:text-lg  bg-[#02afde] text-black rounded-lg shadow-lg hover:bg-[#02afde] transition duration-300"
+          className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-6 py-3 text-sm sm:text-base md:text-lg  bg-[#02afde] text-black rounded-lg shadow-lg hover:bg-[#02afde]  font-medium  transition duration-300"
         >
           Become a Partner
         </button>

@@ -116,7 +116,7 @@ function Dashboard() {
           className="w-full h-full object-cover"
         />
         <div
-          className="absolute bottom-[-10%] left-1/2 transform -translate-x-1/2 bg-white hover:bg-[#02afde] text-black border border-white hover:border-[#02afde] rounded-lg px-6 py-3 flex items-center cursor-pointer shadow-lg mb-10
+          className="absolute bottom-[-10%] left-1/2 transform -translate-x-1/2 bg-[#02afde] text-black rounded-lg px-6 py-3 flex items-center cursor-pointer shadow-lg mb-10
           md:px-5 md:py-2.5 md:text-base lg:px-6 lg:py-3 lg:text-lg"
           onClick={handleDownload}
         >

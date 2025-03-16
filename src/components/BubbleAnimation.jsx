@@ -28,13 +28,13 @@ import MXAcademy from "../assets/SWBPhotos/MX academy.jpg";
 import MusicHub from "../assets/SWBPhotos/Music Hub.jpg";
 import PapaMiaTacos from "../assets/SWBPhotos/Papa mia tacos.jpg";
 import Pervurt from "../assets/SWBPhotos/Pervurt.jpg";
-import PhoenixParagliding from "../assets/SWBPhotos/Phoenix Paragliding Lebanon.jpg";
+// import PhoenixParagliding from "../assets/SWBPhotos/Phoenix Paragliding Lebanon.jpg";
 import PizzaGuys from "../assets/SWBPhotos/Pizza guys.jpg";
-import SOULGarden from "../assets/SWBPhotos/SOUL garden.jpg";
+// import SOULGarden from "../assets/SWBPhotos/SOUL garden.jpg";
 import Wingman from "../assets/SWBPhotos/Wingman.jpg";
 import KababObeid from "../assets/SWBPhotos/Kabab Obeid.jpg";
-import ClassicoArena from "../assets/SWBPhotos/Classico Arena.jpg";
-import SkyFall from "../assets/SWBPhotos/SkyFall.jpg";
+// import ClassicoArena from "../assets/SWBPhotos/Classico Arena.jpg";
+// import SkyFall from "../assets/SWBPhotos/SkyFall.jpg";
 import SloppyJoes from "../assets/SWBPhotos/Sloppy Joes.jpg";
 import SweetBar from "../assets/SWBPhotos/Sweet Bar.jpg";
 import XnDoughs from "../assets/SWBPhotos/XnDoughs.jpg";
@@ -62,7 +62,7 @@ import ZmrdSocialSpace from "../assets/Logo Fixed/zmrd social space.png";
 
 // Define fixed rows
 const allImages = [
-  Pasta, AlSafaPadel, AthleteFactory, B60, Bar35, Beeway, BrainFactory, Burgers, CHKN, ChicksALot, CraveBurger, Dippers, Doughvincy, DrKafta, FireFly, FlyingFrog, Fuego, KibbeKitchen, KitchenLab, KurvPilates, LunaVillage, MOBFood, MXAcademy, MusicHub, PapaMiaTacos, Pervurt, PhoenixParagliding, PizzaGuys, SOULGarden, Wingman, KababObeid, ClassicoArena, SkyFall, SloppyJoes, SweetBar, XnDoughs, ZawiyatFarah,
+  Pasta, AlSafaPadel, AthleteFactory, B60, Bar35, Beeway, BrainFactory, Burgers, CHKN, ChicksALot, CraveBurger, Dippers, Doughvincy, DrKafta, FireFly, FlyingFrog, Fuego, KibbeKitchen, KitchenLab, KurvPilates, LunaVillage, MOBFood, MXAcademy, MusicHub, PapaMiaTacos, Pervurt, PizzaGuys, Wingman, KababObeid, SloppyJoes, SweetBar, XnDoughs, ZawiyatFarah,
   BillyBoyz, Smushkies, Appetito, LosSabores, PersianCup, GoTango, TucTaco, CafeYounes, Machrou3Cafe, PlushCafe, HookaTimes, MYFitLife, MiskBeirut, Miniguette, NabuMuseum, TheBakeAtelier, Agonista, ZmrdSocialSpace
 ];
 
@@ -72,12 +72,12 @@ const rows = [
   allImages.slice(Math.ceil((allImages.length * 2) / 3))
 ];
 
-const InfiniteRow = ({ images, speed }) => {
+const InfiniteRow = ({ images, speed, direction }) => {
   return (
     <motion.div
       className="flex items-center gap-6 whitespace-nowrap my-11"
       style={{ width: "max-content" }}
-      animate={{ x: ["0%", "-50%"] }}
+      animate={{ x: direction === "left" ? ["-50%", "0%"] : ["0%", "-50%"] }}
       transition={{ ease: "linear", duration: speed, repeat: Infinity }}
     >
       {[...images, ...images].map((image, index) => (
@@ -93,12 +93,16 @@ const InfiniteRow = ({ images, speed }) => {
   );
 };
 
-
 const BubbleAnimation = () => {
   return (
     <div className="relative w-full overflow-hidden py-6 bg-white">
       {rows.map((row, rowIndex) => (
-        <InfiniteRow key={rowIndex} images={row} speed={30 + rowIndex * 5} />
+        <InfiniteRow
+          key={rowIndex}
+          images={row}
+          speed={30 + rowIndex * 5}
+          direction={rowIndex % 2 === 0 ? "left" : "right"} // Odd rows move right, even rows move left
+        />
       ))}
     </div>
   );
