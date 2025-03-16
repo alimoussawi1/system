@@ -124,7 +124,9 @@ const Partner = () => {
       {/* Modal Section */}
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-[400px]">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-[90%] max-w-[400px] max-h-[70vh] overflow-y-auto">
+
+
             <ToastContainer
               position="top-right"
               autoClose={3000}
