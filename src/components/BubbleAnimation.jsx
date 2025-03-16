@@ -37,7 +37,7 @@ import KababObeid from "../assets/SWBPhotos/Kabab Obeid.jpg";
 // import SkyFall from "../assets/SWBPhotos/SkyFall.jpg";
 import SloppyJoes from "../assets/SWBPhotos/Sloppy Joes.jpg";
 import SweetBar from "../assets/SWBPhotos/Sweet Bar.jpg";
-import XnDoughs from "../assets/SWBPhotos/XnDoughs.jpg";
+// import XnDoughs from "../assets/SWBPhotos/XnDoughs.jpg";
 import ZawiyatFarah from "../assets/SWBPhotos/Zawiyat farah.jpg";
 
 // Import all images from Logo Fixed
@@ -62,7 +62,7 @@ import ZmrdSocialSpace from "../assets/Logo Fixed/zmrd social space.png";
 
 // Define fixed rows
 const allImages = [
-  Pasta, AlSafaPadel, AthleteFactory, B60, Bar35, Beeway, BrainFactory, Burgers, CHKN, ChicksALot, CraveBurger, Dippers, Doughvincy, DrKafta, FireFly, FlyingFrog, Fuego, KibbeKitchen, KitchenLab, KurvPilates, LunaVillage, MOBFood, MXAcademy, MusicHub, PapaMiaTacos, Pervurt, PizzaGuys, Wingman, KababObeid, SloppyJoes, SweetBar, XnDoughs, ZawiyatFarah,
+  Pasta, AlSafaPadel, AthleteFactory, B60, Bar35, Beeway, BrainFactory, Burgers, CHKN, ChicksALot, CraveBurger, Dippers, Doughvincy, DrKafta, FireFly, FlyingFrog, Fuego, KibbeKitchen, KitchenLab, KurvPilates, LunaVillage, MOBFood, MXAcademy, MusicHub, PapaMiaTacos, Pervurt, PizzaGuys, Wingman, KababObeid, SloppyJoes, SweetBar, ZawiyatFarah,
   BillyBoyz, Smushkies, Appetito, LosSabores, PersianCup, GoTango, TucTaco, CafeYounes, Machrou3Cafe, PlushCafe, HookaTimes, MYFitLife, MiskBeirut, Miniguette, NabuMuseum, TheBakeAtelier, Agonista, ZmrdSocialSpace
 ];
 
