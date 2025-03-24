@@ -24,7 +24,7 @@ function Navbar() {
 
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:3001/initiate_payment", {
+      const response = await axios.post("https://swb-backend.onrender.com/initiate_payment", {
         amount: parseFloat(amount),
         currency: "USD"
       });
@@ -77,8 +77,9 @@ function Navbar() {
           </button>
 
           <div className="text-white rounded-lg px-4 py-2 flex items-center cursor-pointer">
-            <p className="text-[#02afde] font-medium">Log in</p>
+            <Link to="/login" className="text-[#02afde] font-medium">Log in</Link>
           </div>
+
         </div>
 
         {/* Hamburger Menu for Mobile */}

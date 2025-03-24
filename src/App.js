@@ -17,6 +17,8 @@ import BubbleAnimation from "./components/BubbleAnimation";
 import ContactUs from "./components/Contacts";
 import Intro from "./assets/intro.mp4"
 import ScrollToTop from "./components/ScrollToTop";
+import LoginPage from "./components/LoginPage";
+import Admin from "./components/Admin";
 const handleDownload = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -243,6 +245,19 @@ function App() {
               }
             />
             <Route
+              path="/admin"
+              element={
+                <motion.div
+                  variants={pageVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                >
+                  <Admin />
+                </motion.div>
+              }
+            />
+            <Route
               path="/privacy"
               element={
                 <motion.div
@@ -278,6 +293,20 @@ function App() {
                   exit="exit"
                 >
                   <Jobs />
+                </motion.div>
+              }
+            />
+
+            <Route
+              path="/login"
+              element={
+                <motion.div
+                  variants={pageVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                >
+                  <LoginPage />
                 </motion.div>
               }
             />
