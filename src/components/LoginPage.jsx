@@ -23,7 +23,7 @@ function LoginPage() {
         setError("");
 
         try {
-            const response = await axios.post("http://localhost:3001/login", {
+            const response = await axios.post("https://swb-backend.onrender.com/login", {
                 username,
                 password
             });
@@ -86,14 +86,14 @@ function LoginPage() {
                         </button>
                     </div>
 
-                    <div className="text-center">
+                    {/* <div className="text-center">
                         <p className="text-sm text-gray-600">
                             Don't have an account?{" "}
                             <a href="/signup" className="text-blue-500 hover:underline">
                                 Sign up
                             </a>
                         </p>
-                    </div>
+                    </div> */}
                 </form>
             </div>
         </div>
