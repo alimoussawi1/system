@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Use useNavigate in React Router v6
+import { login } from "../services/login";
 
 function LoginPage() {
     const [username, setUsername] = useState("");
@@ -23,16 +24,16 @@ function LoginPage() {
         setError("");
 
         try {
-            const response = await axios.post("https://swb-backend.onrender.com/login", {
-                username,
-                password
-            });
+            const response = await login(username, password)
 
             if (response.data.success) { // Check for success in response
                 // Handle successful login
-                alert("Login successful!");
+                localStorage.setItem("token", response.data.token);  // Store JWT token
+                localStorage.setItem("user", JSON.stringify(response.data.user));
+                localStorage.setItem("access", response.data.user.access);
+
                 // Redirect to admin page
-                navigate("/admin"); // Redirect to admin page using useNavigate
+                navigate("/admin/dashboard"); // Redirect to admin page using useNavigate
             } else {
                 setError("Invalid username or password.");
             }

@@ -9,6 +9,15 @@ function Navbar() {
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [amount, setAmount] = useState("");
+  const [businessEmail, setBusinessEmail] = useState("");
+  const [businessName, setBusinessName] = useState("");
+  const [businessType, setBusinessType] = useState("Food & Drinks");
+  const [isBusinessAccount, setIsBusinessAccount] = useState(true);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [ownerName, setOwnerName] = useState("")
+
+
 
   // Function to toggle menu visibility
   const toggleMenu = () => {
@@ -43,6 +52,21 @@ function Navbar() {
     setLoading(false);
     setShowModal(false);
   };
+  const handleSubmitBusiness = async () => {
+    if (!businessEmail || !businessName || !password || !confirmPassword || !businessType) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    // ... rest of your logic
+  };
+
+
 
 
 
@@ -73,7 +97,7 @@ function Navbar() {
             onClick={() => setShowModal(true)}
             className="bg-[#5842aa] text-white font-medium rounded-lg px-4 py-2 flex items-center cursor-pointer hover:bg-[#452d9a]"
           >
-            Pay Now
+            Get Started
           </button>
 
           <div className="text-white rounded-lg px-4 py-2 flex items-center cursor-pointer">
@@ -107,7 +131,7 @@ function Navbar() {
       </div>
 
       {/* Payment Modal */}
-      {showModal && (
+      {/* {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
             <h2 className="text-xl font-bold mb-4">Enter Payment Amount</h2>
@@ -138,7 +162,103 @@ function Navbar() {
             </div>
           </div>
         </div>
+      )} */}
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 className="text-xl font-bold mb-4">Create Your Business Account</h2>
+
+            <div className="mb-3">
+              <label className="block font-medium text-sm mb-1">Business Email</label>
+              <input
+                type="email"
+                placeholder="Enter email"
+                value={businessEmail}
+                onChange={(e) => setBusinessEmail(e.target.value)}
+                className="w-full p-2 border rounded-md"
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="block font-medium text-sm mb-1">Business Name</label>
+              <input
+                type="text"
+                placeholder="Enter business name"
+                value={businessName}
+                onChange={(e) => setBusinessName(e.target.value)}
+                className="w-full p-2 border rounded-md"
+              />
+            </div>
+            <div className="mb-3">
+              <label className="block font-medium text-sm mb-1">Business Name</label>
+              <input
+                type="text"
+                placeholder="Enter owner name"
+                value={businessName}
+                onChange={(e) => setOwnerName(e.target.value)}
+                className="w-full p-2 border rounded-md"
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="block font-medium text-sm mb-1">Business Type</label>
+              <select
+                value={businessType}
+                onChange={(e) => setBusinessType(e.target.value)}
+                className="w-full p-2 border rounded-md"
+              >
+                <option value="">Select Business Type</option>
+                <option value="Food & Drinks">Food & Drinks</option>
+                <option value="Sports & Activities">Sports & Activities</option>
+                <option value="Nightlife">Nightlife</option>
+                <option value="Tourism">Tourism</option>
+              </select>
+            </div>
+
+            <div className="mb-5">
+              <label className="block font-medium text-sm mb-1">Password</label>
+              <input
+                type="password"
+                placeholder="Create a password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-2 border rounded-md"
+              />
+            </div>
+            <div className="mb-5">
+              <label className="block font-medium text-sm mb-1">Confirm Password</label>
+              <input
+                type="password"
+                placeholder="Re-enter your password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full p-2 border rounded-md"
+              />
+            </div>
+
+
+            <div className="flex justify-between">
+              <button
+                onClick={() => setShowModal(false)}
+                className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={handleSubmitBusiness}
+                className="bg-[#10758B] text-white px-4 py-2 rounded-lg hover:bg-[#0a5f73]"
+                disabled={loading}
+              >
+                {loading ? "Submitting..." : "Add Business"}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
+
+
     </div>
   );
 }

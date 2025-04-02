@@ -19,6 +19,14 @@ import Intro from "./assets/intro.mp4"
 import ScrollToTop from "./components/ScrollToTop";
 import LoginPage from "./components/LoginPage";
 import Admin from "./components/Admin";
+import DefaultLayout from "./layouts/DeaultLayout";
+import BusinessLayout from "./layouts/BusinessLayout";
+import BusinessDashboard from "./businessComponents/businessDashbaord";
+import ScannedCustomers from "./businessComponents/scannedCustomers";
+import Offers from "./businessComponents/offers";
+import Packages from "./businessComponents/Packages";
+import Success from "./businessComponents/Sucess";
+import PaymentFailed from "./businessComponents/Failed";
 const handleDownload = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -150,6 +158,8 @@ function Dashboard() {
 
 function App() {
   const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
 
   const pageVariants = {
     initial: {
@@ -171,129 +181,156 @@ function App() {
     },
   };
 
+
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+
       <ScrollToTop />
       {/* Main content area */}
-      <div className="flex-grow pt-20">
+      <div className={`flex-grow ${!isAdminRoute ? "pt-20" : ""}`}>
+
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route
               path="/"
               element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <Dashboard />
-                </motion.div>
+                <DefaultLayout>
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <Dashboard />
+                  </motion.div>
+
+                </DefaultLayout>
+
               }
             />
             <Route
               path="/partner"
               element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <Partner />
-                </motion.div>
+                <DefaultLayout>
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <Partner />
+                  </motion.div>
+                </DefaultLayout>
               }
             />
             <Route
               path="/deliver"
               element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <Deliver />
-                </motion.div>
+                <DefaultLayout>
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <Deliver />
+                  </motion.div>
+                </DefaultLayout>
               }
             />
             <Route
               path="/careers"
               element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <Careers />
-                </motion.div>
+                <DefaultLayout>
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <Careers />
+                  </motion.div>
+                </DefaultLayout>
               }
             />
             <Route
               path="/contactUs"
               element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <ContactUs />
-                </motion.div>
+                <DefaultLayout>
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <ContactUs />
+                  </motion.div>
+                </DefaultLayout>
               }
+
             />
             <Route
               path="/admin"
               element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <Admin />
-                </motion.div>
+                <BusinessLayout>
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <Admin />
+                  </motion.div>
+
+                </BusinessLayout>
+
               }
             />
             <Route
               path="/privacy"
               element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <Privacy />
-                </motion.div>
+                <DefaultLayout>
+
+
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <Privacy />
+                  </motion.div>
+                </DefaultLayout>
               }
             />
             <Route
               path="/media"
               element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <Media />
-                </motion.div>
+                <DefaultLayout>
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <Media />
+                  </motion.div>
+                </DefaultLayout>
               }
             />
             <Route
               path="/jobs"
               element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <Jobs />
-                </motion.div>
+                <DefaultLayout>
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <Jobs />
+                  </motion.div>
+                </DefaultLayout>
               }
             />
 
@@ -310,11 +347,118 @@ function App() {
                 </motion.div>
               }
             />
+            {/* Business*/}
+            <Route
+              path="/admin/dashboard"
+              element={
+                <BusinessLayout>
+
+
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <BusinessDashboard />
+                  </motion.div>
+                </BusinessLayout>
+              }
+            />
+            <Route
+              path="/admin/scanned-customers"
+              element={
+                <BusinessLayout>
+
+
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <ScannedCustomers />
+                  </motion.div>
+                </BusinessLayout>
+              }
+            />
+            <Route
+              path="/admin/offers"
+              element={
+                <BusinessLayout>
+
+
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <Offers />
+                  </motion.div>
+                </BusinessLayout>
+              }
+            />
+            <Route
+              path="/admin/packages"
+              element={
+                <BusinessLayout>
+
+
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <Packages />
+                  </motion.div>
+                </BusinessLayout>
+              }
+            />
+            <Route
+              path="/admin/success"
+              element={
+                <BusinessLayout>
+
+
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <Success />
+                  </motion.div>
+                </BusinessLayout>
+              }
+            />
+            <Route
+              path="/admin/failed"
+              element={
+                <BusinessLayout>
+
+
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <PaymentFailed />
+                  </motion.div>
+                </BusinessLayout>
+              }
+            />
           </Routes>
         </AnimatePresence>
+
+
+
+
       </div>
-      {/* Footer stays at the bottom */}
-      <Footer />
+
+
     </div>
   );
 }
