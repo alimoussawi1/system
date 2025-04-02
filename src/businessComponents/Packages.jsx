@@ -15,7 +15,7 @@ const Packages = () => {
     ];
 
     const pricingOptions = [
-        { duration: "1 Month", price: "$1", amount: 30 },
+        { duration: "1 Month", price: "$1", amount: 1 },
         { duration: "3 Months", price: "$70", amount: 70 },
         { duration: "6 Months", price: "$120", amount: 120 },
         { duration: "1 Year", price: "$200", amount: 200 }
@@ -32,7 +32,7 @@ const Packages = () => {
 
         setLoading(true);
         try {
-            const response = await axios.post("http://localhost:3001/initiate_payment", {
+            const response = await axios.post("https://swb-backend.onrender.com/initiate_payment", {
                 amount: parseFloat(amount),
                 currency: "USD",
                 user: userId,
