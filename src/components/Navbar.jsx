@@ -24,46 +24,37 @@ function Navbar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Function to initiate payment and open Whish W2W page
-  const handlePayment = async () => {
-    if (!amount || isNaN(amount) || amount <= 0) {
-      alert("Please enter a valid amount.");
+  const handleSubmitBusiness = async () => {
+    if (!businessEmail || !businessName || !password || !businessType) {
+      alert("Please fill in all required fields.");
       return;
     }
 
     setLoading(true);
     try {
-      const response = await axios.post("https://swb-backend.onrender.com/initiate_payment", {
-        amount: parseFloat(amount),
-        currency: "USD"
-      });
+      const payload = {
+        businessEmail,
+        businessName,
+        businessType,
+        ownerName,
+        password,
+        isBusinessAccount: true,
+      };
 
-      console.log("Payment Response:", response.data); // Debugging log
+      const response = await axios.post("https://swb-backend.onrender.com/add_business_user", payload); // Update this to your real API
 
-      if (response.data.payment_url) {
-        window.open(response.data.payment_url, "_blank"); // Open payment page in new tab
+      if (response.status === 201) {
+        alert("Business added successfully!");
+        setShowModal(false);
+        // Optionally reset fields here
       } else {
-        alert("Payment failed: " + JSON.stringify(response.data));
+        alert("Failed to add business.");
       }
     } catch (error) {
-      alert("Error processing payment");
-      console.error(error);
+      console.error("Error adding business:", error);
+      alert("Something went wrong.");
     }
     setLoading(false);
-    setShowModal(false);
-  };
-  const handleSubmitBusiness = async () => {
-    if (!businessEmail || !businessName || !password || !confirmPassword || !businessType) {
-      alert("Please fill in all required fields.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      alert("Passwords do not match.");
-      return;
-    }
-
-    // ... rest of your logic
   };
 
 
@@ -184,8 +175,8 @@ function Navbar() {
               <label className="block font-medium text-sm mb-1">Business Name</label>
               <input
                 type="text"
-                placeholder="Enter business name"
-                value={businessName}
+                placeholder="Enter business owner name"
+                value={ownerName}
                 onChange={(e) => setBusinessName(e.target.value)}
                 className="w-full p-2 border rounded-md"
               />
