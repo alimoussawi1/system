@@ -53,7 +53,7 @@ const Offers = () => {
         const user = userString ? JSON.parse(userString) : null;
         const userId = user ? user.uid : null;
         try {
-            const offersResponse = await axios.get("http://localhost:3001/get_offers", {
+            const offersResponse = await axios.get("https://swb-backend.onrender.com/get_offers", {
                 params: { userId },
             });
             setOffers(offersResponse.data);
@@ -151,7 +151,7 @@ const Offers = () => {
                 formData.append("imageFile", newOffer.imageFile);
             }
 
-            await axios.post("http://localhost:3001/create_offer", formData, {
+            await axios.post("https://swb-backend.onrender.com/create_offer", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             await fetchData();

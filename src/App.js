@@ -27,6 +27,9 @@ import Offers from "./businessComponents/offers";
 import Packages from "./businessComponents/Packages";
 import Success from "./businessComponents/Sucess";
 import PaymentFailed from "./businessComponents/Failed";
+import Payments from "./businessComponents/Payments";
+import ContractComponent from "./businessComponents/Contracts";
+import ProtectedRoute from "./businessComponents/ProtectedRoute";
 const handleDownload = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -351,105 +354,155 @@ function App() {
             <Route
               path="/admin/dashboard"
               element={
-                <BusinessLayout>
+                <ProtectedRoute>
+                  <BusinessLayout>
 
 
-                  <motion.div
-                    variants={pageVariants}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                  >
-                    <BusinessDashboard />
-                  </motion.div>
-                </BusinessLayout>
+                    <motion.div
+                      variants={pageVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                    >
+                      <BusinessDashboard />
+                    </motion.div>
+                  </BusinessLayout>
+                </ProtectedRoute>
               }
             />
             <Route
               path="/admin/scanned-customers"
               element={
-                <BusinessLayout>
+                <ProtectedRoute>
+                  <BusinessLayout>
 
 
-                  <motion.div
-                    variants={pageVariants}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                  >
-                    <ScannedCustomers />
-                  </motion.div>
-                </BusinessLayout>
+                    <motion.div
+                      variants={pageVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                    >
+                      <ScannedCustomers />
+                    </motion.div>
+                  </BusinessLayout>
+                </ProtectedRoute>
               }
             />
             <Route
               path="/admin/offers"
               element={
-                <BusinessLayout>
+                <ProtectedRoute>
+                  <BusinessLayout>
 
 
-                  <motion.div
-                    variants={pageVariants}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                  >
-                    <Offers />
-                  </motion.div>
-                </BusinessLayout>
+                    <motion.div
+                      variants={pageVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                    >
+                      <Offers />
+                    </motion.div>
+                  </BusinessLayout>
+                </ProtectedRoute>
               }
             />
             <Route
               path="/admin/packages"
               element={
-                <BusinessLayout>
+                <ProtectedRoute>
+                  <BusinessLayout>
 
 
-                  <motion.div
-                    variants={pageVariants}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                  >
-                    <Packages />
-                  </motion.div>
-                </BusinessLayout>
+                    <motion.div
+                      variants={pageVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                    >
+                      <Packages />
+                    </motion.div>
+                  </BusinessLayout>
+                </ProtectedRoute>
               }
             />
             <Route
               path="/admin/success"
               element={
-                <BusinessLayout>
+                <ProtectedRoute>
+                  <BusinessLayout>
 
 
-                  <motion.div
-                    variants={pageVariants}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                  >
-                    <Success />
-                  </motion.div>
-                </BusinessLayout>
+                    <motion.div
+                      variants={pageVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                    >
+                      <Success />
+                    </motion.div>
+                  </BusinessLayout>
+                </ProtectedRoute>
+
               }
             />
             <Route
               path="/admin/failed"
               element={
-                <BusinessLayout>
+                <ProtectedRoute>
+                  <BusinessLayout>
 
 
-                  <motion.div
-                    variants={pageVariants}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                  >
-                    <PaymentFailed />
-                  </motion.div>
-                </BusinessLayout>
+                    <motion.div
+                      variants={pageVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                    >
+                      <PaymentFailed />
+                    </motion.div>
+                  </BusinessLayout>
+                </ProtectedRoute>
               }
             />
+            <Route
+              path="/admin/payments"
+              element={
+                <ProtectedRoute>
+                  <BusinessLayout>
+
+
+                    <motion.div
+                      variants={pageVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                    >
+                      <Payments />
+                    </motion.div>
+                  </BusinessLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/contracts"
+              element={
+                <ProtectedRoute>
+                  <BusinessLayout>
+                    <motion.div
+                      variants={pageVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                    >
+                      <ContractComponent />
+                    </motion.div>
+                  </BusinessLayout>
+                </ProtectedRoute>
+              }
+            />
+
           </Routes>
         </AnimatePresence>
 

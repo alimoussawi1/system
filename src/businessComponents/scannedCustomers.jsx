@@ -59,7 +59,7 @@ const ScannedCustomers = () => {
         const userId = user ? user.uid : null;
 
         try {
-            const response = await axios.get("http://localhost:3001/get_scanned_customers_for_business", {
+            const response = await axios.get("https://swb-backend.onrender.com/get_scanned_customers_for_business", {
                 params: {
                     businessId: userId,
                     startDate: startDate || undefined,
