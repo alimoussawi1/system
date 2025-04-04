@@ -45,7 +45,7 @@ const ContractComponent = () => {
 
                 try {
                     // Sending the signature data to the backend using axios
-                    const response = await axios.post('http://localhost:3001/save_signature', signatureData);
+                    const response = await axios.post('https://swb-backend.onrender.com/save_signature', signatureData);
 
                     // Handle the response
                     if (response.status === 200) {

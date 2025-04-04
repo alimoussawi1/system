@@ -62,7 +62,7 @@ const ScannedCustomers = () => {
         try {
             let response;
             if (isAdmin) {
-                response = await axios.get("http://localhost:3001/get_scanned_customers_for_business_admin", {
+                response = await axios.get("https://swb-backend.onrender.com/get_scanned_customers_for_business_admin", {
                     params: {
                         businessId: userId,
                         startDate: startDate || undefined,
@@ -76,7 +76,7 @@ const ScannedCustomers = () => {
 
             }
             else {
-                response = await axios.get("http://localhost:3001/get_scanned_customers_for_business", {
+                response = await axios.get("https://swb-backend.onrender.com/get_scanned_customers_for_business", {
                     params: {
                         businessId: userId,
                         startDate: startDate || undefined,

@@ -38,11 +38,11 @@ const Admin = () => {
                 const scannedResponse = await axios.get("https://swb-backend.onrender.com/get_scanned_customers");
                 const scannedData = scannedResponse.data;
 
-                const offersResponse = await axios.get("http://localhost:3001/get_offers", {
+                const offersResponse = await axios.get("https://swb-backend.onrender.com/get_offers", {
                     params: { userId } // Pass userId as a query parameter
                 });
                 setOffers(offersResponse.data);
-                const scannedBusinessResponse = await axios.get("http://localhost:3001/get_scanned_customers_for_business", {
+                const scannedBusinessResponse = await axios.get("https://swb-backend.onrender.com/get_scanned_customers_for_business", {
                     params: { businessId: userId }
                 });
 

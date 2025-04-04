@@ -210,7 +210,7 @@ function MessageActivity({ chartData, setChartData, selectStyle, isAdmin }) {
 
         try {
             const response = await axios.get(
-                "http://localhost:3001/get_scanned_customers_for_business",
+                "https://swb-backend.onrender.com/get_scanned_customers_for_business",
                 {
                     params: { businessId: userId, isAdmin: isAdmin },
                 }

@@ -9,7 +9,7 @@ const AccessCenter = () => {
     useEffect(() => {
         const fetchBusinesses = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/get_businesses_admin');
+                const response = await axios.get('https://swb-backend.onrender.com/get_businesses_admin');
 
                 setBusinesses(response.data);
             } catch (error) {
@@ -23,7 +23,7 @@ const AccessCenter = () => {
         const updatedAccess = !currentAccess;
         try {
             // Call the API to update the 'access' field
-            const response = await axios.get(`http://localhost:3001/update_business_access/${businessId}`);
+            const response = await axios.get(`https://swb-backend.onrender.com/update_business_access/${businessId}`);
 
             if (response.status === 200) {  // Ensure you check the response status
                 // Update the state to reflect the change locally
