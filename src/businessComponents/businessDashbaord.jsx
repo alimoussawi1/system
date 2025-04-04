@@ -22,6 +22,7 @@ const BusinessDashboard = () => {
     const user = userString ? JSON.parse(userString) : null;
     const name = user ? user.fullName : null;
     const access = localStorage.getItem("access") === "true";
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
 
 
     return (
@@ -36,6 +37,7 @@ const BusinessDashboard = () => {
                     chartData={chartData}
                     setChartData={setChartData}
                     selectStyle={selectStyle}
+                    isAdmin={isAdmin}
                 />
             ) : (
                 <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 px-6 py-4 rounded-lg">

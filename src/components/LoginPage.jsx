@@ -28,9 +28,14 @@ function LoginPage() {
 
             if (response.data.success) { // Check for success in response
                 // Handle successful login
+                console.log(response.data);
                 localStorage.setItem("token", response.data.token);  // Store JWT token
                 localStorage.setItem("user", JSON.stringify(response.data.user));
                 localStorage.setItem("access", response.data.user.access);
+                localStorage.setItem("signature", response.data.user.signature);  // Store signature
+                localStorage.setItem("signatureTimestamp", response.data.user.signatureTimestamp);  // Store signature timestamp
+                localStorage.setItem("isAdmin", response.data.user.isAdmin);
+
 
                 // Redirect to admin page
                 navigate("/admin/dashboard"); // Redirect to admin page using useNavigate

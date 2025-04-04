@@ -30,6 +30,7 @@ import PaymentFailed from "./businessComponents/Failed";
 import Payments from "./businessComponents/Payments";
 import ContractComponent from "./businessComponents/Contracts";
 import ProtectedRoute from "./businessComponents/ProtectedRoute";
+import AccessCenter from "./businessComponents/AccessCenter";
 const handleDownload = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -365,6 +366,25 @@ function App() {
                       exit="exit"
                     >
                       <BusinessDashboard />
+                    </motion.div>
+                  </BusinessLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/access-center"
+              element={
+                <ProtectedRoute>
+                  <BusinessLayout>
+
+
+                    <motion.div
+                      variants={pageVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                    >
+                      <AccessCenter />
                     </motion.div>
                   </BusinessLayout>
                 </ProtectedRoute>

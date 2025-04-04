@@ -1,8 +1,22 @@
-import React, { useRef } from 'react';
+import axios from 'axios';
+import React, { useRef, useEffect, useState } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 
 const ContractComponent = () => {
     const sigPad = useRef(null);
+    const [signature, setSignature] = useState(null);
+    const [signatureTimestamp, setSignatureTimestamp] = useState(null);
+
+    // Retrieve the signature and timestamp from localStorage when the component mounts
+    useEffect(() => {
+        const storedSignature = localStorage.getItem("signature");
+        const storedSignatureTimestamp = localStorage.getItem("signatureTimestamp");
+
+        if (storedSignature && storedSignatureTimestamp) {
+            setSignature(storedSignature);
+            setSignatureTimestamp(storedSignatureTimestamp);
+        }
+    }, []);
 
     const clearSignature = () => {
         if (sigPad.current) {
@@ -10,11 +24,44 @@ const ContractComponent = () => {
         }
     };
 
-    const saveSignature = () => {
+    const saveSignature = async () => {
         if (sigPad.current) {
-            const dataUrl = sigPad.current.getTrimmedCanvas().toDataURL('image/png');
-            // Use the signature data (e.g. send to an API or update state)
-            console.log('Saved signature:', dataUrl);
+            // Get the canvas element directly using getCanvas()
+            const canvas = sigPad.current.getCanvas();
+
+            // Check if the canvas exists and then get the image as a data URL
+            if (canvas) {
+                const dataUrl = canvas.toDataURL('image/png');  // Convert canvas to base64 PNG
+
+                // Retrieve user information from localStorage
+                const userString = localStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const userId = user ? user.uid : null;
+
+                const signatureData = {
+                    userId,
+                    signature: dataUrl
+                };
+
+                try {
+                    // Sending the signature data to the backend using axios
+                    const response = await axios.post('http://localhost:3001/save_signature', signatureData);
+
+                    // Handle the response
+                    if (response.status === 200) {
+                        console.log('Signature saved successfully:', response.data);
+                        // Update the localStorage after saving the signature
+                        localStorage.setItem("signature", dataUrl);
+                        localStorage.setItem("signatureTimestamp", new Date().toLocaleString());
+                        setSignature(dataUrl);
+                        setSignatureTimestamp(new Date().toLocaleString());
+                    } else {
+                        console.error('Error saving signature:', response.data.error);
+                    }
+                } catch (error) {
+                    console.error('Error sending signature to backend:', error);
+                }
+            }
         }
     };
 
@@ -27,7 +74,8 @@ const ContractComponent = () => {
                     Beirut, Lebanon<br />
                     +961 70009879
                 </p>
-                <p className="text-gray-500 mt-2">Date: 14th March 2025</p>
+                <p className="text-gray-500 mt-2">Date: {new Date().toLocaleDateString()}</p>
+
             </div>
 
             <div className="mb-8 text-gray-800 overflow-y-auto max-h-96 border p-4 rounded whitespace-pre-wrap bg-gray-50">
@@ -103,15 +151,26 @@ Signature:                                                             Signature
 `}
             </div>
 
+            {/* Signature Section */}
             <div className="mb-8">
                 <h2 className="text-2xl font-semibold mb-4">Signature</h2>
-                <div className="border border-gray-300 rounded mb-4">
-                    <SignatureCanvas
-                        ref={sigPad}
-                        penColor="black"
-                        canvasProps={{ className: 'w-full h-64' }}
-                    />
-                </div>
+
+                {/* Display the saved signature if available */}
+                {signature ? (
+                    <div>
+                        <h3 className="font-semibold">Signed on: {signatureTimestamp}</h3>
+                        <img src={signature} alt="Signature" className="w-full h-64 border" />
+                    </div>
+                ) : (
+                    <div className="border border-gray-300 rounded mb-4">
+                        <SignatureCanvas
+                            ref={sigPad}
+                            penColor="black"
+                            canvasProps={{ className: 'w-full h-64' }}
+                        />
+                    </div>
+                )}
+
                 <div className="flex space-x-4">
                     <button
                         onClick={clearSignature}

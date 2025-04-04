@@ -57,17 +57,39 @@ const ScannedCustomers = () => {
         const userString = localStorage.getItem("user");
         const user = userString ? JSON.parse(userString) : null;
         const userId = user ? user.uid : null;
+        const isAdmin = localStorage.getItem("isAdmin") === "true";
 
         try {
-            const response = await axios.get("https://swb-backend.onrender.com/get_scanned_customers_for_business", {
-                params: {
-                    businessId: userId,
-                    startDate: startDate || undefined,
-                    endDate: endDate || undefined,
-                    gender: gender.value || undefined,
-                    university: university.value || undefined
-                }
-            });
+            let response;
+            if (isAdmin) {
+                response = await axios.get("http://localhost:3001/get_scanned_customers_for_business_admin", {
+                    params: {
+                        businessId: userId,
+                        startDate: startDate || undefined,
+                        endDate: endDate || undefined,
+                        gender: gender.value || undefined,
+                        university: university.value || undefined,
+                        isAdmin: isAdmin
+
+                    }
+                });
+
+            }
+            else {
+                response = await axios.get("http://localhost:3001/get_scanned_customers_for_business", {
+                    params: {
+                        businessId: userId,
+                        startDate: startDate || undefined,
+                        endDate: endDate || undefined,
+                        gender: gender.value || undefined,
+                        university: university.value || undefined,
+                        isAdmin: isAdmin
+
+                    }
+                });
+
+            }
+
 
             const data = response.data;
 
@@ -97,14 +119,27 @@ const ScannedCustomers = () => {
         fetchData();
     };
 
-    const scannedBusiness = React.useMemo(() => [
-        { Header: "Name", accessor: "fullName" },
-        { Header: "Email", accessor: "email" },
-        { Header: "Gender", accessor: "gender" },
-        { Header: "Phone", accessor: "phone" },
-        { Header: "University", accessor: "university" },
-        { Header: "Scanned At", accessor: "scannedAt" },
-    ], []);
+    const scannedBusiness = React.useMemo(() => {
+        // Check if user is admin (this could be passed as a prop or state)
+        // Set to `true` if the user is admin, otherwise `false`
+        const isAdmin = localStorage.getItem("isAdmin") === "true";
+        const columns = [
+            { Header: "Name", accessor: "fullName" },
+            { Header: "Email", accessor: "email" },
+            { Header: "Gender", accessor: "gender" },
+            { Header: "Phone", accessor: "phone" },
+            { Header: "University", accessor: "university" },
+            { Header: "Scanned At", accessor: "scannedAt" },
+        ];
+
+        // If isAdmin is true, add the businessName column
+        if (isAdmin) {
+            columns.push({ Header: "Business Name", accessor: "businessName" });
+        }
+
+        return columns;
+    }, []);
+
 
     const access = localStorage.getItem("access") === "true";
     return (

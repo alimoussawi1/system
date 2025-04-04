@@ -9,6 +9,7 @@ const Sidebar = () => {
         localStorage.clear(); // Clear all data
         navigate("/");        // Redirect to homepage
     };
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
 
     return (
         <div className="w-64 h-full bg-gray-800 text-white fixed top-0 left-0 flex flex-col items-start py-5 px-3">
@@ -44,6 +45,16 @@ const Sidebar = () => {
                         Contracts
                     </Link>
                 </li>
+                {
+                    isAdmin && (
+                        <li>
+                            <Link to="/admin/access-center" className="text-white hover:text-gray-400">
+                                Access Center
+                            </Link>
+                        </li>
+
+                    )
+                }
                 <li>
                     <Link to="/admin/chat" className="text-white hover:text-gray-400">
                         Chat

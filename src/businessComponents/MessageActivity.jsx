@@ -188,7 +188,7 @@ import axios from "axios";
 import moment from "moment";
 import Chart from "chart.js/auto";
 
-function MessageActivity({ chartData, setChartData, selectStyle }) {
+function MessageActivity({ chartData, setChartData, selectStyle, isAdmin }) {
     const selectOptions = [
         { value: "today", label: "Today" },
         { value: "this_week", label: "This Week" },
@@ -210,9 +210,9 @@ function MessageActivity({ chartData, setChartData, selectStyle }) {
 
         try {
             const response = await axios.get(
-                "https://swb-backend.onrender.com/get_scanned_customers_for_business",
+                "http://localhost:3001/get_scanned_customers_for_business",
                 {
-                    params: { businessId: userId },
+                    params: { businessId: userId, isAdmin: isAdmin },
                 }
             );
 

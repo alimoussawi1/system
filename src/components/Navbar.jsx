@@ -172,12 +172,12 @@ function Navbar() {
             </div>
 
             <div className="mb-3">
-              <label className="block font-medium text-sm mb-1">Business Name</label>
+              <label className="block font-medium text-sm mb-1">Owner Name</label>
               <input
                 type="text"
                 placeholder="Enter business owner name"
                 value={ownerName}
-                onChange={(e) => setBusinessName(e.target.value)}
+                onChange={(e) => setOwnerName(e.target.value)}
                 className="w-full p-2 border rounded-md"
               />
             </div>
@@ -185,9 +185,9 @@ function Navbar() {
               <label className="block font-medium text-sm mb-1">Business Name</label>
               <input
                 type="text"
-                placeholder="Enter owner name"
+                placeholder="Ente business name"
                 value={businessName}
-                onChange={(e) => setOwnerName(e.target.value)}
+                onChange={(e) => setBusinessName(e.target.value)}
                 className="w-full p-2 border rounded-md"
               />
             </div>

@@ -15,7 +15,7 @@ const Packages = () => {
     ];
 
     const pricingOptions = [
-        { duration: "1 Month", price: "$1", amount: 1 },
+        { duration: "1 Month", price: "$30", amount: 30 },
         { duration: "3 Months", price: "$70", amount: 70 },
         { duration: "6 Months", price: "$120", amount: 120 },
         { duration: "1 Year", price: "$200", amount: 200 }
