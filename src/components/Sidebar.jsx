@@ -12,7 +12,7 @@ const Sidebar = () => {
     const isAdmin = localStorage.getItem("isAdmin") === "true";
 
     return (
-        <div className="w-64 h-full bg-gray-800 text-white fixed top-0 left-0 flex flex-col items-start py-5 px-3">
+        <div className="w-64 h-full bg-[#5842aa] text-white fixed top-0 left-0 flex flex-col items-start py-5 px-3">
             <h2 className="text-xl font-bold text-center mb-8">Business Dashboard</h2>
             <ul className="space-y-4 w-full">
                 <li>
@@ -25,11 +25,11 @@ const Sidebar = () => {
                         Scanned Customers
                     </Link>
                 </li>
-                <li>
+                {/* <li>
                     <Link to="/admin/offers" className="text-white hover:text-gray-400">
                         Offers
                     </Link>
-                </li>
+                </li> */}
                 <li>
                     <Link to="/admin/packages" className="text-white hover:text-gray-400">
                         Packages
@@ -55,11 +55,11 @@ const Sidebar = () => {
 
                     )
                 }
-                <li>
+                {/* <li>
                     <Link to="/admin/chat" className="text-white hover:text-gray-400">
                         Chat
                     </Link>
-                </li>
+                </li> */}
                 <li>
                     <button
                         onClick={handleLogout}

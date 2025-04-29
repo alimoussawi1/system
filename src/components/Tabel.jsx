@@ -100,7 +100,11 @@ const Table = ({
                     {page.map((row) => {
                         prepareRow(row);
                         return (
-                            <tr {...row.getRowProps()} className="border-b hover:bg-gray-100">
+                            <tr
+                                {...row.getRowProps()}
+                                className="border-b hover:bg-gray-100 even:bg-white odd:bg-gray-50"
+                            >
+
                                 {checkbox && (
                                     <td className="p-3">
                                         <input

@@ -21,7 +21,7 @@ const AdminNavbar = ({ name }) => {
                 <div className="h-5 border-l border-gray-400"></div>
                 <div className="flex items-center space-x-2">
                     <FaUserCircle className="w-8 h-8 text-gray-600" />
-                    <span className="font-semibold">{name}</span>
+                    <span className="font-semibold text-[#5842aa]">{name}</span>
                 </div>
             </div>
         </div>

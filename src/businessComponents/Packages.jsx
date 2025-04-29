@@ -5,20 +5,74 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const Packages = () => {
     const [loading, setLoading] = useState(false);
+    const [focusedPackage, setFocusedPackage] = useState(null);
+    const [showZoom, setShowZoom] = useState(false);
 
-    const features = [
-        "Unlimited access to all SWB tools",
-        "Business listing",
-        "Full analytics access on SWB website",
-        "In-app push notifications (2x/month)",
-        "Top spot listing (2x/month)"
-    ];
 
-    const pricingOptions = [
-        { duration: "1 Month", price: "$30", amount: 30 },
-        { duration: "3 Months", price: "$70", amount: 70 },
-        { duration: "6 Months", price: "$120", amount: 120 },
-        { duration: "1 Year", price: "$200", amount: 200 }
+    const packageOptions = [
+        {
+            duration: "1 Month",
+            price: "$50",
+            amount: 50,
+            details: [
+                "Offer Listing",
+                "Full Analytics on SWB Website",
+                "1 Social Media Promotion on SWB Page",
+                "Top 30 Ranking in Related Category (rotated/shuffled)",
+                "Virtual or In-Person Staff Training (upon request)",
+                "Priority 24/7 Customer Support"
+            ]
+        },
+        {
+            duration: "3 Months",
+            price: "$100",
+            amount: 100,
+            saving: "You're saving 33%",
+            details: [
+                "Offer Listing",
+                "Full Analytics on SWB Website",
+                "1 Social Media Promotion on SWB Page",
+                "Top 20 Ranking in Related Category (rotated/shuffled)",
+                "Virtual or In-Person Staff Training (upon request)",
+                "Priority 24/7 Customer Support",
+                "3 Push Notifications",
+                "1 SWB WhatsApp Channel Exposure"
+            ]
+        },
+        {
+            duration: "6 Months ",
+            price: "$150",
+            amount: 150,
+            saving: "You're saving 50%",
+            info: 'Most Popular',
+            details: [
+                "Offer Listing",
+                "Full Analytics on SWB Website",
+                "1 Social Media Promotion on SWB Page",
+                "Top 15 Ranking in Related Category (rotated/shuffled)",
+                "Virtual or In-Person Staff Training (upon request)",
+                "Priority 24/7 Customer Support",
+                "6 Push Notifications",
+                "3 SWB WhatsApp Channel Exposures per Month",
+            ]
+        },
+        {
+            duration: "1 Year ",
+            price: "$250",
+            amount: 250,
+            info: 'Best Value',
+            saving: "You're saving 60%",
+            details: [
+                "Offer Listing",
+                "Full Analytics on SWB Website",
+                "1 Social Media Promotion on SWB Page",
+                "Top 10 Ranking in Related Category (rotated/shuffled)",
+                "Virtual or In-Person Staff Training (upon request)",
+                "Priority 24/7 Customer Support",
+                "15 Push Notifications",
+                "6 SWB WhatsApp Channel Exposures",
+            ]
+        }
     ];
 
     const handlePayment = async (amount) => {
@@ -36,10 +90,7 @@ const Packages = () => {
                 amount: parseFloat(amount),
                 currency: "USD",
                 user: userId,
-
             });
-
-            console.log("Payment Response:", response.data);
 
             if (response.data.payment_url) {
                 window.open(response.data.payment_url, "_blank");
@@ -71,39 +122,116 @@ const Packages = () => {
 
     return (
         <div className="min-h-screen bg-[#f8f9fb] py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">SWB Pro Package</h2>
-                <p className="text-gray-600 mb-10">Unlock full potential for your business with exclusive tools and features.</p>
+            <div className="max-w-6xl mx-auto text-center mb-12">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                    SWB <span className="text-[#5842aa]">Plus</span> Packages
+                </h2>
+                <p className="text-gray-600">
+                    Unlock your business's full potential with SWB's exclusive tools, analytics, promotions, and 24/7 support.
+                </p>
             </div>
 
-            <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white p-6 rounded-2xl shadow-md">
-                    <h3 className="text-xl font-semibold mb-4 text-[#10758B]">What You Get</h3>
-                    <ul className="list-disc list-inside text-gray-700 space-y-2">
-                        {features.map((feature, index) => (
-                            <li key={index}>{feature}</li>
-                        ))}
-                    </ul>
-                </div>
+            <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {packageOptions.map((pkg, index) => (
+                    <div
+                        key={index}
+                        onClick={() => {
+                            setFocusedPackage(index);
+                            setTimeout(() => setShowZoom(true), 500); // delay for smoother feel
+                        }}
+                        className="bg-white flex flex-col justify-between rounded-2xl shadow-md p-6 border border-gray-200 transition-all cursor-pointer hover:shadow-xl"
+                    >
 
-                <div className="space-y-4">
-                    {pricingOptions.map((option, index) => (
-                        <div
-                            key={index}
-                            className="cursor-pointer hover:shadow-md transition-all bg-white p-5 rounded-2xl shadow-sm flex justify-between items-center border border-gray-200"
-                            onClick={() => confirmPurchase(option.amount)}
-                        >
-                            <div>
-                                <h4 className="text-lg font-medium text-gray-800">{option.duration}</h4>
-                                <p className="text-sm text-gray-500">All Pro Features Included</p>
+
+                        <div>
+                            <div className="flex justify-between items-start mb-4">
+                                <h4 className="text-xl font-semibold text-[#5842aa]">{pkg.duration}</h4>
+
+                                {pkg.info && (
+                                    <div className="border border-[#02afde] px-3 py-1 rounded-lg bg-[#02afde]">
+                                        <h4 className="text-sm text-white">{pkg.info}</h4>
+                                    </div>
+                                )}
                             </div>
-                            <div className="text-right">
-                                <p className="text-2xl font-bold text-[#10758B]">{option.price}</p>
-                            </div>
+
+
+                            {pkg.saving && (
+                                <p className="text-sm italic text-[#5842aa] mt-1 mb-3">{pkg.saving}</p>
+                            )}
+                            <ul className="list-disc list-inside text-sm text-gray-700 space-y-2">
+                                {pkg.details.map((detail, idx) => (
+                                    <li key={idx}>{detail}</li>
+                                ))}
+                            </ul>
                         </div>
-                    ))}
-                </div>
+                        <div className="text-center mt-6">
+                            <p className="text-3xl font-bold text-[#02afde] mb-3">{pkg.price}</p>
+                            <button
+                                onClick={() => confirmPurchase(pkg.amount)}
+                                className="bg-[#5842aa] hover:bg-[#452d9a] text-white font-semibold py-2 px-4 rounded-lg w-full"
+                            >
+                                Subscribe
+                            </button>
+                        </div>
+                    </div>
+                ))}
             </div>
+            {focusedPackage !== null && (
+                <div
+                    className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm transition-opacity duration-300 ${showZoom ? "opacity-100" : "opacity-0"
+                        }`}
+                    onClick={() => {
+                        setShowZoom(false);
+                        setTimeout(() => setFocusedPackage(null), 300); // smooth exit
+                    }}
+                >
+                    <div
+                        className={`bg-white rounded-2xl shadow-2xl p-8 border border-gray-200 w-[90%] max-w-lg relative transform transition-transform duration-300 ease-in-out ${showZoom ? "scale-100 translate-y-0" : "scale-95 translate-y-10"
+                            }`}
+                        onClick={(e) => e.stopPropagation()} // prevent closing on inner click
+                    >
+                        {/* Close "X" Button */}
+                        <button
+                            onClick={() => {
+                                setShowZoom(false);
+                                setTimeout(() => setFocusedPackage(null), 300);
+                            }}
+                            className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 transition-colors text-2xl font-bold"
+                            aria-label="Close"
+                        >
+                            &times;
+                        </button>
+
+                        <h4 className="text-2xl font-bold text-[#5842aa] mb-2">
+                            {packageOptions[focusedPackage].duration}
+                        </h4>
+
+                        {packageOptions[focusedPackage].saving && (
+                            <p className="text-sm italic text-[#5842aa] mb-4">
+                                {packageOptions[focusedPackage].saving}
+                            </p>
+                        )}
+
+                        <ul className="list-disc list-inside text-gray-700 mb-6 space-y-2 text-sm">
+                            {packageOptions[focusedPackage].details.map((detail, idx) => (
+                                <li key={idx}>{detail}</li>
+                            ))}
+                        </ul>
+
+                        <p className="text-3xl font-bold text-[#02afde] mb-4 flex items-center justify-center">
+                            {packageOptions[focusedPackage].price}
+                        </p>
+
+                        <button
+                            onClick={() => confirmPurchase(packageOptions[focusedPackage].amount)}
+                            className="bg-[#5842aa] hover:bg-[#452d9a] text-white font-semibold py-2 px-4 rounded-lg w-full"
+                        >
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+            )}
+
 
             {loading && (
                 <div className="mt-10 text-center text-[#10758B] font-semibold">

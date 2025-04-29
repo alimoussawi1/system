@@ -31,6 +31,7 @@ import Payments from "./businessComponents/Payments";
 import ContractComponent from "./businessComponents/Contracts";
 import ProtectedRoute from "./businessComponents/ProtectedRoute";
 import AccessCenter from "./businessComponents/AccessCenter";
+import News from "./components/News";
 const handleDownload = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -333,6 +334,21 @@ function App() {
                     exit="exit"
                   >
                     <Jobs />
+                  </motion.div>
+                </DefaultLayout>
+              }
+            />      <Route
+              path="/news"
+              element={
+                <DefaultLayout>
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <News />
+
                   </motion.div>
                 </DefaultLayout>
               }

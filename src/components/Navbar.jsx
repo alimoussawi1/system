@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import Swb from "../assets/swblogo.png";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { auth, db } from "../firebase"; // make sure this exports your Firebase auth & db
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,7 +18,16 @@ function Navbar() {
   const [isBusinessAccount, setIsBusinessAccount] = useState(true);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [ownerName, setOwnerName] = useState("")
+  const [ownerName, setOwnerName] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
+
+  const [ownerPhoneNumber, setOwnerPhoneNumber] = useState("");
+
 
 
 
@@ -25,38 +37,76 @@ function Navbar() {
   };
 
   const handleSubmitBusiness = async () => {
-    if (!businessEmail || !businessName || !password || !businessType) {
+    if (!businessEmail || !businessName || !password || !businessType || !ownerName) {
       alert("Please fill in all required fields.");
       return;
     }
 
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
     setLoading(true);
+
     try {
-      const payload = {
+      // Step 1: Create Firebase Auth user
+      const userCredential = await createUserWithEmailAndPassword(auth, businessEmail, password);
+      const uid = userCredential.user.uid;
+
+      // Step 2: Store user details in Firestore
+      const userRef = doc(db, "users", uid);
+      await setDoc(userRef, {
+        uid,
         businessEmail,
         businessName,
         businessType,
         ownerName,
-        password,
+        ownerPhoneNumber,
         isBusinessAccount: true,
-      };
+        createdAt: serverTimestamp(),
+        access: true,
+        isAdmin: false,
+      });
 
-      const response = await axios.post("https://swb-backend.onrender.com/add_business_user", payload); // Update this to your real API
+      // Step 3: Optionally, show a success state or modal
+      alert("Business account created successfully!");
+      setShowModal(false);
+      setIsVerifying(true);
+      setUserId(uid);
+    } catch (error) {
+      console.error("Error adding business user:", error);
+      alert("Failed to create business account.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      if (response.status === 201) {
-        alert("Business added successfully!");
+
+  const handleVerifyCode = async () => {
+    if (!verificationCode) {
+      alert("Please enter the verification code.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:3001/verify_business_user", {
+        userId: userId,  // Pass the correct user ID that was returned after business creation
+        verificationCode
+      });
+
+      if (response.status === 200) {
+        alert("Business added successfully! ");
+        setIsVerifying(false);  // Show verification section after business is added
         setShowModal(false);
-        // Optionally reset fields here
       } else {
         alert("Failed to add business.");
       }
     } catch (error) {
-      console.error("Error adding business:", error);
+      console.error("Error verifying code:", error);
       alert("Something went wrong.");
     }
-    setLoading(false);
   };
-
 
 
 
@@ -76,7 +126,7 @@ function Navbar() {
         <div className="hidden md:flex space-x-6 items-center">
           <Link to="/" className={`font-medium ${location.pathname === "/" ? "text-[#10758B]" : "text-gray-600"} hover:text-[#10758B]`}>Home</Link>
           <Link to="/partner" className={`font-medium ${location.pathname === "/partner" ? "text-[#10758B]" : "text-gray-600"} hover:text-[#10758B]`}>Become a Partner</Link>
-          <Link to="/jobs" className={`font-medium ${location.pathname === "/jobs" ? "text-[#10758B]" : "text-gray-600"} hover:text-[#10758B]`}>Student Jobs</Link>
+          <Link to="/news" className={`font-medium ${location.pathname === "/news" ? "text-[#10758B]" : "text-gray-600"} hover:text-[#10758B]`}> News</Link>
         </div>
 
         {/* Desktop Buttons */}
@@ -84,18 +134,55 @@ function Navbar() {
           <div className="h-10 w-[1px] bg-gray-300"></div>
 
           {/* Pay Now Button */}
-          <button
+          {/* <button
             onClick={() => setShowModal(true)}
             className="bg-[#5842aa] text-white font-medium rounded-lg px-4 py-2 flex items-center cursor-pointer hover:bg-[#452d9a]"
           >
             Get Started
-          </button>
+          </button> */}
 
           <div className="text-white rounded-lg px-4 py-2 flex items-center cursor-pointer">
             <Link to="/login" className="text-[#02afde] font-medium">Log in</Link>
           </div>
 
         </div>
+
+        {/* Verification Code Modal */}
+        {isVerifying && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+              <h2 className="text-xl font-bold mb-4">Verify Your Business Account</h2>
+
+              <div className="mb-3">
+                <label className="block font-medium text-sm mb-1">Enter Verification Code</label>
+                <input
+                  type="text"
+                  placeholder="Enter verification code"
+                  value={verificationCode}
+                  onChange={(e) => setVerificationCode(e.target.value)}
+                  className="w-full p-2 border rounded-md"
+                />
+              </div>
+
+              <div className="flex justify-between">
+                <button
+                  onClick={() => setIsVerifying(false)}
+                  className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  onClick={handleVerifyCode}
+                  className="bg-[#10758B] text-white px-4 py-2 rounded-lg hover:bg-[#0a5f73]"
+                >
+                  Verify
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
 
         {/* Hamburger Menu for Mobile */}
         <div className="md:hidden">
@@ -172,15 +259,44 @@ function Navbar() {
             </div>
 
             <div className="mb-3">
-              <label className="block font-medium text-sm mb-1">Owner Name</label>
+              <label className="block font-medium text-sm mb-1">Owner First Name</label>
               <input
                 type="text"
-                placeholder="Enter business owner name"
-                value={ownerName}
-                onChange={(e) => setOwnerName(e.target.value)}
+                placeholder="Enter owner's first name"
+                value={firstName}
+                onChange={(e) => {
+                  setFirstName(e.target.value);
+                  setOwnerName(e.target.value + " " + lastName); // Concatenate first and last name
+                }}
                 className="w-full p-2 border rounded-md"
               />
             </div>
+
+            <div className="mb-3">
+              <label className="block font-medium text-sm mb-1">Owner Last Name</label>
+              <input
+                type="text"
+                placeholder="Enter owner's last name"
+                value={lastName}
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                  setOwnerName(firstName + " " + e.target.value); // Concatenate first and last name
+                }}
+                className="w-full p-2 border rounded-md"
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="block font-medium text-sm mb-1">Owner Phone Number</label>
+              <input
+                type="tel"  // Use 'tel' type for phone number input
+                placeholder="Enter business owner phone number"
+                value={ownerPhoneNumber}  // You will need to create this state variable
+                onChange={(e) => setOwnerPhoneNumber(e.target.value)}  // Update the state when the input changes
+                className="w-full p-2 border rounded-md"
+              />
+            </div>
+
             <div className="mb-3">
               <label className="block font-medium text-sm mb-1">Business Name</label>
               <input

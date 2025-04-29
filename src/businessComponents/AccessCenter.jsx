@@ -1,48 +1,63 @@
 import React, { useEffect, useState } from "react";
 import Table from "../components/Tabel";
-import axios from 'axios';
 import { toast } from 'react-toastify';
+import { db } from "../firebase"; // your firebase config
+import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import { FaToggleOn, FaToggleOff } from "react-icons/fa"; // <-- Added react-icons
 import 'react-toastify/dist/ReactToastify.css';
+import { MdToggleOn } from "react-icons/md";
+import { MdToggleOff } from "react-icons/md";
 const AccessCenter = () => {
     const [businesses, setBusinesses] = useState([]);
 
     useEffect(() => {
         const fetchBusinesses = async () => {
             try {
-                const response = await axios.get('https://swb-backend.onrender.com/get_businesses_admin');
+                const businessesRef = collection(db, "users");
+                const snapshot = await getDocs(businessesRef);
 
-                setBusinesses(response.data);
+                const fetchedBusinesses = snapshot.docs
+                    .filter(doc => doc.data().isBusinessAccount)
+                    .map(doc => ({
+                        businessId: doc.id,
+                        businessName: doc.data().businessName || "",
+                        email: doc.data().businessEmail || "",
+                        access: doc.data().access || false,
+                    }))
+                    .sort((a, b) => a.businessName.localeCompare(b.businessName)); // <-- sort alphabetically
+
+                setBusinesses(fetchedBusinesses);
             } catch (error) {
                 console.error("Error fetching businesses:", error);
+                toast.error("Failed to fetch businesses.");
             }
         };
+
+
         fetchBusinesses();
     }, []);
 
     const handleToggleAccess = async (businessId, currentAccess) => {
         const updatedAccess = !currentAccess;
         try {
-            // Call the API to update the 'access' field
-            const response = await axios.get(`https://swb-backend.onrender.com/update_business_access/${businessId}`);
+            const businessDocRef = doc(db, "users", businessId);
+            await updateDoc(businessDocRef, { access: updatedAccess });
 
-            if (response.status === 200) {  // Ensure you check the response status
-                // Update the state to reflect the change locally
-                setBusinesses(businesses.map(business =>
+            setBusinesses(prevBusinesses =>
+                prevBusinesses.map(business =>
                     business.businessId === businessId
                         ? { ...business, access: updatedAccess }
                         : business
-                ));
+                )
+            );
 
-                // Show success toast
-                toast.success("Access updated successfully!");
-            } else {
-                toast.error("Failed to update access.");
-            }
+            // No success toast (silent update)
         } catch (error) {
             console.error("Error updating access:", error);
             toast.error("Error updating access.");
         }
     };
+
     const columns = [
         { Header: "Business Name", accessor: "businessName" },
         { Header: "Email", accessor: "email" },
@@ -50,16 +65,21 @@ const AccessCenter = () => {
             Header: "Access",
             accessor: "access",
             Cell: ({ row }) => (
-                <label className="switch">
-                    <input
-                        type="checkbox"
-                        checked={row.original.access}
-                        onChange={() => handleToggleAccess(row.original.businessId, row.original.access)}
-                    />
-                    <span className="slider"></span>
-                </label>
+                <div className="flex justify-center items-center h-full">
+                    <div
+                        onClick={() => handleToggleAccess(row.original.businessId, row.original.access)}
+                        className="cursor-pointer text-3xl"
+                    >
+                        {row.original.access ? (
+                            <MdToggleOn className="text-green-500 text-4xl" />
+                        ) : (
+                            <MdToggleOff className="text-red-500 text-4xl" />
+                        )}
+                    </div>
+                </div>
             ),
         },
+
     ];
 
     return (

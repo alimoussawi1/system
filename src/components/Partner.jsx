@@ -1,257 +1,238 @@
 import React, { useState } from "react";
-import emailjs from "emailjs-com";
-import Partners from "../assets/partners.png";
+import axios from "axios";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc, serverTimestamp, getDoc, deleteDoc } from "firebase/firestore";
+import { auth, db } from "../firebase";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import PartnersSmall from "../assets/partnerwithussmall.png";
-import PictureWithButton from "./PictureWithButton";
 import PictureWithText from "./PictureWithText";
 import PictureWithText1 from "./PictureWithText1";
 import PictureWithText2 from "./PictureWithText2";
-import { ToastContainer, toast } from "react-toastify"; // Import Toastify
-import "react-toastify/dist/ReactToastify.css"; // Import Toastify styles
+import { FaRegTimesCircle } from "react-icons/fa";
+
 const Partner = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    contactName: "",
-    businessName: "",
-    phoneNumber: "",
-    email: "",
-    location: "",
-    description: "",
-  });
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [verify, setVerify] = useState(false)
+  const [enteredCode, setEnteredCode] = useState("");
+  const [userId, setUserId] = useState("");
 
-  const openModal = () => {
-    setIsOpen(true);
+  const [businessEmail, setBusinessEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [ownerPhoneNumber, setOwnerPhoneNumber] = useState("");
+  const [businessName, setBusinessName] = useState("");
+  const [businessType, setBusinessType] = useState("Food & Drinks");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const openModalSend = () => setShowModal(true);
+
+  const handleSubmitBusiness = async () => {
+    if (!businessEmail || !businessName || !password || !firstName || !lastName) {
+      toast.error("Please fill all fields");
+      return;
+    }
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // 1. Create Firebase User
+      const userCredential = await createUserWithEmailAndPassword(auth, businessEmail, password);
+      const uid = userCredential.user.uid;
+      setUserId(uid);
+
+      // 2. Send verification code email through your backend
+      const response = await axios.post("https://swb-backend.onrender.com/send-verification-code", {
+        businessEmail,
+      });
+
+      if (response.data.success) {
+        const generatedCode = response.data.code;  // receive the generated code from backend
+        console.log("Saving");
+        // 3. Save pending verification **in frontend** manually after email sent
+        await setDoc(doc(db, "pendingVerifications", uid), {
+          verificationCode: generatedCode,
+          fullInfo: {
+            businessEmail,
+            businessName,
+            firstName,
+            lastName,
+            ownerPhoneNumber,
+            businessType,
+          },
+        });
+
+        toast.success("Verification code sent! Check your email.");
+        setIsVerifying(true);
+        setShowModal(false);
+      } else {
+        // If backend says failure, delete created Firebase user
+        await userCredential.user.delete();
+        toast.error("Failed to send verification email. User deleted.");
+      }
+    } catch (error) {
+      console.error("Error creating user or sending email:", error);
+      toast.error("Failed to create business account or send verification email.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const closeModal = () => {
-    setIsOpen(false);
-  };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const verifyCode = async () => {
+    if (!enteredCode) {
+      toast.error("Enter the verification code");
+      return;
+    }
 
-    const templateParams = {
-      contactName: formData.contactName,
-      businessName: formData.businessName,
-      phoneNumber: formData.phoneNumber,
-      email: formData.email,
-      location: formData.location,
-      description: formData.description,
-    };
-    const toastId = toast.loading("Sending message...", {
+    try {
+      setVerify(true)
+      const docRef = doc(db, "pendingVerifications", userId);
+      const docSnap = await getDoc(docRef);
 
-    });
+      if (docSnap.exists()) {
+        const { verificationCode, fullInfo } = docSnap.data();
 
-    emailjs
-      .send(
-        "service_5ihkoqc", // Your Service ID
-        "template_p98neyn", // Your Template ID
-        templateParams,
-        "V6ZGtr1e7XiBbA7-z" // Your Public Key
-      )
-      .then(
-        (response) => {
-          console.log("Email sent successfully!", response.status, response.text);
-          toast.update(toastId, {
-            render: "Message sent successfully! ",
-            type: "success",
-            isLoading: false,
-            autoClose: 3000,
-            position: "top-right",
-
+        if (enteredCode === verificationCode) {
+          await setDoc(doc(db, "users", userId), {
+            uid: userId,
+            businessEmail,
+            businessName: fullInfo.businessName,
+            ownerName: fullInfo.firstName + " " + fullInfo.lastName,
+            ownerPhoneNumber: fullInfo.ownerPhoneNumber,
+            businessType: fullInfo.businessType,
+            isBusinessAccount: true,
+            access: false,
+            createdAt: serverTimestamp(),
           });
-          setTimeout(() => {
-            closeModal();
-          }, 3000);
 
-        },
-        (error) => {
-          console.error("Failed to send email.", error);
-          toast.update(toastId, {
-            render: "Failed to send message. Please try again.",
-            type: "error",
-            isLoading: false,
-            autoClose: 3000,
-            position: "top-right",
+          await deleteDoc(doc(db, "pendingVerifications", userId));
 
-          });
+          toast.success("Business account verified and created!");
+          setIsVerifying(false);
+        } else {
+          toast.error("Incorrect verification code");
         }
-      );
+      } else {
+        toast.error("No verification info found");
+      }
+    } catch (error) {
+      console.error("Verification error:", error);
+      toast.error("Verification failed");
+    }
+    finally {
+      setVerify(false)
+    }
   };
 
   return (
-    <>
-      {/* Background Section */}
-      {/* Show this div ONLY on large screens */}
-      <div
-        className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center hidden md:block"
-        style={{ backgroundImage: `url(${PartnersSmall})` }}
-      >
-        {/* Button positioned at the bottom center */}
+    <div>
+      <ToastContainer />
+
+      <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center hidden md:block" style={{ backgroundImage: `url(${PartnersSmall})` }}>
         <button
-          onClick={openModal}
-          className="absolute bottom-24 left-1/2 transform -translate-x-1/2 px-6 py-3 text-sm sm:text-base md:text-lg bg-[#02afde] text-black rounded-lg shadow-lg hover:bg-[#02afde]  font-medium  transition duration-300"
+          onClick={openModalSend}
+          className="absolute bottom-24 left-1/2 transform -translate-x-1/2 px-6 py-3 bg-[#02afde] text-black rounded-lg hover:bg-[#02afde] font-medium"
         >
-          Become a Partner
+          Get Started
         </button>
       </div>
 
-
-      {/* Show this div ONLY on small screens */}
-      <div
-        className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center block md:hidden"
-        style={{ backgroundImage: `url(${PartnersSmall})` }}
-      >
+      <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center block md:hidden" style={{ backgroundImage: `url(${PartnersSmall})` }}>
         <button
-          onClick={openModal}
-          className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-6 py-3 text-sm sm:text-base md:text-lg  bg-[#02afde] text-black rounded-lg shadow-lg hover:bg-[#02afde]  font-medium  transition duration-300"
+          onClick={openModalSend}
+          className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-6 py-3 bg-[#02afde] text-black rounded-lg hover:bg-[#02afde] font-medium"
         >
-          Become a Partner
+          Get Started
         </button>
       </div>
-
 
       <PictureWithText />
       <PictureWithText1 />
       <PictureWithText2 />
 
-
-      {/* Modal Section */}
-      {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-[90%] max-w-[400px] max-h-[70vh] overflow-y-auto">
-
-
-            <ToastContainer
-              position="top-right"
-              autoClose={3000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              pauseOnHover
-              draggable
-              theme="light"
-              progressStyle={{ background: "#5843aa" }} // Custom progress bar color
-            />
-            <h2 className="text-xl font-bold mb-4 text-center">
-              Partner With Us
-            </h2>
-            <form onSubmit={handleSubmit}>
-              {/* Contact Name */}
-              <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">
-                  Contact Name
-                </label>
-                <input
-                  type="text"
-                  name="contactName"
-                  value={formData.contactName}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#02afde]"
-                  placeholder="Enter contact name"
-                />
-              </div>
-
-              {/* Business Name */}
-              <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">
-                  Business Name
-                </label>
-                <input
-                  type="text"
-                  name="businessName"
-                  value={formData.businessName}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#02afde]"
-                  placeholder="Enter business name"
-                />
-              </div>
-
-              {/* Phone Number */}
-              <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  name="phoneNumber"
-                  value={formData.phoneNumber}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#02afde]"
-                  placeholder="Enter phone number"
-                />
-              </div>
-
-              {/* Email */}
-              <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#02afde]"
-                  placeholder="Enter email"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">Description (Max 500 chars)</label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:ring focus:ring-[#02afde] resize-none"
-                  placeholder="Provide a brief description..."
-                  maxLength="500"
-                  rows="4"
-                />
-                <p className="text-xs text-gray-500">{formData.description.length}/500 characters</p>
-              </div>
-
-              {/* Location */}
-              <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">
-                  Location
-                </label>
-                <input
-                  type="text"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#02afde]"
-                  placeholder="Enter location"
-                />
-              </div>
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center mt-10">
+          <div className="relative bg-white p-6 rounded-lg w-[90%] max-w-[400px] mt-10">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold">Create Business Account</h2>
+              <button
+                className="text-2xl font-bold text-gray-600 hover:text-black"
+                onClick={() => setShowModal(false)}
+              >
+                <FaRegTimesCircle />
+              </button>
+            </div>
 
 
-              {/* Submit Button */}
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="px-4 py-2 mr-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-[#02afde] text-white rounded-lg hover:bg-[#5843aa]"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
+
+            <label className="block font-medium text-sm mb-1">Owner's First Name</label>
+            <input type="text" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} className="border p-2 mb-2 w-full" />
+            <label className="block font-medium text-sm mb-1">Owner's Last Name</label>
+            <input type="text" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} className="border p-2 mb-2 w-full" />
+            <label className="block font-medium text-sm mb-1">Owner's Phone Number</label>
+            <input type="tel" placeholder="Phone Number" value={ownerPhoneNumber} onChange={(e) => setOwnerPhoneNumber(e.target.value)} className="border p-2 mb-2 w-full" />
+            <label className="block font-medium text-sm mb-1">Business Name</label>
+            <input type="text" placeholder="Business Name" value={businessName} onChange={(e) => setBusinessName(e.target.value)} className="border p-2 mb-2 w-full" />
+            <label className="block font-medium text-sm mb-1">Business Email</label>
+            <input type="email" placeholder="Business Email" value={businessEmail} onChange={(e) => setBusinessEmail(e.target.value)} className="border p-2 mb-2 w-full" />
+            <label className="block font-medium text-sm mb-1">Business Type</label>
+            <select
+              value={businessType}
+              onChange={(e) => setBusinessType(e.target.value)}
+              className="w-full p-2 border rounded-md"
+            >
+              <option value="">Select Business Type</option>
+              <option value="Food & Drinks">Food & Drinks</option>
+              <option value="Sports & Activities">Sports & Activities</option>
+              <option value="Nightlife">Nightlife</option>
+              <option value="Tourism">Tourism</option>
+            </select>
+            <label className="block font-medium text-sm mb-1">Password</label>
+            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="border p-2 mb-2 w-full" />
+            <label className="block font-medium text-sm mb-1">Confirm Password</label>
+            <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="border p-2 mb-4 w-full" />
+
+            <div className="flex justify-center">
+              <button
+                onClick={handleSubmitBusiness}
+                disabled={loading}
+                className="bg-[#02afde] text-white px-4 py-2 rounded flex justify-center items-center"
+              >
+                {loading ? "Submitting..." : "Create Account"}
+              </button>
+            </div>
+
           </div>
         </div>
       )}
-    </>
+
+      {isVerifying && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg w-[90%] max-w-[400px]">
+            <h2 className="text-xl font-bold mb-4">Enter Verification Code </h2>
+            <h2 className="text-sm italic mb-4 text-[#02afde]">
+              If you did not receive an email, kindly check your spam folder
+            </h2>
+
+            <input type="text" placeholder="6-digit code" value={enteredCode} onChange={(e) => setEnteredCode(e.target.value)} className="border p-2 mb-4 w-full" />
+            <div className=" flex justify-center">
+              <button onClick={verifyCode} className="bg-[#5842aa] text-white px-4 py-2 rounded">
+                {verify ? 'Verifying' : 'Verify'}
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.69a3560c.css",
-    "main.js": "/static/js/main.2a5df4fe.js",
+    "main.js": "/static/js/main.5eb9d58d.js",
     "static/media/mobile1.mp4": "/static/media/mobile1.510459e0b6cf09669ead.mp4",
     "static/media/partners.png": "/static/media/partners.0d8f6f7170c4612b305e.png",
     "static/media/dashboard.png": "/static/media/dashboard.1145612828bd2f3db3b8.png",
@@ -70,10 +70,10 @@
     "static/media/MY fit life.JPG": "/static/media/MY fit life.1773a40bbc946054bad0.JPG",
     "index.html": "/index.html",
     "main.69a3560c.css.map": "/static/css/main.69a3560c.css.map",
-    "main.2a5df4fe.js.map": "/static/js/main.2a5df4fe.js.map"
+    "main.5eb9d58d.js.map": "/static/js/main.5eb9d58d.js.map"
   },
   "entrypoints": [
     "static/css/main.69a3560c.css",
-    "static/js/main.2a5df4fe.js"
+    "static/js/main.5eb9d58d.js"
   ]
 }

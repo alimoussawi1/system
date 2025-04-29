@@ -6,8 +6,11 @@ import AdminNavbar from '../businessComponents/adminNavbar';
 
 const BusinessLayout = ({ children }) => {
     const userString = localStorage.getItem("user");
+
     const user = userString ? JSON.parse(userString) : null;
-    const name = user ? user.fullName : null;
+    const name = localStorage.getItem("fullName");
+
+
 
     return (
         <div className="flex h-screen">
