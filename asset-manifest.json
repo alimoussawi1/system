@@ -1,10 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.4379d4ca.css",
-    "main.js": "/static/js/main.879af163.js",
+    "main.css": "/static/css/main.a4b362d8.css",
+    "main.js": "/static/js/main.f47b8f9a.js",
+    "static/js/239.9845c332.chunk.js": "/static/js/239.9845c332.chunk.js",
+    "static/js/977.8879121b.chunk.js": "/static/js/977.8879121b.chunk.js",
+    "static/js/455.217cf9bc.chunk.js": "/static/js/455.217cf9bc.chunk.js",
     "static/media/mobile1.mp4": "/static/media/mobile1.510459e0b6cf09669ead.mp4",
     "static/media/dashboard.png": "/static/media/dashboard.1145612828bd2f3db3b8.png",
     "static/media/partnerwithussmall.png": "/static/media/partnerwithussmall.961300c90303bd79bcc6.png",
+    "static/media/login.jpg": "/static/media/login.10a2dc1f696443c744c3.jpg",
     "static/media/comingsoon.jpeg": "/static/media/comingsoon.96dec6f8722ea4ce9b21.jpeg",
     "static/media/aboutus.png": "/static/media/aboutus.426d2fa04c3387f724cf.png",
     "static/media/intro.mp4": "/static/media/intro.50cde864fcb6f6a5d4d6.mp4",
@@ -68,11 +72,14 @@
     "static/media/Dippers.jpg": "/static/media/Dippers.fc96e5d1564e4f2edbd7.jpg",
     "static/media/MY fit life.JPG": "/static/media/MY fit life.1773a40bbc946054bad0.JPG",
     "index.html": "/index.html",
-    "main.4379d4ca.css.map": "/static/css/main.4379d4ca.css.map",
-    "main.879af163.js.map": "/static/js/main.879af163.js.map"
+    "main.a4b362d8.css.map": "/static/css/main.a4b362d8.css.map",
+    "main.f47b8f9a.js.map": "/static/js/main.f47b8f9a.js.map",
+    "239.9845c332.chunk.js.map": "/static/js/239.9845c332.chunk.js.map",
+    "977.8879121b.chunk.js.map": "/static/js/977.8879121b.chunk.js.map",
+    "455.217cf9bc.chunk.js.map": "/static/js/455.217cf9bc.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.4379d4ca.css",
-    "static/js/main.879af163.js"
+    "static/css/main.a4b362d8.css",
+    "static/js/main.f47b8f9a.js"
   ]
 }
