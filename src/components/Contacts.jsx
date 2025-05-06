@@ -18,7 +18,7 @@ const ContactUs = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     const templateParams = {
       firstName: formData.firstName.trim(),
       familyName: formData.familyName.trim(),
@@ -27,13 +27,12 @@ const ContactUs = () => {
       subject: formData.subject.trim(),
       description: formData.description.trim(),
     };
-  
-    console.log("Sending this data to EmailJS:", templateParams);
-  
+
+
     // Show a loading toast
     const toastId = toast.loading("Sending message...", {
-      
-      });
+
+    });
     emailjs
       .send(
         "service_5ihkoqc", // Your Service ID
@@ -43,17 +42,17 @@ const ContactUs = () => {
       )
       .then((response) => {
         console.log("SUCCESS!", response.status, response.text);
-  
+
         // Update loading toast to success
         toast.update(toastId, {
-            render: "Message sent successfully! ",
-            type: "success",
-            isLoading: false,
-            autoClose: 3000,
-            position: "top-right",
+          render: "Message sent successfully! ",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+          position: "top-right",
 
-          });
-  
+        });
+
         // Reset form after success
         setFormData({
           firstName: "",
@@ -66,34 +65,34 @@ const ContactUs = () => {
       })
       .catch((error) => {
         console.log("FAILED...", error);
-  
+
         // Update loading toast to error
         toast.update(toastId, {
-            render: "Failed to send message. Please try again.",
-            type: "error",
-            isLoading: false,
-            autoClose: 3000,
-            position: "top-right",
+          render: "Failed to send message. Please try again.",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+          position: "top-right",
 
-          });
+        });
       });
   };
-  
+
 
   return (
     <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold text-center mb-4">Contact Us</h2>
       <ToastContainer
-  position="top-right"
-  autoClose={3000}
-  hideProgressBar={false}
-  newestOnTop={false}
-  closeOnClick
-  pauseOnHover
-  draggable
-  theme="light"
-  progressStyle={{ background: "#5843aa" }} // Custom progress bar color
-/>
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+        progressStyle={{ background: "#5843aa" }} // Custom progress bar color
+      />
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* First Name */}
@@ -106,7 +105,7 @@ const ContactUs = () => {
           className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#02afde]"
           required
         />
-        
+
         {/* Family Name */}
         <input
           type="text"

@@ -15,7 +15,8 @@ const ScannedCustomers = () => {
     const [endDate, setEndDate] = useState('');
 
     const [university, setUniversity] = useState('');
-
+    const pageSize = 5;
+    const totalPages = Math.ceil(scanBusiness.length / pageSize);
     const universities = [
         { value: "", label: "ALL" },
         { value: 'LU - Lebanese University', label: 'LU - Lebanese University' },
@@ -97,6 +98,8 @@ const ScannedCustomers = () => {
             const snapshot = await getDocs(q);
 
             let results = snapshot.docs.map(doc => doc.data());
+            results.sort((a, b) => b.scannedAt.toDate() - a.scannedAt.toDate());
+
 
 
             if (university?.value) {
@@ -202,6 +205,7 @@ const ScannedCustomers = () => {
                             data={scanBusiness}
                             pageSize={5}
                             checkbox={false}
+                            totalPages={totalPages}
                         />
                     )}
                 </>

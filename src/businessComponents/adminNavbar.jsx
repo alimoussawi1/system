@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 
-const AdminNavbar = ({ name }) => {
+const AdminNavbar = ({ name, plan }) => {
     const location = useLocation();
 
     // Extract the route after /admin
@@ -18,9 +18,16 @@ const AdminNavbar = ({ name }) => {
             <h2 className="text-xl font-semibold">{pageTitle}</h2>
 
             <div className="flex items-center space-x-4 text-sm">
+
+
+                <span className=" text-[#02afde]">Current Plan : <span className="font-semibold text-[#5842aa]">
+                    {plan}
+                </span> </span>
                 <div className="h-5 border-l border-gray-400"></div>
+
+
                 <div className="flex items-center space-x-2">
-                    <FaUserCircle className="w-8 h-8 text-gray-600" />
+
                     <span className="font-semibold text-[#5842aa]">{name}</span>
                 </div>
             </div>

@@ -32,6 +32,7 @@ import ContractComponent from "./businessComponents/Contracts";
 import ProtectedRoute from "./businessComponents/ProtectedRoute";
 import AccessCenter from "./businessComponents/AccessCenter";
 import News from "./components/News";
+import Businesses from "./components/Businesses";
 const handleDownload = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -163,7 +164,8 @@ function Dashboard() {
 
 function App() {
   const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith("/admin");
+  const isAdminRoute = location.pathname.startsWith("/admin") || location.pathname.startsWith("/login");
+
 
 
   const pageVariants = {
@@ -401,6 +403,25 @@ function App() {
                       exit="exit"
                     >
                       <AccessCenter />
+                    </motion.div>
+                  </BusinessLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/business"
+              element={
+                <ProtectedRoute>
+                  <BusinessLayout>
+
+
+                    <motion.div
+                      variants={pageVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                    >
+                      <Businesses />
                     </motion.div>
                   </BusinessLayout>
                 </ProtectedRoute>

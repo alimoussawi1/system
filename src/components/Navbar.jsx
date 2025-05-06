@@ -202,9 +202,12 @@ function Navbar() {
           </svg>
         </button>
         <nav className="flex flex-col p-4 space-y-4">
-          <Link to="/" className={`font-medium ${location.pathname === "/" ? "text-[#10758B]" : "text-gray-600"} hover:text-[#10758B]`} onClick={() => setIsMenuOpen(false)}>Home</Link>
-          <Link to="/partner" className={`font-medium ${location.pathname === "/partner" ? "text-[#10758B]" : "text-gray-600"} hover:text-[#10758B]`} onClick={() => setIsMenuOpen(false)}>Become a Partner</Link>
-          <Link to="/jobs" className={`font-medium ${location.pathname === "/jobs" ? "text-[#10758B]" : "text-gray-600"} hover:text-[#10758B]`} onClick={() => setIsMenuOpen(false)}>Student Jobs</Link>
+          <Link to="/" className={`font-medium ${location.pathname === "/" ? "text-gray-600" : "text-gray-600"} hover:text-[#10758B]`} onClick={() => setIsMenuOpen(false)}>Home</Link>
+          <Link to="/partner" className={`font-medium ${location.pathname === "/partner" ? "text-gray-600" : "text-gray-600"} hover:text-[#10758B]`} onClick={() => setIsMenuOpen(false)}>Become a Partner</Link>
+          <Link to="/news" className={`font-medium ${location.pathname === "/news" ? "text-gray-600" : "text-gray-600"} hover:text-[#10758B]`} onClick={() => setIsMenuOpen(false)}>News</Link>
+
+          <Link to="/login" className="text-[#02afde] font-medium">Log in</Link>
+
         </nav>
       </div>
 

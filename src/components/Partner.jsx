@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import emailjs from "emailjs-com";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, serverTimestamp, getDoc, deleteDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
@@ -11,6 +13,7 @@ import PictureWithText1 from "./PictureWithText1";
 import PictureWithText2 from "./PictureWithText2";
 import { FaRegTimesCircle } from "react-icons/fa";
 
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify styles
 const Partner = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -27,6 +30,42 @@ const Partner = () => {
   const [businessType, setBusinessType] = useState("Food & Drinks");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [resendClicked, setResendClicked] = useState(false);
+
+  const isStrongPassword = (pwd) => {
+    const regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+    return regex.test(pwd);
+  };
+  const handleResendCode = async () => {
+    if (resendClicked || !businessEmail) return;
+
+    try {
+      setResendClicked(true);
+
+      const response = await axios.post("https://swb-backend.onrender.com/send-verification-code", {
+        businessEmail,
+      });
+
+      if (response.data.success) {
+        const newCode = response.data.code;
+
+        // Update Firestore document with new code
+        await setDoc(doc(db, "pendingVerifications", userId), {
+          verificationCode: newCode,
+        }, { merge: true });
+
+        toast.success("Verification code resent!");
+      } else {
+        toast.error("Failed to resend verification code.");
+      }
+    } catch (err) {
+      console.error("Resend error:", err);
+      toast.error("Error resending verification code.");
+    }
+  };
+
 
   const openModalSend = () => setShowModal(true);
 
@@ -37,6 +76,10 @@ const Partner = () => {
     }
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
+      return;
+    }
+    if (!isStrongPassword(password)) {
+      toast.error("Password must be at least 8 characters long, contain 1 uppercase letter and 1 number.");
       return;
     }
 
@@ -115,8 +158,36 @@ const Partner = () => {
 
           await deleteDoc(doc(db, "pendingVerifications", userId));
 
+
+
           toast.success("Business account verified and created!");
           setIsVerifying(false);
+          const templateParams = {
+            businessEmail: businessEmail,
+            businessName: fullInfo.businessName,
+            ownerName: fullInfo.firstName + " " + fullInfo.lastName,
+            ownerPhoneNumber: fullInfo.ownerPhoneNumber,
+            businessType: fullInfo.businessType,
+          };
+
+          emailjs
+            .send(
+              "service_5ihkoqc",      // Your Service ID
+              "template_p98neyn",     // Your Template ID
+              templateParams,
+              "V6ZGtr1e7XiBbA7-z"     // Your Public Key
+            )
+            .then((response) => {
+              console.log("SUCCESS!", response.status, response.text);
+              // You can trigger any other logic here (e.g., form reset, navigation)
+            })
+            .catch((error) => {
+              console.error("FAILED...", error);
+              // Handle failure if needed (e.g., show alert or fallback UI)
+            });
+
+
+
         } else {
           toast.error("Incorrect verification code");
         }
@@ -196,9 +267,38 @@ const Partner = () => {
               <option value="Tourism">Tourism</option>
             </select>
             <label className="block font-medium text-sm mb-1">Password</label>
-            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="border p-2 mb-2 w-full" />
+            <div className="relative mb-2">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="border p-2 w-full pr-10"
+              />
+              <div
+                className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-600"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </div>
+            </div>
+
             <label className="block font-medium text-sm mb-1">Confirm Password</label>
-            <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="border p-2 mb-4 w-full" />
+            <div className="relative mb-4">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="border p-2 w-full pr-10"
+              />
+              <div
+                className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-600"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </div>
+            </div>
 
             <div className="flex justify-center">
               <button
@@ -215,23 +315,64 @@ const Partner = () => {
       )}
 
       {isVerifying && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg w-[90%] max-w-[400px]">
-            <h2 className="text-xl font-bold mb-4">Enter Verification Code </h2>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg w-[90%] max-w-[400px] relative">
+
+            {/* Close Button */}
+            <button
+              onClick={() => setIsVerifying(false)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl font-bold"
+              aria-label="Close"
+            >
+              <FaRegTimesCircle />
+            </button>
+
+            <h2 className="text-xl font-bold mb-4">Enter Verification Code</h2>
             <h2 className="text-sm italic mb-4 text-[#02afde]">
               If you did not receive an email, kindly check your spam folder
             </h2>
 
-            <input type="text" placeholder="6-digit code" value={enteredCode} onChange={(e) => setEnteredCode(e.target.value)} className="border p-2 mb-4 w-full" />
-            <div className=" flex justify-center">
-              <button onClick={verifyCode} className="bg-[#5842aa] text-white px-4 py-2 rounded">
-                {verify ? 'Verifying' : 'Verify'}
+            <input
+              type="text"
+              placeholder="6-digit code"
+              value={enteredCode}
+              onChange={(e) => setEnteredCode(e.target.value)}
+              className="border p-2 mb-4 w-full"
+            />
+            <div className="text-center mt-4">
+              <button
+                onClick={handleResendCode}
+
+                className={`text-sm font-medium ${resendClicked ? 'text-gray-400 ' : 'text-[#02afde] hover:underline'}`}
+              >
+                {resendClicked ? "Verification Code Sent" : "Resend Verification Code"}
               </button>
             </div>
 
+
+            <div className="flex justify-center mt-2">
+              <button
+                onClick={verifyCode}
+                className="bg-[#5842aa] text-white px-4 py-2 rounded"
+              >
+                {verify ? "Verifying" : "Verify"}
+              </button>
+            </div>
           </div>
         </div>
       )}
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+        progressStyle={{ background: "#5843aa" }} // Custom progress bar color
+      />
     </div>
   );
 };

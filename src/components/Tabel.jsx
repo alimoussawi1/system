@@ -13,10 +13,10 @@ const Table = ({
     checkbox = false,
     selectedRowId,
     setSelectedRowId,
+    totalPages = 1 // ✅ NEW: Accept totalPages prop
 }) => {
-    const [searchQuery, setSearchQuery] = useState(""); // State for search query
+    const [searchQuery, setSearchQuery] = useState("");
 
-    // Memoize filtered data to avoid unnecessary recalculations
     const filteredData = useMemo(() => {
         return data.filter((row) => {
             return columns.some((column) => {
@@ -24,7 +24,7 @@ const Table = ({
                 return cellValue ? String(cellValue).toLowerCase().includes(searchQuery.toLowerCase()) : false;
             });
         });
-    }, [data, searchQuery, columns]); // Only re-filter when data, searchQuery, or columns change
+    }, [data, searchQuery, columns]);
 
     const {
         getTableProps,
@@ -40,14 +40,14 @@ const Table = ({
     } = useTable(
         {
             columns,
-            data: filteredData, // Pass the filtered data to the table
+            data: filteredData,
             initialState: { pageIndex: 0, pageSize },
         },
         usePagination
     );
 
     const handleRowSelect = (rowId) => {
-        setSelectedRowId((prev) => (prev === rowId ? null : rowId)); // Toggle row selection
+        setSelectedRowId((prev) => (prev === rowId ? null : rowId));
     };
 
     return (
@@ -57,7 +57,7 @@ const Table = ({
                 <input
                     type="text"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)} // Update the search query
+                    onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search..."
                     className="border p-2 rounded-md w-1/4"
                 />
@@ -81,8 +81,7 @@ const Table = ({
             </div>
 
             <table {...getTableProps()} className="w-full border border-gray-300">
-                {/* Table Header */}
-                <thead className="bg-gray-900 text-white">
+                <thead className="bg-[#5842aa] text-white">
                     {headerGroups.map((headerGroup) => (
                         <tr {...headerGroup.getHeaderGroupProps()} className="border-b">
                             {checkbox && <th className="p-3 text-left">Select</th>}
@@ -95,33 +94,39 @@ const Table = ({
                     ))}
                 </thead>
 
-                {/* Table Body */}
                 <tbody {...getTableBodyProps()}>
-                    {page.map((row) => {
-                        prepareRow(row);
-                        return (
-                            <tr
-                                {...row.getRowProps()}
-                                className="border-b hover:bg-gray-100 even:bg-white odd:bg-gray-50"
-                            >
-
-                                {checkbox && (
-                                    <td className="p-3">
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedRowId === row.original._id} // Check if row is selected
-                                            onChange={() => handleRowSelect(row.original._id)} // Toggle selection on checkbox click
-                                        />
-                                    </td>
-                                )}
-                                {row.cells.map((cell) => (
-                                    <td {...cell.getCellProps()} className="p-3">
-                                        {cell.render("Cell")}
-                                    </td>
-                                ))}
-                            </tr>
-                        );
-                    })}
+                    {page.length === 0 ? (
+                        <tr>
+                            <td colSpan={columns.length + (checkbox ? 1 : 0)} className="text-center py-6 text-gray-500">
+                                No data found
+                            </td>
+                        </tr>
+                    ) : (
+                        page.map((row) => {
+                            prepareRow(row);
+                            return (
+                                <tr
+                                    {...row.getRowProps()}
+                                    className="border-b hover:bg-gray-100 even:bg-white odd:bg-gray-50"
+                                >
+                                    {checkbox && (
+                                        <td className="p-3">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedRowId === row.original._id}
+                                                onChange={() => handleRowSelect(row.original._id)}
+                                            />
+                                        </td>
+                                    )}
+                                    {row.cells.map((cell) => (
+                                        <td {...cell.getCellProps()} className="p-3">
+                                            {cell.render("Cell")}
+                                        </td>
+                                    ))}
+                                </tr>
+                            );
+                        })
+                    )}
                 </tbody>
             </table>
 
@@ -130,15 +135,17 @@ const Table = ({
                 <button
                     onClick={previousPage}
                     disabled={!canPreviousPage}
-                    className="px-4 py-2 bg-gray-800 text-white rounded disabled:opacity-50"
+                    className="px-4 py-2 bg-[#02afde] text-white rounded disabled:opacity-50"
                 >
                     Previous
                 </button>
-                <span>Page {pageIndex + 1}</span>
+                <span className="text-sm text-gray-700">
+                    Page {pageIndex + 1} of {totalPages}
+                </span>
                 <button
                     onClick={nextPage}
                     disabled={!canNextPage}
-                    className="px-4 py-2 bg-gray-800 text-white rounded disabled:opacity-50"
+                    className="px-4 py-2 bg-[#02afde] text-white rounded disabled:opacity-50"
                 >
                     Next
                 </button>

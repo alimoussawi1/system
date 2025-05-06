@@ -9,6 +9,7 @@ const BusinessLayout = ({ children }) => {
 
     const user = userString ? JSON.parse(userString) : null;
     const name = localStorage.getItem("fullName");
+    const plan = localStorage.getItem("plan");
 
 
 
@@ -22,6 +23,7 @@ const BusinessLayout = ({ children }) => {
                 {/* ✅ Admin Navbar */}
                 <AdminNavbar
                     name={name}
+                    plan={plan}
                 // Replace with dynamic value or user image
                 // Replace with real balance if needed
                 />
