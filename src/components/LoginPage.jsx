@@ -50,7 +50,7 @@ function LoginPage() {
                 localStorage.setItem("signature", userData.signature || "");
                 localStorage.setItem("signatureTimestamp", userData.signatureTimestamp || "");
                 localStorage.setItem("isAdmin", userData.email === "amoussawi02@gmail.com" ? "true" : "false");
-                localStorage.setItem("plan", userData.plan || 'Essential')
+                localStorage.setItem("plan", userData.plan || 'Basic Plan (free version)')
             } else {
                 console.error("User document not found in Firestore.");
                 setError("User data not found.");
