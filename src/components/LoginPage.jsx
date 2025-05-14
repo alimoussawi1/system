@@ -7,6 +7,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import LoginBackground from "../assets/login.jpg";
+import { useAccount } from "../context/AccountContext";
+
 
 function LoginPage() {
     const [username, setUsername] = useState("");
@@ -16,6 +18,7 @@ function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
 
     const navigate = useNavigate();
+    const { setAccountData } = useAccount();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -29,43 +32,51 @@ function LoginPage() {
         setError("");
 
         try {
-            // Step 1: Sign in with Firebase Auth
             const userCredential = await signInWithEmailAndPassword(auth, username, password);
             const user = userCredential.user;
-            localStorage.setItem("uid", user.uid);
 
-            // Step 2: Get Firebase ID token
             const token = await user.getIdToken();
-            localStorage.setItem("token", token);
 
-            // Step 3: Get full user data from Firestore
             const userRef = doc(db, "users", user.uid);
             const userSnap = await getDoc(userRef);
 
             if (userSnap.exists()) {
                 const userData = userSnap.data();
+                let role = 'student';
 
-                localStorage.setItem("access", userData.access || "");
-                localStorage.setItem("fullName", userData.businessName);
-                localStorage.setItem("signature", userData.signature || "");
-                localStorage.setItem("signatureTimestamp", userData.signatureTimestamp || "");
-                localStorage.setItem("isAdmin", userData.email === "amoussawi02@gmail.com" ? "true" : "false");
-                localStorage.setItem("plan", userData.plan || 'Basic Plan (free version)')
+                if (userData.email === "amoussawi02@gmail.com") {
+                    role = 'admin';
+                } else if (userData.businessName) {
+                    role = 'business';
+                }
+
+                if (role === 'student') {
+                    toast.error("This is a login for businesses only! Students use your mobile app!");
+                    setLoading(false);
+                    return;
+                }
+
+                const session = {
+                    uid: user.uid,
+                    token,
+                    role,
+                    fullName: userData.businessName || userData.fullName,
+                    plan: userData.plan || 'Basic Plan (free version)',
+                    isAdmin: role === "admin"
+                };
+
+                setAccountData(session);
+
+                navigate("/admin/dashboard");
             } else {
-                console.error("User document not found in Firestore.");
                 setError("User data not found.");
                 setLoading(false);
-                return;
             }
-
-            // Step 4: Redirect to dashboard
-            navigate("/admin/dashboard");
         } catch (err) {
             console.error("Login error:", err);
             setError("Invalid email or password.");
+            setLoading(false);
         }
-
-        setLoading(false);
     };
 
     const handleForgotPassword = async () => {
@@ -78,7 +89,6 @@ function LoginPage() {
             await sendPasswordResetEmail(auth, username);
             toast.success("Password reset email sent! Check your inbox.");
         } catch (err) {
-            console.error("Forgot password error:", err);
             setError("Failed to send password reset email.");
             toast.error("Failed to send password reset email.");
         }
@@ -86,20 +96,11 @@ function LoginPage() {
 
     return (
         <div className="min-h-screen flex items-center justify-center relative">
-            {/* Background Image with Overlay */}
-            <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{
-                    backgroundImage: `url(${LoginBackground})`,
-                }}
-            >
-                {/* Gradient Overlay */}
+            <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${LoginBackground})` }}>
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-900/70 to-blue-800/70"></div>
             </div>
 
-            {/* Content Container */}
             <div className="relative z-10 flex w-full max-w-4xl px-4">
-                {/* Left side - branding message (hidden on mobile) */}
                 <div className="hidden md:flex md:w-1/2 flex-col justify-center items-start p-8 text-white">
                     <h1 className="text-3xl md:text-4xl font-bold mb-4">Welcome Back</h1>
                     <p className="text-lg mb-6">Access your dashboard and continue managing your business with ease.</p>
@@ -108,7 +109,6 @@ function LoginPage() {
                     </div>
                 </div>
 
-                {/* Right side - login form */}
                 <div className="w-full md:w-1/2 p-4">
                     <div className="bg-white/95 backdrop-blur-sm p-8 rounded-lg shadow-xl w-full max-w-md mx-auto">
                         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Login</h2>
@@ -140,7 +140,7 @@ function LoginPage() {
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-10 text-gray-500 focus:outline-none"
+                                    className="absolute right-3 top-10 text-gray-500"
                                     tabIndex={-1}
                                 >
                                     {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}

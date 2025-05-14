@@ -1,11 +1,13 @@
-// src/components/Dashboard.jsx
 import React, { useState } from "react";
 import MessageActivity from "./MessageActivity";
 import { Link } from "react-router-dom";
-
+import { useAccount } from "../context/AccountContext";
 
 
 const BusinessDashboard = () => {
+    const { accountData } = useAccount();
+    const { fullName, isAdmin, access } = accountData;
+
     const [chartData, setChartData] = useState({
         labels: [],
         datasets: [],
@@ -19,18 +21,13 @@ const BusinessDashboard = () => {
             minHeight: "40px",
         }),
     };
-    const userString = localStorage.getItem("user");
-    const user = userString ? JSON.parse(userString) : null;
-    const name = localStorage.getItem("fullName");
-    const access = localStorage.getItem("access") === "true";
-    const isAdmin = localStorage.getItem("isAdmin") === "true";
-
 
     return (
-        <div className="p-6 space-y-10">
+        <div className="p-2">
             <div>
-
-                <h1 className="text-xl font-bold">Hello <span className="text-[#5842aa]">{name} </span>!</h1>
+                <h1 className="text-xl font-bold">
+                    Hello <span className="text-[#5842aa]">{fullName}</span>!
+                </h1>
             </div>
 
             {access || isAdmin ? (
@@ -53,15 +50,9 @@ const BusinessDashboard = () => {
                         </Link>
                     </div>
                 </div>
-
-
-
-
-
             )}
         </div>
     );
 };
-
 
 export default BusinessDashboard;

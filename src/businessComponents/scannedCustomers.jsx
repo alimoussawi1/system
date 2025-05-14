@@ -1,22 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Table from '../components/Tabel';
 import SelectInput from '../components/SelectInput';
 import { Link } from 'react-router-dom';
 import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
-import { getAuth } from 'firebase/auth';
+import { useAccount } from '../context/AccountContext';
 
 const ScannedCustomers = () => {
+    const { accountData } = useAccount();
+    const { uid, isAdmin, access } = accountData;
+
     const [scanBusiness, setScanBusiness] = useState([]);
     const [loading, setLoading] = useState(false);
-    const isAdmin = localStorage.getItem("isAdmin") === "true";
 
     // Filters
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-
     const [university, setUniversity] = useState('');
+
     const pageSize = 5;
     const totalPages = Math.ceil(scanBusiness.length / pageSize);
+
     const universities = [
         { value: "", label: "ALL" },
         { value: 'LU - Lebanese University', label: 'LU - Lebanese University' },
@@ -74,16 +77,13 @@ const ScannedCustomers = () => {
     const fetchData = async () => {
         setLoading(true);
         const db = getFirestore();
-        const auth = getAuth();
-        const user = auth.currentUser;
-        const userId = user ? user.uid : null;
 
         try {
             const scansRef = collection(db, "scannedCustomers");
             let constraints = [];
 
-            if (userId && !isAdmin) {
-                constraints.push(where("businessId", "==", userId));
+            if (uid && !isAdmin) {
+                constraints.push(where("businessId", "==", uid));
             }
             if (startDate) {
                 constraints.push(where("scannedAt", ">=", new Date(startDate)));
@@ -99,8 +99,6 @@ const ScannedCustomers = () => {
 
             let results = snapshot.docs.map(doc => doc.data());
             results.sort((a, b) => b.scannedAt.toDate() - a.scannedAt.toDate());
-
-
 
             if (university?.value) {
                 results = results.filter(c => c.university === university.value);
@@ -133,11 +131,10 @@ const ScannedCustomers = () => {
         fetchData();
     }, [startDate, endDate, university]);
 
-    const scannedBusiness = React.useMemo(() => {
+    const scannedBusiness = useMemo(() => {
         const columns = [
             { Header: "Name", accessor: "fullName" },
             { Header: "Email", accessor: "email" },
-
             { Header: "Phone", accessor: "phone" },
             { Header: "University", accessor: "university" },
             { Header: "Scanned At", accessor: "scannedAt" },
@@ -148,9 +145,7 @@ const ScannedCustomers = () => {
         }
 
         return columns;
-    }, []);
-
-    const access = localStorage.getItem("access") === "true";
+    }, [isAdmin]);
 
     return (
         <div>
@@ -183,8 +178,6 @@ const ScannedCustomers = () => {
                             />
                         </div>
 
-
-
                         <div className="col-span-1">
                             <SelectInput
                                 id="university"
@@ -203,7 +196,7 @@ const ScannedCustomers = () => {
                         <Table
                             columns={scannedBusiness}
                             data={scanBusiness}
-                            pageSize={5}
+                            pageSize={pageSize}
                             checkbox={false}
                             totalPages={totalPages}
                         />

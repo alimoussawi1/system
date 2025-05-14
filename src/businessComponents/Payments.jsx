@@ -1,19 +1,22 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { collection, getDocs, query, where, doc, getDoc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import Table from "../components/Tabel";
 import { getAuth } from "firebase/auth";
 import { jsPDF } from "jspdf";
+import { IoIosCloseCircleOutline } from "react-icons/io";
+
+import { FaDownload, FaTrash } from "react-icons/fa";
+import { AiFillDislike, AiFillLike } from "react-icons/ai";
+import { confirmAlert } from 'react-confirm-alert';
+import { useAccount } from "../context/AccountContext";
 const Payments = () => {
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(true);
-
-    const userString = localStorage.getItem("user");
-    const auth = getAuth();
-    const user = auth.currentUser;
-    const userId = user ? user.uid : null;
-    const isAdmin = localStorage.getItem("isAdmin") === "true";
+    const { accountData } = useAccount();
+    const { uid, isAdmin } = accountData;
     const downloadReceipt = (payment) => {
+        console.log(payment);
         const doc = new jsPDF();
 
         // Set the document title and format the first section
@@ -21,11 +24,8 @@ const Payments = () => {
         doc.text('Official Receipt', 20, 20);
         doc.setFontSize(12);
         doc.text('SWB Business Plus', 20, 30);
-        doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 40);
         doc.text(`Business Name: ${payment.businessName}`, 20, 60);
         doc.text(`Contact Email: ${payment.businessEmail}`, 20, 70);
-        doc.text(`Amount: $${payment.amount}`, 20, 80);
-        doc.text(`Currency: ${payment.currency}`, 20, 90);
 
         // Package Details
         doc.text('Package Details:', 20, 110);
@@ -63,7 +63,7 @@ const Payments = () => {
                 if (isAdmin) {
                     q = query(paymentsRef);
                 } else {
-                    q = query(paymentsRef, where("userId", "==", userId));
+                    q = query(paymentsRef, where("userId", "==", uid));
                 }
 
                 const snapshot = await getDocs(q);
@@ -123,13 +123,14 @@ const Payments = () => {
         };
 
         fetchPayments();
-    }, [userId, isAdmin]);
+    }, [uid, isAdmin]);
 
     const paymentColumns = useMemo(() => {
         const baseColumns = [
             { Header: "Amount", accessor: "amount" },
             { Header: "Currency", accessor: "currency" },
             { Header: "Status", accessor: "status" },
+            ...(isAdmin ? [{ Header: "Whish Status", accessor: "whishStatus" }] : []),
             { Header: "Type", accessor: "type" },
             {
                 Header: "Created At",
@@ -150,63 +151,179 @@ const Payments = () => {
                 Header: "Business Name",
                 accessor: "businessName",
             });
+
         }
 
         baseColumns.push({
             Header: "Action",
             Cell: ({ row }) => {
                 const status = row.original.status;
+
+                // Conditionally render "Dislike" button only for Admins
+                if (isAdmin) {
+                    if (status === 'Pending') {
+                        return (
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={() => updatePaymentStatus(row.original.id, "success")}
+                                    className="text-green-500"
+                                    title="Approve"
+                                >
+                                    <AiFillLike />
+                                </button>
+                                <button
+                                    onClick={() => updatePaymentStatus(row.original.id, "Declined")}
+                                    className="text-green-500"
+                                    title="Decline"
+                                >
+                                    <IoIosCloseCircleOutline />
+                                </button>
+                                <button
+                                    onClick={() => downloadReceipt(row.original)}
+                                    className="text-[#0a5f73]"
+                                    title="Download"
+                                >
+                                    <FaDownload />
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(row.original)}
+                                    className="text-red-500"
+                                    title="Delete"
+                                >
+                                    <FaTrash />
+                                </button>
+                            </div>
+                        );
+                    }
+
+                    else if (status === 'success') {
+                        return (
+                            <>
+
+                                <button
+                                    onClick={() => updatePaymentStatus(row.original.id, "Pending")}
+                                    className=" text-red-500 px-4 py-2 rounded"
+                                >
+                                    <AiFillDislike />
+                                </button>
+                                <button
+                                    onClick={() => updatePaymentStatus(row.original.id, "Declined")}
+                                    className=" text-green-500 px-4 py-2 rounded"
+                                >
+                                    <IoIosCloseCircleOutline />
+                                </button>
+                                <button
+                                    onClick={() => downloadReceipt(row.original)}
+                                    className=" text-[#0a5f73] px-4 py-2 rounded"
+                                >
+                                    <FaDownload />
+                                </button>
+                            </>
+                        );
+
+                    }
+
+
+                }
+
                 if (status === "success") {
                     return (
                         <>
-
                             <button
                                 onClick={() => downloadReceipt(row.original)}
-                                className="bg-blue-500 text-white px-4 py-2 rounded"
+                                className="text-[#0a5f73] px-4 py-2 rounded"
                             >
-                                Download Receipt
-                            </button>
-                            <button
-                                onClick={() => updatePaymentStatus(row.original.id, "pending")}
-                                className="bg-red-500 text-white px-4 py-2 rounded"
-                            >
-                                Decline Payment
+                                <FaDownload />
                             </button>
                         </>
                     );
+                }
 
-                }
-                else {
-                    if (status === 'Pending') {
-                        <button
-                            onClick={() => updatePaymentStatus(row.original.id, "success")}
-                            className="bg-green-500 text-white px-4 py-2 rounded mr-2"
-                        >
-                            Mark as Success
-                        </button>
-                    }
-                }
                 return null;
             }
         });
 
+
         return baseColumns;
     }, [isAdmin]);
-    const updatePaymentStatus = async (paymentId, newStatus) => {
-        try {
-            const paymentRef = doc(db, "payments", paymentId);
-            await updateDoc(paymentRef, { status: newStatus });
+    const updatePaymentStatus = async (paymentId, newStatus, uid, planName) => {
+        // Confirm the action before making any changes
+        console.log("vkfenva", newStatus)
+        confirmAlert({
+            title: 'Confirm Status Change',
+            message: `Are you sure you want to change the payment status to "${newStatus}"?`,
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: async () => {
+                        try {
+                            const paymentRef = doc(db, "payments", paymentId);
+                            await updateDoc(paymentRef, { status: newStatus });
 
-            // Update the local state to reflect the change
-            setPayments(prevPayments =>
-                prevPayments.map(payment =>
-                    payment.id === paymentId ? { ...payment, status: newStatus } : payment
-                )
-            );
-        } catch (error) {
-            console.error("Error updating payment status:", error);
-        }
+                            // If admin, update the access and plan fields
+                            if (isAdmin) {
+                                const userRef = doc(db, "users", uid);
+                                if (newStatus === 'success') {
+                                    // Set access to true and update plan name
+                                    await updateDoc(userRef, { access: true, plan: planName });
+                                } else if (newStatus === '[ending') {
+                                    // Set access to false and clear plan name
+                                    await updateDoc(userRef, { access: false, plan: "" });
+                                }
+                                else if (newStatus === 'Declined') {
+                                    await updateDoc(userRef, { access: false, plan: "" });
+                                }
+                            }
+
+                            // Update the local state to reflect the change
+                            setPayments(prevPayments =>
+                                prevPayments.map(payment =>
+                                    payment.id === paymentId ? { ...payment, status: newStatus } : payment
+                                )
+                            );
+                        } catch (error) {
+                            console.error("Error updating payment status:", error);
+                        }
+                    }
+                },
+                {
+                    label: 'No',
+                    onClick: () => {
+                        // Do nothing on cancel
+                    }
+                }
+            ]
+        });
     };
+    const handleDelete = async (payment) => {
+        confirmAlert({
+            title: 'Confirm Delete',
+            message: `Are you sure you want to permanently delete this payment? This action cannot be undone.`,
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: async () => {
+                        try {
+                            const paymentRef = doc(db, "payments", payment.id);
+                            await deleteDoc(paymentRef); // completely removes the doc from Firestore
+
+                            setPayments(prev =>
+                                prev.filter(p => p.id !== payment.id)
+                            );
+
+                            console.log(`Payment ${payment.id} successfully deleted.`);
+                        } catch (error) {
+                            console.error("Error deleting payment:", error);
+                        }
+                    }
+                },
+                {
+                    label: 'No'
+                }
+            ]
+        });
+    };
+
 
     return (
         <div className="p-4">

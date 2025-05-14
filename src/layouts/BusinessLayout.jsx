@@ -3,33 +3,32 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import AdminNavbar from '../businessComponents/adminNavbar';
 import { collection, getDocs, query, where, orderBy, limit } from "firebase/firestore";
-import { db } from "../firebase"; // Adjust according to your firebase setup
-import { getAuth } from 'firebase/auth';
+import { db } from "../firebase";
+import { useAccount } from '../context/AccountContext';
 
 const BusinessLayout = ({ children }) => {
-    const userString = localStorage.getItem("user");
-
-    const name = localStorage.getItem("fullName");
-    const plan = localStorage.getItem("plan");
-    const auth = getAuth();
-    const user = auth.currentUser;
-    const userId = user ? user.uid : null;
+    const { accountData } = useAccount();
+    const { uid, fullName, plan, isAdmin } = accountData;
 
     const [timeLeft, setTimeLeft] = useState(null);
 
     useEffect(() => {
         const fetchLatestApprovedPayment = async () => {
             try {
-
                 const paymentsRef = collection(db, "payments");
-                const q = query(paymentsRef, where("userId", "==", userId), where("status", "==", "success"), orderBy("createdAt", "desc"), limit(1));
+                const q = query(
+                    paymentsRef,
+                    where("userId", "==", uid),
+                    where("status", "==", "success"),
+                    orderBy("createdAt", "desc"),
+                    limit(1)
+                );
                 const snapshot = await getDocs(q);
 
                 if (!snapshot.empty) {
                     const latestPayment = snapshot.docs[0].data();
-                    const endDate = latestPayment.endDate.toDate(); // Convert Firestore timestamp to JavaScript Date
+                    const endDate = latestPayment.endDate.toDate(); // Firestore timestamp -> JS Date
 
-                    // Set up a countdown timer
                     const intervalId = setInterval(() => {
                         const currentDate = new Date();
                         const timeDifference = endDate - currentDate;
@@ -42,12 +41,11 @@ const BusinessLayout = ({ children }) => {
                             const hours = Math.floor((timeDifference % (1000 * 3600 * 24)) / (1000 * 3600));
                             const minutes = Math.floor((timeDifference % (1000 * 3600)) / (1000 * 60));
 
-
                             setTimeLeft(`${days}d ${hours}h ${minutes}m`);
                         }
                     }, 1000);
 
-                    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+                    return () => clearInterval(intervalId);
                 } else {
                     setTimeLeft("No active subscription found");
                 }
@@ -56,10 +54,10 @@ const BusinessLayout = ({ children }) => {
             }
         };
 
-        if (userId) {
+        if (uid) {
             fetchLatestApprovedPayment();
         }
-    }, [userId]);
+    }, [uid]);
 
     return (
         <div className="flex h-screen">
@@ -67,16 +65,18 @@ const BusinessLayout = ({ children }) => {
             <Sidebar />
 
             {/* Main Content Area */}
-            <div className="flex-grow ml-64 bg-gray-100 flex flex-col overflow-y-auto">
-                {/* ✅ Admin Navbar */}
+            <div className="flex-grow bg-gray-100 flex flex-col overflow-y-auto w-full md:ml-64">
+                {/* Admin Navbar */}
                 <AdminNavbar
-                    name={name}
+                    name={fullName}
                     plan={plan}
-                    timeLeft={timeLeft} // Passing the dynamic countdown to AdminNavbar
+                    timeLeft={timeLeft}
+                    isAdmin={isAdmin}
+
                 />
 
                 {/* Page Content */}
-                <div className="p-8 flex-grow overflow-y-auto">
+                <div className="p-4 flex-grow overflow-y-auto w-full">
                     {children || <Outlet />}
                 </div>
             </div>

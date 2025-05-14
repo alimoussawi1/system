@@ -1,14 +1,15 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { useAccount } from '../context/AccountContext';
+
 
 const ProtectedRoute = ({ children }) => {
-    const userString = localStorage.getItem("user");
-    const user = userString ? JSON.parse(userString) : null;
-    const token = localStorage.getItem("token");
-    if (!token) {
+    const { accountData } = useAccount();
+    const { token, uid } = accountData;
+
+    if (!token || !uid) {
         return <Navigate to="/login" />;
     }
-
 
     return children;
 };

@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 
-const AdminNavbar = ({ name, plan, timeLeft }) => {
+const AdminNavbar = ({ name, plan, timeLeft, isAdmin }) => {
     const location = useLocation();
 
     // Extract the route after /admin
@@ -18,16 +18,26 @@ const AdminNavbar = ({ name, plan, timeLeft }) => {
             <h2 className="text-xl font-semibold">{pageTitle}</h2>
 
             <div className="flex items-center space-x-4 text-sm">
-                <span className="text-[#02afde]">Current Plan: <span className="font-semibold text-[#5842aa]">
-                    {plan}
-                </span></span>
 
-                {/* Conditionally render countdown if timeLeft is available */}
-                {timeLeft && (
-                    <span className="text-[#ff6347] font-semibold">Days Left: {timeLeft}</span>
-                )}
+                {
+                    !isAdmin && (
+                        <>
+                            <span className="text-[#02afde]">Current Plan: <span className="font-semibold text-[#5842aa]">
+                                {plan}
+                            </span></span>
 
-                <div className="h-5 border-l border-gray-400"></div>
+                            {/* Conditionally render countdown if timeLeft is available */}
+                            {timeLeft && (
+                                <span className="text-[#ff6347] font-semibold">Days Left: {timeLeft}</span>
+                            )}
+
+                            <div className="h-5 border-l border-gray-400"></div>
+
+
+                        </>
+
+                    )
+                }
 
                 <div className="flex items-center space-x-2">
                     <span className="font-semibold text-[#5842aa]">{name}</span>

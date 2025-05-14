@@ -33,24 +33,15 @@ import image27 from "../assets/SWB-WEBP/27.webp";
 import image28 from "../assets/SWB-WEBP/28.webp";
 import image29 from "../assets/SWB-WEBP/29.webp";
 import image30 from "../assets/SWB-WEBP/30.webp";
-import image31 from "../assets/SWB-WEBP/31.webp";
-import image32 from "../assets/SWB-WEBP/32.webp";
-import image33 from "../assets/SWB-WEBP/33.webp";
-import image34 from "../assets/SWB-WEBP/34.webp";
-import image35 from "../assets/SWB-WEBP/35.webp";
-import image36 from "../assets/SWB-WEBP/36.webp";
-import image37 from "../assets/SWB-WEBP/37.webp";
-import image38 from "../assets/SWB-WEBP/38.webp";
-import image39 from "../assets/SWB-WEBP/39.webp";
 import image40 from "../assets/SWB-WEBP/40.webp";
 import image41 from "../assets/SWB-WEBP/41.webp";
 import image42 from "../assets/SWB-WEBP/42.webp";
-import image43 from "../assets/SWB-WEBP/43.webp";
+
 import image44 from "../assets/SWB-WEBP/44.webp";
 import image45 from "../assets/SWB-WEBP/45.webp";
 import image46 from "../assets/SWB-WEBP/46.webp";
-import image47 from "../assets/SWB-WEBP/47.webp";
-import image48 from "../assets/SWB-WEBP/48.webp";
+
+
 import image49 from "../assets/SWB-WEBP/49.webp";
 import image50 from "../assets/SWB-WEBP/50.webp";
 import image51 from "../assets/SWB-WEBP/51.webp";
@@ -69,13 +60,13 @@ import image63 from "../assets/SWB-WEBP/63.webp";
 
 import image65 from "../assets/SWB-WEBP/65.webp";
 import image66 from "../assets/SWB-WEBP/66.webp";
-import image67 from "../assets/SWB-WEBP/67.webp";
+
 import image68 from "../assets/SWB-WEBP/68.webp";
 import image69 from "../assets/SWB-WEBP/69.webp";
 import image70 from "../assets/SWB-WEBP/70.webp";
 import image71 from "../assets/SWB-WEBP/71.webp";
 
-import image73 from "../assets/SWB-WEBP/73.webp";
+
 import image74 from "../assets/SWB-WEBP/74.webp";
 import image75 from "../assets/SWB-WEBP/75.webp";
 import image76 from "../assets/SWB-WEBP/76.webp";
@@ -101,26 +92,34 @@ import image95 from "../assets/SWB-WEBP/95.webp";
 import image96 from "../assets/SWB-WEBP/96.webp";
 import image97 from "../assets/SWB-WEBP/97.webp";
 import image98 from "../assets/SWB-WEBP/98.webp";
-import image99 from "../assets/SWB-WEBP/99.webp";
+
 import image100 from "../assets/SWB-WEBP/100.webp";
 import image101 from "../assets/SWB-WEBP/101.webp";
 import image102 from "../assets/SWB-WEBP/102.webp";
 import image103 from "../assets/SWB-WEBP/103.webp";
 import image104 from "../assets/SWB-WEBP/104.webp";
+import image105 from "../assets/SWB-WEBP/105.webp";
+import image106 from "../assets/SWB-WEBP/106.webp";
+import image107 from "../assets/SWB-WEBP/107.webp";
+import image108 from "../assets/SWB-WEBP/108.webp";
+import image109 from "../assets/SWB-WEBP/109.webp";
+import image110 from "../assets/SWB-WEBP/110.webp";
+import image111 from "../assets/SWB-WEBP/111.webp";
+import image112 from "../assets/SWB-WEBP/112.webp";
 
 // Define fixed rows
 const allImages = [
   image1, image2, image3, image4, image5, image6, image7, image8, image9, image10,
   image11, image12, image13, image14, image15, image16, image17, image18, image19, image20,
   image21, image22, image23, image24, image25, image26, image27, image28, image29, image30,
-  image31, image32, image33, image34, image35, image36, image37, image38, image39, image40,
-  image41, image42, image43, image44, image45, image46, image47, image48, image49, image50,
+  image40,
+  image41, image42, image44, image45, image46, image49, image50,
   image51, image52, image53, image54, image55, image56, image57, image59, image60,
-  image61, image62, image63, image65, image66, image67, image68, image69, image70,
-  image71, image73, image74, image75, image76, image77, image78, image79, image80,
+  image61, image62, image63, image65, image66, image68, image69, image70,
+  image71, image74, image75, image76, image77, image78, image79, image80,
   image81, image82, image83, image84, image85, image86, image87, image88, image89, image90,
-  image91, image92, image93, image94, image95, image96, image97, image98, image99, image100,
-  image101, image102, image103, image104
+  image91, image92, image93, image94, image95, image96, image97, image98, image100,
+  image101, image102, image103, image104, image105, image106, image107, image108, image109, image110, image111, image112
 ];
 
 

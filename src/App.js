@@ -33,6 +33,7 @@ import ProtectedRoute from "./businessComponents/ProtectedRoute";
 import AccessCenter from "./businessComponents/AccessCenter";
 import News from "./components/News";
 import Businesses from "./components/Businesses";
+import Subscriptions from "./components/Subscriptions";
 const handleDownload = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -190,7 +191,7 @@ function App() {
 
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen ">
 
       <ScrollToTop />
       {/* Main content area */}
@@ -422,6 +423,25 @@ function App() {
                       exit="exit"
                     >
                       <Businesses />
+                    </motion.div>
+                  </BusinessLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/subscriptions"
+              element={
+                <ProtectedRoute>
+                  <BusinessLayout>
+
+
+                    <motion.div
+                      variants={pageVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                    >
+                      <Subscriptions />
                     </motion.div>
                   </BusinessLayout>
                 </ProtectedRoute>
