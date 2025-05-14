@@ -114,53 +114,27 @@ const Subscriptions = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!selectedBusinesses || selectedBusinesses.length === 0) {
-            console.error("No business selected");
-            return;
-        }
+        const baseSubscriptionData = {
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
+            packageName: selectedPackage?.label,
+            createdAt: serverTimestamp(),
+            status: selectedStatus // Use selectedStatus for status
+        };
+        console.log(selectedBusinesses)
 
         try {
-            // Check active subscriptions for all selected businesses only if status is active
-            if (selectedStatus) {
-                for (const business of selectedBusinesses) {
-                    const activeSubQuery = query(
-                        collection(db, "subscriptions"),
-                        where("businessUid", "==", business.value),
-                        where("status", "==", true)
-                    );
-
-                    const querySnapshot = await getDocs(activeSubQuery);
-
-                    // If editing, exclude the current subscription being updated
-                    const activeSubs = querySnapshot.docs.filter(doc => !isEditMode || doc.id !== editSubscriptionId);
-
-                    if (activeSubs.length > 0) {
-                        // Show error and abort
-                        showErrorToast(`Business "${business.label}" already has an active subscription.`);
-                        return;
-                    }
-                }
-            }
-
-            const baseSubscriptionData = {
-                startDate: new Date(startDate),
-                endDate: new Date(endDate),
-                packageName: selectedPackage?.label,
-                createdAt: serverTimestamp(),
-                status: selectedStatus
-            };
-
             if (isEditMode) {
-                // Update the single subscription being edited
+                // Update existing subscription
                 const subscriptionDoc = doc(db, "subscriptions", editSubscriptionId);
                 await updateDoc(subscriptionDoc, {
                     ...baseSubscriptionData,
-                    businessUid: selectedBusinesses[0].value,
-                    businessName: selectedBusinesses[0].label,
+                    businessUid: selectedBusinesses[0]?.value,
+                    businessName: selectedBusinesses[0]?.label,
                 });
                 console.log("Subscription updated successfully");
             } else {
-                // Add subscription for each selected business
+                // Create new subscription
                 const writePromises = selectedBusinesses.map(business => {
                     const data = {
                         ...baseSubscriptionData,
@@ -169,18 +143,17 @@ const Subscriptions = () => {
                     };
                     return addDoc(collection(db, "subscriptions"), data);
                 });
+
                 await Promise.all(writePromises);
                 console.log("All subscriptions successfully added.");
             }
 
             closeModal();
-            fetchSubscriptions();
-
+            fetchSubscriptions(); // Refresh the table after adding or editing
         } catch (error) {
             console.error("Error saving subscriptions:", error);
         }
     };
-
 
     const handleDelete = (subscriptionId) => {
         confirmAlert({
