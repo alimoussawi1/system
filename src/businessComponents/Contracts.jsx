@@ -11,6 +11,7 @@ import logo from "../assets/swblogo.png"
 import { FaDownload, FaTrash } from 'react-icons/fa';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { confirmAlert } from "react-confirm-alert";
+import { useAccount } from '../context/AccountContext';
 
 const handleDownload = async (business) => {
     console.log(business)
@@ -129,7 +130,8 @@ const ContractComponent = () => {
     const [signatureTimestamp, setSignatureTimestamp] = useState(null);
     const [ownerName, setOwnerName] = useState("");
     const [signedBusinesses, setSignedBusinesses] = useState([]);
-    const isAdmin = localStorage.getItem("isAdmin") === "true";
+    const { accountData } = useAccount();
+    const { uid, isAdmin, fullName } = accountData;
     const handleDelete = async (business) => {
 
         confirmAlert({
@@ -294,11 +296,11 @@ const ContractComponent = () => {
                         <p className="text-gray-500 mt-2">Date: {new Date().toLocaleDateString()}</p>
                     </div>
 
-                    <div className="mb-8 text-gray-800 overflow-y-auto max-h-96 border p-4 rounded whitespace-pre-wrap bg-gray-50">
-                        {`This Listing contract is entered into as of today between Ali el Moussaoui, founder & owner of Student with Benefits [referred to as SWB below] and the business: ${ownerName}.
+                    <div className="mb-8 text-gray-800  max-h-full border p-4 rounded whitespace-pre-wrap bg-gray-50">
+                        {`This Listing contract is entered into as of today between Ali el Moussaoui, Founder & Owner of Student With Benefits [referred to as SWB below] and ${fullName}'s owner: ${ownerName}.
                 
 1. Purpose 
-The purpose of this contract is to outline the terms and conditions under which the Business listed above agrees to list its offers, deals and discounts on the Student with Benefits mobile application.
+The purpose of this contract is to outline the terms and conditions under which the Business listed above agrees to list its offers, deals and discounts on the Student With Benefits mobile application.
 
 2. Grant of Rights 
 The Business grants the SWB the right to:
@@ -307,13 +309,13 @@ The Business grants the SWB the right to:
 
 3. Duration of Listing 
 The Business acknowledges and agrees that:
-• The listing of offers on SWB application is set to a 1 month period, commencing on the date of listing and automatically renewed for 1 month without prior notice.
-• The listing may be renewed or extended upon mutual agreement between the two parties with a 1 week prior notice to the SWB application.
+• The listing of offers on SWB application is set to a 12 months period, commencing on the date of listing and automatically renewed for 12 months without prior notice.
+
 
 4. No Compensation 
 The Business agrees that:
 • SWB is not obligated to provide any form of compensation or payment to the Business for the listing of offers on the SWB application.
-• The Business will not seek any financial remuneration from Student with Benefits for the inclusion of its offers, logo and related info on the SWB application.
+• The Business will not seek any financial remuneration from Student With Benefits for the inclusion of its offers, logo and related info on the SWB application.
 
 5. Release of Claims 
 The Business agrees to:
@@ -334,11 +336,11 @@ This contract shall be governed by and construed in accordance with the laws of 
 It is preferred that during the launch period, businesses engage in marketing activities that promote the listed offer on SWB’s application through on-ground actions and, if available, its social media platforms.
 
 10. Payments and fees
-Businesses can list their offers on the SWB application free of charge until Student with Benefits decides otherwise.
+Businesses can list their offers on the SWB application free of charge until Student With Benefits decides otherwise.
 
 At that point, businesses can choose to accept the new terms and continue using the application or not without paying any charges and depending on their view if SWB application benefited their business.
 
-Additionally, optional features such as advertisements, front-page listings, banner listings, and algorithmic priority ensuring your business appears more prominently in our search engine will have separate pricing. This pricing will be shared monthly with each business, tailored according to factors such as management, business size, number of branches, and other considerations. Therefore, each business will have a customized pricing package.
+Additionally, optional features such as advertisements, front-page listings, push notifications, banner listings, and algorithmic priority ensuring your business appears more prominently in our search engine will have separate pricing. This pricing will be updated monthly with each business, tailored according to factors such as management, business size, number of branches, and other considerations. Therefore, each business will have a customized pricing package.
 
 11. Entire Contract 
 This contract constitutes the entire agreement between the parties with respect to the subject matter hereof and supersedes all prior agreements and understandings, whether written or oral, relating to such subject matter.

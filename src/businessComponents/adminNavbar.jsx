@@ -27,9 +27,12 @@ const AdminNavbar = ({ name, plan, timeLeft, isAdmin }) => {
                             </span></span>
 
                             {/* Conditionally render countdown if timeLeft is available */}
-                            {timeLeft && (
+                            {timeLeft ? (
                                 <span className="text-[#ff6347] font-semibold">Days Left: {timeLeft}</span>
-                            )}
+                            )
+                                : (
+                                    <span className="text-[#ff6347] "> Subscription Expired</span>
+                                )}
 
                             <div className="h-5 border-l border-gray-400"></div>
 

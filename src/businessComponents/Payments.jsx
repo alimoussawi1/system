@@ -1,12 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { collection, getDocs, query, where, doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, doc, getDoc, updateDoc, deleteDoc, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import Table from "../components/Tabel";
 import { getAuth } from "firebase/auth";
+import Select from "react-select";
 import { jsPDF } from "jspdf";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-
-import { FaDownload, FaTrash } from "react-icons/fa";
+import Modal from "react-modal";
+import { FaDownload, FaRegTimesCircle, FaTrash } from "react-icons/fa";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { confirmAlert } from 'react-confirm-alert';
 import { useAccount } from "../context/AccountContext";
@@ -14,7 +15,85 @@ const Payments = () => {
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(true);
     const { accountData } = useAccount();
+    const [selectedBusinesses, setSelectedBusinesses] = useState([]);
     const { uid, isAdmin } = accountData;
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [businessOptions, setBusinessOptions] = useState([]);
+    const [selectedStatus, setSelectedStatus] = useState(null);
+    const statusOptions = [
+        { value: "Success", label: "Success" },
+        { value: "Pending", label: "Pending" },
+        { value: "Declined", label: "Declined" },
+    ];
+
+    const typesOptions = [
+        {
+            value: "Cash", label: "Cash"
+        },
+
+    ]
+    const [selectedType, setSelectedType] = useState(typesOptions[0]); // default to Cash
+    const [amount, setAmount] = useState("");
+
+    //add payment manually
+    const openModalForAdd = () => {
+        setIsModalOpen(true);
+
+    };
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedBusinesses([]);
+
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const timestamp = new Date();
+
+            const paymentPromises = selectedBusinesses.map(async (business) => {
+                const paymentData = {
+                    userId: business.value,
+                    businessName: business.label,
+                    amount: Number(amount),
+                    currency: "USD", // or any other you use
+                    type: selectedType.value,
+                    status: "Success",
+                    createdAt: timestamp,
+                    whishStatus: "-", // optional
+                };
+
+                await addDoc(collection(db, "payments"), paymentData);
+            });
+
+            await Promise.all(paymentPromises);
+
+            // Optionally, you could refresh payments list manually here
+            setAmount("");
+            setSelectedBusinesses([]);
+            closeModal();
+        } catch (error) {
+            console.error("Error adding payment:", error);
+        }
+    };
+
+    const fetchBusinessNames = async () => {
+        try {
+            const snapshot = await getDocs(collection(db, "users"));
+            const filtered = snapshot.docs
+                .map(doc => ({ ...doc.data(), uid: doc.id }))
+                .filter(doc => !!doc.businessEmail)
+                .map(doc => ({
+                    value: doc.uid,
+                    label: doc.businessName || "-",
+                }))
+                .sort((a, b) => a.label.localeCompare(b.label));
+            setBusinessOptions(filtered);
+        } catch (error) {
+            console.error("Error fetching business names: ", error);
+        }
+    };
     const downloadReceipt = (payment) => {
         console.log(payment);
         const doc = new jsPDF();
@@ -55,6 +134,10 @@ const Payments = () => {
         doc.save(`receipt_${payment.id}.pdf`);
     };
     useEffect(() => {
+        fetchBusinessNames(); // Fetch business names when the component mounts
+
+    }, []);
+    useEffect(() => {
         const fetchPayments = async () => {
             try {
                 let q;
@@ -70,6 +153,7 @@ const Payments = () => {
 
                 let results = snapshot.docs.map(doc => {
                     const data = doc.data();
+                    console.log(data);
 
 
 
@@ -77,7 +161,7 @@ const Payments = () => {
                         id: doc.id,
                         ...data,
                         createdAt: data.createdAt ?? null,
-                        endDate: data.endDate ?? null
+
                     };
                 });
                 console.log(results)
@@ -129,7 +213,24 @@ const Payments = () => {
         const baseColumns = [
             { Header: "Amount", accessor: "amount" },
             { Header: "Currency", accessor: "currency" },
-            { Header: "Status", accessor: "status" },
+            {
+                Header: "Status",
+                accessor: "status",
+                Cell: ({ cell: { value } }) => {
+                    const statusColor = {
+                        success: "bg-green-100 text-green-800",
+                        pending: "bg-orange-100 text-orange-800",
+                        declined: "bg-red-100 text-red-800",
+                    };
+
+                    return (
+                        <span className={`px-3 py-1 rounded-full text-sm font-semibold capitalize ${statusColor[value.toLowerCase()] || "bg-gray-100 text-gray-800"}`}>
+                            {value}
+                        </span>
+                    );
+                }
+            },
+
             ...(isAdmin ? [{ Header: "Whish Status", accessor: "whishStatus" }] : []),
             { Header: "Type", accessor: "type" },
             {
@@ -138,12 +239,7 @@ const Payments = () => {
                 Cell: ({ cell: { value } }) =>
                     value?.seconds ? new Date(value.seconds * 1000).toLocaleString() : "-",
             },
-            {
-                Header: "End Date",
-                accessor: "endDate",
-                Cell: ({ cell: { value } }) =>
-                    value?.seconds ? new Date(value.seconds * 1000).toLocaleString() : "-",
-            },
+
         ];
 
         if (isAdmin) {
@@ -165,14 +261,14 @@ const Payments = () => {
                         return (
                             <div className="flex items-center gap-2">
                                 <button
-                                    onClick={() => updatePaymentStatus(row.original.id, "success")}
+                                    onClick={() => updatePaymentStatus(row.original.id, "Success", row.original.userId)}
                                     className="text-green-500"
                                     title="Approve"
                                 >
                                     <AiFillLike />
                                 </button>
                                 <button
-                                    onClick={() => updatePaymentStatus(row.original.id, "Declined")}
+                                    onClick={() => updatePaymentStatus(row.original.id, "Declined", row.original.userId)}
                                     className="text-green-500"
                                     title="Decline"
                                 >
@@ -196,37 +292,55 @@ const Payments = () => {
                         );
                     }
 
-                    else if (status === 'success') {
+                    else if (status === 'Success') {
                         return (
                             <>
-
-                                <button
-                                    onClick={() => updatePaymentStatus(row.original.id, "Pending")}
-                                    className=" text-red-500 px-4 py-2 rounded"
-                                >
-                                    <AiFillDislike />
-                                </button>
-                                <button
-                                    onClick={() => updatePaymentStatus(row.original.id, "Declined")}
-                                    className=" text-green-500 px-4 py-2 rounded"
-                                >
-                                    <IoIosCloseCircleOutline />
-                                </button>
-                                <button
-                                    onClick={() => downloadReceipt(row.original)}
-                                    className=" text-[#0a5f73] px-4 py-2 rounded"
-                                >
-                                    <FaDownload />
-                                </button>
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        onClick={() => updatePaymentStatus(row.original.id, "Pending", row.original.userId)}
+                                        className=" text-red-500 rounded"
+                                    >
+                                        <AiFillDislike />
+                                    </button>
+                                    <button
+                                        onClick={() => updatePaymentStatus(row.original.id, "Declined", row.original.userId)}
+                                        className=" text-green-500  rounded"
+                                    >
+                                        <IoIosCloseCircleOutline />
+                                    </button>
+                                    <button
+                                        onClick={() => downloadReceipt(row.original)}
+                                        className=" text-[#0a5f73] rounded"
+                                    >
+                                        <FaDownload />
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(row.original)}
+                                        className="text-red-500"
+                                        title="Delete"
+                                    >
+                                        <FaTrash />
+                                    </button>
+                                </div>
                             </>
                         );
 
-                    }
+                    } else if (status === 'Declined') {
+                        return (
+                            <button
+                                onClick={() => handleDelete(row.original)}
+                                className="text-red-500"
+                                title="Delete"
+                            >
+                                <FaTrash />
+                            </button>
 
+                        )
+                    }
 
                 }
 
-                if (status === "success") {
+                if (status === "Success") {
                     return (
                         <>
                             <button
@@ -248,7 +362,7 @@ const Payments = () => {
     }, [isAdmin]);
     const updatePaymentStatus = async (paymentId, newStatus, uid, planName) => {
         // Confirm the action before making any changes
-        console.log("vkfenva", newStatus)
+
         confirmAlert({
             title: 'Confirm Status Change',
             message: `Are you sure you want to change the payment status to "${newStatus}"?`,
@@ -263,10 +377,10 @@ const Payments = () => {
                             // If admin, update the access and plan fields
                             if (isAdmin) {
                                 const userRef = doc(db, "users", uid);
-                                if (newStatus === 'success') {
+                                if (newStatus === 'Success') {
                                     // Set access to true and update plan name
                                     await updateDoc(userRef, { access: true, plan: planName });
-                                } else if (newStatus === '[ending') {
+                                } else if (newStatus === 'Pending') {
                                     // Set access to false and clear plan name
                                     await updateDoc(userRef, { access: false, plan: "" });
                                 }
@@ -327,7 +441,34 @@ const Payments = () => {
 
     return (
         <div className="p-4">
-            <h2 className="text-2xl font-semibold mb-4">Payments</h2>
+            <div className="flex justify-between">
+                <div>
+                    {isAdmin && (
+                        <div className="my-4 w-60">
+                            <Select
+                                options={statusOptions}
+                                value={selectedStatus}
+                                onChange={setSelectedStatus}
+                                isClearable
+                                placeholder="Filter by status"
+                            />
+                        </div>
+                    )}
+
+                </div>
+                <div>
+                    {
+                        isAdmin && (
+                            <button onClick={openModalForAdd} className="bg-[#5842aa] text-white p-2 rounded-lg">
+                                Add Payment
+                            </button>
+                        )
+                    }
+
+                </div>
+
+            </div>
+
             {loading ? (
                 <div>Loading...</div>
             ) : payments.length === 0 ? (
@@ -336,14 +477,97 @@ const Payments = () => {
                 <>
                     <Table
                         columns={paymentColumns}
-                        data={payments}
-                        pageSize={5}
+                        data={
+                            selectedStatus
+                                ? payments.filter(p => p.status?.toLowerCase() === selectedStatus.value.toLowerCase())
+                                : payments
+                        }
+                        pageSize={10}
                         checkbox={false}
-                        totalPages={Math.ceil(payments.length / 5)}
+                        totalPages={Math.ceil(payments.length / 10)}
                     />
+
 
                 </>
             )}
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={closeModal}
+                ariaHideApp={false}
+                style={{
+                    content: {
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: "500px",
+                        padding: "20px",
+                        borderRadius: "10px",
+                        height: "500px"
+                    },
+                }}
+            >
+                <div className="flex justify-between">
+                    <div>
+                        <h2 className="mb-4">Add Payment</h2>
+                    </div>
+                    <div>
+                        <FaRegTimesCircle onClick={closeModal} />
+                    </div>
+                </div>
+
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-4">
+                        <label className="block mb-1">Business Names</label>
+                        <Select
+                            isMulti
+                            options={businessOptions}
+                            value={selectedBusinesses}
+                            onChange={setSelectedBusinesses}
+                            placeholder="Select businesses"
+                            className="text-left"
+                            required
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block mb-1">Type</label>
+                        <Select
+                            options={typesOptions}
+                            value={selectedType}
+                            onChange={setSelectedType}
+                            placeholder="Select type"
+                            className="text-left"
+                            isDisabled
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block mb-1">Amount</label>
+                        <input
+                            type="number"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                            className="w-full p-2 border rounded"
+                            placeholder="Enter amount"
+                            required
+                        />
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+                    <div className="flex justify-center w-full mt-8">
+                        <button type="submit" className="bg-[#10758B] w-[20%] text-white p-2 rounded-lg hover:bg-[#0a5f73] w-full">
+                            Add
+                        </button>
+                    </div>
+                </form>
+            </Modal>
         </div>
     );
 };

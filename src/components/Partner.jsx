@@ -7,7 +7,7 @@ import { doc, setDoc, serverTimestamp, getDoc, deleteDoc } from "firebase/firest
 import { auth, db } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import PartnersSmall from "../assets/partnerwithussmall.png";
+import PartnersSmall from "../assets/login.jpg";
 import PictureWithText from "./PictureWithText";
 import PictureWithText1 from "./PictureWithText1";
 import PictureWithText2 from "./PictureWithText2";
@@ -207,19 +207,34 @@ const Partner = () => {
     <div>
       <ToastContainer />
 
-      <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center hidden md:block" style={{ backgroundImage: `url(${PartnersSmall})` }}>
+      <div
+        className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center hidden md:block"
+        style={{ backgroundImage: `url(${PartnersSmall})` }}
+      >
+        {/* Heading placed directly above the button */}
+        <h1 className="absolute bottom-40 left-1/2 transform -translate-x-1/2 text-6xl text-white font-bold text-center mb-10 w-full">
+          Join us in making a Difference!
+        </h1>
+
+        {/* Button */}
         <button
           onClick={openModalSend}
-          className="absolute bottom-24 left-1/2 transform -translate-x-1/2 px-6 py-3 bg-[#02afde] text-black rounded-lg hover:bg-[#02afde] font-medium"
+          className="absolute bottom-24 left-1/2 transform -translate-x-1/2 px-8 text-xl py-4 bg-gradient-to-r from-[#029fc8] to-[#02afde] text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-transform duration-200 hover:scale-105"
         >
           Get Started
         </button>
+
       </div>
 
+
       <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center block md:hidden" style={{ backgroundImage: `url(${PartnersSmall})` }}>
+        <h1 className="absolute bottom-40 left-1/2 transform -translate-x-1/2 text-3xl text-white font-bold text-center  w-full">
+          Join us in making a Difference!
+        </h1>
+
         <button
           onClick={openModalSend}
-          className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-6 py-3 bg-[#02afde] text-black rounded-lg hover:bg-[#02afde] font-medium"
+          className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-6 py-3 bg-[#02afde] text-white rounded-lg hover:bg-[#02afde] font-medium"
         >
           Get Started
         </button>

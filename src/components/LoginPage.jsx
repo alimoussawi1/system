@@ -61,7 +61,6 @@ function LoginPage() {
                     token,
                     role,
                     fullName: userData.businessName || userData.fullName,
-                    plan: userData.plan || 'Basic Plan (free version)',
                     isAdmin: role === "admin"
                 };
 

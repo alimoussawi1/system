@@ -222,7 +222,7 @@ const Subscriptions = () => {
         <div>
             <div className="flex justify-between">
                 <div>
-                    <h1 className="text-lg font-bold">Subscriptions</h1>
+
                 </div>
                 <div>
                     <button onClick={openModalForAdd} className="bg-[#5842aa] text-white p-2 rounded-lg">

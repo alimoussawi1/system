@@ -4,6 +4,8 @@ import android from "../assets/playstore.webp";
 import whatsapp from "../assets/whatsapp.png";
 import instagram from "../assets/instagram.png"
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 function Footer() {
   return (
@@ -16,30 +18,28 @@ function Footer() {
             <Link to="/privacy" className="hover:text-[#10758B]">Privacy Policy</Link>
           </div>
 
-          <div className="flex ">
-            <div className="mt-3">
-              <a
-                href="https://www.instagram.com/studentwithbenefits?igsh=MXc2c2ZpM2VuZmpqNg=="
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src={instagram} alt="Instagram" className="w-[30px] h-[30px]" />
-              </a>
+          <div className="flex space-x-4 items-center mt-3">
+            {/* Instagram */}
+            <a
+              href="https://www.instagram.com/studentwithbenefits?igsh=MXc2c2ZpM2VuZmpqNg=="
+              target="_blank"
+              rel="noopener noreferrer"
+              className=" text-3xl"
+            >
+              <FontAwesomeIcon icon={faInstagram} />
+            </a>
 
-            </div>
-            <div>
-              <a
-                href="https://wa.me/+96170009879"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src={whatsapp} alt="WhatsApp" className="w-[70px] h-[50px]" />
-              </a>
-
-            </div>
-
-
+            {/* WhatsApp */}
+            <a
+              href="https://wa.me/+96170009879"
+              target="_blank"
+              rel="noopener noreferrer"
+              className=" text-3xl"
+            >
+              <FontAwesomeIcon icon={faWhatsapp} />
+            </a>
           </div>
+
         </div>
 
         {/* Download Our App Section */}

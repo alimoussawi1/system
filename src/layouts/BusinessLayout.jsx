@@ -7,55 +7,63 @@ import { db } from "../firebase";
 import { useAccount } from '../context/AccountContext';
 
 const BusinessLayout = ({ children }) => {
-    const { accountData } = useAccount();
+    const { accountData, setAccountData } = useAccount();
     const { uid, fullName, plan, isAdmin } = accountData;
 
     const [timeLeft, setTimeLeft] = useState(null);
 
     useEffect(() => {
-        const fetchLatestApprovedPayment = async () => {
+        const fetchActiveSubscription = async () => {
             try {
-                const paymentsRef = collection(db, "payments");
+                const subscriptionsRef = collection(db, "subscriptions");
                 const q = query(
-                    paymentsRef,
-                    where("userId", "==", uid),
-                    where("status", "==", "success"),
-                    orderBy("createdAt", "desc"),
+                    subscriptionsRef,
+                    where("businessUid", "==", uid),
+                    where("status", "==", true),
+                    orderBy("endDate", "desc"), // In case there are multiple actives, get latest
                     limit(1)
                 );
                 const snapshot = await getDocs(q);
 
                 if (!snapshot.empty) {
-                    const latestPayment = snapshot.docs[0].data();
-                    const endDate = latestPayment.endDate.toDate(); // Firestore timestamp -> JS Date
+                    const activeSub = snapshot.docs[0].data();
+                    const endDate = activeSub.endDate.toDate(); // Firestore Timestamp to JS Date
+                    const planName = activeSub.packageName;
+                    console.log(planName)
+                    setAccountData(prev => ({ ...prev, plan: planName }));
+
+                    // Optional: you can update plan from here too
+                    // setPlan(planName); // If you're managing it via state
 
                     const intervalId = setInterval(() => {
-                        const currentDate = new Date();
-                        const timeDifference = endDate - currentDate;
+                        const now = new Date();
+                        const timeDiff = endDate - now;
 
-                        if (timeDifference <= 0) {
+                        if (timeDiff <= 0) {
                             clearInterval(intervalId);
-                            setTimeLeft("Subscription expired");
-                        } else {
-                            const days = Math.floor(timeDifference / (1000 * 3600 * 24));
-                            const hours = Math.floor((timeDifference % (1000 * 3600 * 24)) / (1000 * 3600));
-                            const minutes = Math.floor((timeDifference % (1000 * 3600)) / (1000 * 60));
 
+                        } else {
+                            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
                             setTimeLeft(`${days}d ${hours}h ${minutes}m`);
                         }
                     }, 1000);
+                    const hasaccess = activeSub ? true : false
+                    setAccountData(prev => ({ ...prev, access: hasaccess }))
 
                     return () => clearInterval(intervalId);
                 } else {
                     setTimeLeft("No active subscription found");
                 }
             } catch (error) {
-                console.error("Error fetching the latest payment:", error);
+                console.error("Error fetching active subscription:", error);
             }
         };
 
+
         if (uid) {
-            fetchLatestApprovedPayment();
+            fetchActiveSubscription();
         }
     }, [uid]);
 
