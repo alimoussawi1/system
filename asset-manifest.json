@@ -1,14 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.2c3ec9af.css",
-    "main.js": "/static/js/main.17e47324.js",
+    "main.css": "/static/css/main.0736b891.css",
+    "main.js": "/static/js/main.18d145c5.js",
     "static/js/239.9845c332.chunk.js": "/static/js/239.9845c332.chunk.js",
     "static/js/977.8879121b.chunk.js": "/static/js/977.8879121b.chunk.js",
-    "static/js/455.962ffe55.chunk.js": "/static/js/455.962ffe55.chunk.js",
+    "static/js/455.cca78903.chunk.js": "/static/js/455.cca78903.chunk.js",
     "static/media/mobile1.mp4": "/static/media/mobile1.510459e0b6cf09669ead.mp4",
     "static/media/intro.mp4": "/static/media/intro.fa0285750b07366d7eff.mp4",
     "static/media/dashboard.png": "/static/media/dashboard.1145612828bd2f3db3b8.png",
-    "static/media/partnerwithussmall.png": "/static/media/partnerwithussmall.961300c90303bd79bcc6.png",
     "static/media/login.jpg": "/static/media/login.10a2dc1f696443c744c3.jpg",
     "static/media/75.webp": "/static/media/75.ea72e07a90bb6ceff2df.webp",
     "static/media/comingsoon.jpeg": "/static/media/comingsoon.96dec6f8722ea4ce9b21.jpeg",
@@ -119,14 +118,14 @@
     "static/media/paragraph3.png": "/static/media/paragraph3.895531ea8adca0a24f02.png",
     "static/media/paragraph2.png": "/static/media/paragraph2.7de430a04a7a1bb5d455.png",
     "index.html": "/index.html",
-    "main.2c3ec9af.css.map": "/static/css/main.2c3ec9af.css.map",
-    "main.17e47324.js.map": "/static/js/main.17e47324.js.map",
+    "main.0736b891.css.map": "/static/css/main.0736b891.css.map",
+    "main.18d145c5.js.map": "/static/js/main.18d145c5.js.map",
     "239.9845c332.chunk.js.map": "/static/js/239.9845c332.chunk.js.map",
     "977.8879121b.chunk.js.map": "/static/js/977.8879121b.chunk.js.map",
-    "455.962ffe55.chunk.js.map": "/static/js/455.962ffe55.chunk.js.map"
+    "455.cca78903.chunk.js.map": "/static/js/455.cca78903.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.2c3ec9af.css",
-    "static/js/main.17e47324.js"
+    "static/css/main.0736b891.css",
+    "static/js/main.18d145c5.js"
   ]
 }
