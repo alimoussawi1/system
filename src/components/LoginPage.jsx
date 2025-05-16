@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth, db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, getDocs, limit, orderBy, where, collection, query } from "firebase/firestore";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -19,6 +19,52 @@ function LoginPage() {
 
     const navigate = useNavigate();
     const { setAccountData } = useAccount();
+    const fetchActiveSubscription = async (uid) => {
+        try {
+            const subscriptionsRef = collection(db, "subscriptions");
+            const q = query(
+                subscriptionsRef,
+                where("businessUid", "==", uid),
+                where("status", "==", true),
+                orderBy("endDate", "desc"),
+                limit(1)
+            );
+            const snapshot = await getDocs(q);
+
+            if (!snapshot.empty) {
+                const activeSub = snapshot.docs[0].data();
+                const endDate = activeSub.endDate.toDate();
+                const planName = activeSub.packageName;
+
+                // Calculate timeLeft immediately
+                const now = new Date();
+                const timeDiff = endDate - now;
+                let timeLeft = null;
+
+                if (timeDiff > 0) {
+                    const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                    timeLeft = `${days}d ${hours}h ${minutes}m`;
+                }
+
+                setAccountData(prev => ({
+                    ...prev,
+                    plan: planName,
+                    access: true,
+                    timeLeft,
+                }));
+            } else {
+                setAccountData(prev => ({
+                    ...prev,
+                    access: false,
+                    timeLeft: "No active subscription found",
+                }));
+            }
+        } catch (error) {
+            console.error("Error fetching active subscription:", error);
+        }
+    };
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -42,15 +88,15 @@ function LoginPage() {
 
             if (userSnap.exists()) {
                 const userData = userSnap.data();
-                let role = 'student';
+                let role = "student";
 
                 if (userData.email === "amoussawi02@gmail.com") {
-                    role = 'admin';
+                    role = "admin";
                 } else if (userData.businessName) {
-                    role = 'business';
+                    role = "business";
                 }
 
-                if (role === 'student') {
+                if (role === "student") {
                     toast.error("This is a login for businesses only! Students use your mobile app!");
                     setLoading(false);
                     return;
@@ -58,16 +104,24 @@ function LoginPage() {
 
                 const session = {
                     uid: user.uid,
-                    token,
                     role,
                     fullName: userData.businessName || userData.fullName,
-                    isAdmin: role === "admin"
+                    isAdmin: role === "admin",
                 };
 
-                setAccountData(session);
+                // ✅ Save minimal safe info in localStorage
+                localStorage.setItem("accountSession", JSON.stringify(session));
+
+                setAccountData({
+                    ...session,
+                    token, // not stored in localStorage
+                });
+                fetchActiveSubscription(user.uid)
+
 
                 navigate("/admin/dashboard");
-            } else {
+            }
+            else {
                 setError("User data not found.");
                 setLoading(false);
             }

@@ -153,7 +153,7 @@ const Payments = () => {
 
                 let results = snapshot.docs.map(doc => {
                     const data = doc.data();
-                    console.log(data);
+
 
 
 
@@ -164,7 +164,7 @@ const Payments = () => {
 
                     };
                 });
-                console.log(results)
+
 
                 if (isAdmin) {
                     // Fetch all unique userId -> business info
@@ -261,14 +261,14 @@ const Payments = () => {
                         return (
                             <div className="flex items-center gap-2">
                                 <button
-                                    onClick={() => updatePaymentStatus(row.original.id, "Success", row.original.userId)}
+                                    onClick={() => updatePaymentStatus(row.original.id, "Success")}
                                     className="text-green-500"
                                     title="Approve"
                                 >
                                     <AiFillLike />
                                 </button>
                                 <button
-                                    onClick={() => updatePaymentStatus(row.original.id, "Declined", row.original.userId)}
+                                    onClick={() => updatePaymentStatus(row.original.id, "Declined")}
                                     className="text-green-500"
                                     title="Decline"
                                 >
@@ -297,13 +297,13 @@ const Payments = () => {
                             <>
                                 <div className="flex items-center gap-2">
                                     <button
-                                        onClick={() => updatePaymentStatus(row.original.id, "Pending", row.original.userId)}
+                                        onClick={() => updatePaymentStatus(row.original.id, "Pending")}
                                         className=" text-red-500 rounded"
                                     >
                                         <AiFillDislike />
                                     </button>
                                     <button
-                                        onClick={() => updatePaymentStatus(row.original.id, "Declined", row.original.userId)}
+                                        onClick={() => updatePaymentStatus(row.original.id, "Declined")}
                                         className=" text-green-500  rounded"
                                     >
                                         <IoIosCloseCircleOutline />
@@ -360,8 +360,11 @@ const Payments = () => {
 
         return baseColumns;
     }, [isAdmin]);
-    const updatePaymentStatus = async (paymentId, newStatus, uid, planName) => {
+    const updatePaymentStatus = async (paymentId, newStatus) => {
         // Confirm the action before making any changes
+        console.log("changing", payments);
+        console.log(paymentId)
+
 
         confirmAlert({
             title: 'Confirm Status Change',
@@ -374,22 +377,9 @@ const Payments = () => {
                             const paymentRef = doc(db, "payments", paymentId);
                             await updateDoc(paymentRef, { status: newStatus });
 
-                            // If admin, update the access and plan fields
-                            if (isAdmin) {
-                                const userRef = doc(db, "users", uid);
-                                if (newStatus === 'Success') {
-                                    // Set access to true and update plan name
-                                    await updateDoc(userRef, { access: true, plan: planName });
-                                } else if (newStatus === 'Pending') {
-                                    // Set access to false and clear plan name
-                                    await updateDoc(userRef, { access: false, plan: "" });
-                                }
-                                else if (newStatus === 'Declined') {
-                                    await updateDoc(userRef, { access: false, plan: "" });
-                                }
-                            }
 
-                            // Update the local state to reflect the change
+                            console.log(paymentId)
+                            console.log(payments);
                             setPayments(prevPayments =>
                                 prevPayments.map(payment =>
                                     payment.id === paymentId ? { ...payment, status: newStatus } : payment

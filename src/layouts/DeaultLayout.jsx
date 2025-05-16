@@ -2,6 +2,7 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { ToastContainer } from 'react-toastify';
 
 
 const DefaultLayout = ({ children }) => {
@@ -10,6 +11,7 @@ const DefaultLayout = ({ children }) => {
             <Navbar />
             <main>{children}</main>
             <Footer />
+
         </div>
     );
 };

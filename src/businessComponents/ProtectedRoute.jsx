@@ -2,15 +2,20 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAccount } from '../context/AccountContext';
 
-
 const ProtectedRoute = ({ children }) => {
-    const { accountData } = useAccount();
-    const { token, uid } = accountData;
+    const { accountData, loading } = useAccount();
 
-    if (!token || !uid) {
+    // Wait for session restoration
+    if (loading) {
+        return <div>Loading...</div>; // Or a Spinner
+    }
+
+    // Not logged in
+    if (!accountData || !accountData.token || !accountData.uid) {
         return <Navigate to="/login" />;
     }
 
+    // ✅ Now it's safe to access token and uid
     return children;
 };
 

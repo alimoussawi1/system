@@ -377,17 +377,7 @@ const Partner = () => {
         </div>
       )}
 
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-        theme="light"
-        progressStyle={{ background: "#5843aa" }} // Custom progress bar color
-      />
+
     </div>
   );
 };
