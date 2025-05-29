@@ -5,6 +5,7 @@ import { confirmAlert } from "react-confirm-alert";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { getAuth } from "firebase/auth";
 import { useAccount } from "../context/AccountContext";
+import { FaSpinner } from "react-icons/fa";
 
 const Packages = () => {
     const { accountData } = useAccount();
@@ -86,25 +87,7 @@ const Packages = () => {
                 "6 SWB WhatsApp Channel Exposures",
             ]
         },
-        {
-            duration: "1 Year ",
-            price: "$1",
-            name: "Testing",
-            months: 1,
-            amount: 1,
-            info: 'BEST VALUE',
-            saving: "You're saving 60%",
-            details: [
-                "Offer Listing",
-                "Full Analytics on SWB Website",
-                "1 Social Media Promotion on SWB Page",
-                "Top 10 Ranking in Related Category (rotated/shuffled)",
-                "Virtual or In-Person Staff Training (upon request)",
-                "Priority 24/7 Customer Support",
-                "15 Push Notifications",
-                "6 SWB WhatsApp Channel Exposures",
-            ]
-        }
+
     ];
 
     const handlePayment = async (pkg) => {
@@ -175,6 +158,16 @@ const Packages = () => {
             {loading ? (
                 <div className="mt-10 text-center text-[#10758B] font-semibold">
                     Payment Gateway is loading, please wait!
+                    <div className="flex justify-center items-center mt-20">
+
+                        <div className="flex items-center justify-center gap-2 mt-4">
+                            <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:0ms]" />
+                            <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:200ms]" />
+                            <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:400ms]" />
+                        </div>
+
+
+                    </div>
                 </div>
             ) :
                 (

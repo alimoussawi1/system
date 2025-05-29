@@ -26,6 +26,7 @@ const Subscriptions = () => {
     const [selectedStatus, setSelectedStatus] = useState(true); // Track status (active/inactive)
     const [subscriptions, setSubscriptions] = useState([]); // Store subscription data
     const [editSubscriptionId, setEditSubscriptionId] = useState(null); // Store subscription ID for editing
+    const [loading, setLoading] = useState(false);
 
     // Fetch & sort businesses
     const fetchBusinessNames = async () => {
@@ -48,6 +49,7 @@ const Subscriptions = () => {
     // Fetch subscriptions data
     const fetchSubscriptions = async () => {
         try {
+            setLoading(true)
             const snapshot = await getDocs(collection(db, "subscriptions"));
             const fetchedData = snapshot.docs.map(doc => {
                 const data = doc.data();
@@ -70,6 +72,9 @@ const Subscriptions = () => {
             setSubscriptions(fetchedData);
         } catch (error) {
             console.error("Error fetching subscriptions:", error);
+        }
+        finally {
+            setLoading(false)
         }
     };
 
@@ -230,15 +235,30 @@ const Subscriptions = () => {
                     </button>
                 </div>
             </div>
+            {
+                loading ? (
+
+                    <div className="flex items-center justify-center gap-2 mt-4">
+                        <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:0ms]" />
+                        <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:200ms]" />
+                        <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:400ms]" />
+                    </div>
+
+
+                ) : (
+                    <Table
+                        columns={subscriptionColumns}
+                        data={subscriptions} // Pass subscriptions data to your table component
+                        pageSize={10}
+                        checkbox={false}
+                        totalPages={Math.ceil(subscriptions.length / 10)}
+                    />
+
+
+                )
+            }
 
             {/* Table Component */}
-            <Table
-                columns={subscriptionColumns}
-                data={subscriptions} // Pass subscriptions data to your table component
-                pageSize={10}
-                checkbox={false}
-                totalPages={Math.ceil(subscriptions.length / 10)}
-            />
 
             {/* Modal for Adding or Editing Subscription */}
             <Modal

@@ -23,12 +23,12 @@ const ScannedCustomers = () => {
     const universities = [
         { value: "", label: "ALL" },
         { value: 'LU - Lebanese University', label: 'LU - Lebanese University' },
-        { value: 'NDU - Notre Dame University - Louaize', label: 'NDU - Notre Dame University - Louaize' },
+        { value: 'NDU - Notre Dame University-Lo...', label: 'NDU - Notre Dame University - Louaize' },
         { value: 'UOB - University of Balamand', label: 'UOB - University of Balamand' },
         { value: 'MUT - Manar University of Tripoli', label: 'MUT - Manar University of Tripoli' },
         { value: 'MEU - Middle East University', label: 'MEU - Middle East University' },
         { value: 'HU - Haigazian University', label: 'HU - Haigazian University' },
-        { value: 'AUB - American University of Beirut', label: 'AUB - American University of Beirut' },
+        { value: 'AUB - American University of B...', label: 'AUB - American University of Beirut' },
         { value: 'LAU - Lebanese American University', label: 'LAU - Lebanese American University' },
         { value: 'USJ - Saint Joseph University', label: 'USJ - Saint Joseph University' },
         { value: 'Holy Spirit University', label: 'Holy Spirit University' },
@@ -191,7 +191,16 @@ const ScannedCustomers = () => {
                     </div>
 
                     {loading ? (
-                        <div className="text-center text-lg font-semibold p-6">Loading...</div>
+                        <div className="flex justify-center items-center mt-20">
+
+                            <div className="flex items-center justify-center gap-2 mt-4">
+                                <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:0ms]" />
+                                <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:200ms]" />
+                                <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:400ms]" />
+                            </div>
+
+
+                        </div>
                     ) : (
                         <Table
                             columns={scannedBusiness}

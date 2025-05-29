@@ -117,7 +117,7 @@ function Navbar() {
         {/* Logo Section */}
         <div className="flex flex-row items-center">
           <Link to="/" className="flex items-center space-x-2">
-            <img src={Swb} alt="Student With Benefits Logo" className="h-14 object-contain" />
+            <img src={Swb} alt="Student with Benefits" className="h-14 object-contain" />
             <p className="font-bold">SWB</p>
           </Link>
         </div>

@@ -460,7 +460,16 @@ const Payments = () => {
             </div>
 
             {loading ? (
-                <div>Loading...</div>
+                <div className="flex justify-center items-center mt-20">
+
+                    <div className="flex items-center justify-center gap-2 mt-4">
+                        <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:0ms]" />
+                        <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:200ms]" />
+                        <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:400ms]" />
+                    </div>
+
+
+                </div>
             ) : payments.length === 0 ? (
                 <div>No payments found</div>
             ) : (
@@ -492,7 +501,7 @@ const Payments = () => {
                         width: "500px",
                         padding: "20px",
                         borderRadius: "10px",
-                        height: "500px"
+                        height: "400px"
                     },
                 }}
             >

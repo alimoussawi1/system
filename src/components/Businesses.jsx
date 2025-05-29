@@ -128,7 +128,13 @@ const Businesses = () => {
         <div className="p-4">
             <h2 className="text-2xl font-semibold mb-4">Businesses</h2>
             {loading ? (
-                <p>Loading...</p>
+
+                <div className="flex items-center justify-center gap-2 mt-4">
+                    <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:0ms]" />
+                    <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:200ms]" />
+                    <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:400ms]" />
+                </div>
+
             ) : (
                 <>
                     <Table

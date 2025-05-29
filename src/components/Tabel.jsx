@@ -119,9 +119,13 @@ const Table = ({
                                         </td>
                                     )}
                                     {row.cells.map((cell) => (
-                                        <td {...cell.getCellProps()} className="p-3">
+                                        <td
+                                            {...cell.getCellProps()}
+                                            className="p-3 truncate max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis"
+                                        >
                                             {cell.render("Cell")}
                                         </td>
+
                                     ))}
                                 </tr>
                             );

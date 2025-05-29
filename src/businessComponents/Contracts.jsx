@@ -132,6 +132,7 @@ const ContractComponent = () => {
     const [signedBusinesses, setSignedBusinesses] = useState([]);
     const { accountData } = useAccount();
     const { uid, isAdmin, fullName } = accountData;
+    const [loading, setLoading] = useState(false)
     const handleDelete = async (business) => {
 
         confirmAlert({
@@ -183,7 +184,9 @@ const ContractComponent = () => {
         });
     };
     useEffect(() => {
+        setLoading(true)
         const fetchSignature = async () => {
+
             const db = getFirestore();
             const auth = getAuth();
             const user = auth.currentUser;
@@ -241,6 +244,8 @@ const ContractComponent = () => {
 
         fetchSignature();
         fetchSignedBusinesses();
+
+        setLoading(false)
     }, [isAdmin]);
 
     const clearSignature = () => {
@@ -394,47 +399,60 @@ IN WITNESS WHEREOF, the parties hereto have executed this Digital Listing contra
             {isAdmin && (
                 <div className="mb-8">
                     <h2 className="text-2xl font-semibold mb-4">Businesses That Signed</h2>
+                    {
+                        loading ? (
 
-                    <Table
-                        columns={[
-                            {
-                                Header: "Business Name",
-                                accessor: "businessName"
-                            },
-                            {
-                                Header: "Signed At",
-                                accessor: "signatureTimestamp"
-                            },
-                            {
-                                Header: () => <div className="text-center w-full">Actions</div>,
-                                accessor: "download",
-                                Cell: ({ row }) => (
-                                    <div className="flex justify-center gap-4 items-center">
-                                        <button
-                                            onClick={() => handleDownload(row.original)}
-                                            className="text-[#5842aa] hover:text-[#452d9a]"
-                                            title="Download Contract"
-                                        >
-                                            <FaDownload />
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete(row.original)}
-                                            className="text-[#5842aa] hover:text-[#452d9a]"
-                                            title="Delete Contract"
-                                        >
-                                            <FaTrash />
-                                        </button>
-                                    </div>
-                                )
-                            }
+                            <div className="flex items-center justify-center gap-2 mt-4">
+                                <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:0ms]" />
+                                <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:200ms]" />
+                                <div className="w-3 h-3 bg-[#10758B] rounded-full animate-ping [animation-delay:400ms]" />
+                            </div>
+
+                        ) :
+                            (
+                                <Table
+                                    columns={[
+                                        {
+                                            Header: "Business Name",
+                                            accessor: "businessName"
+                                        },
+                                        {
+                                            Header: "Signed At",
+                                            accessor: "signatureTimestamp"
+                                        },
+                                        {
+                                            Header: () => <div className="text-center w-full">Actions</div>,
+                                            accessor: "download",
+                                            Cell: ({ row }) => (
+                                                <div className="flex justify-center gap-4 items-center">
+                                                    <button
+                                                        onClick={() => handleDownload(row.original)}
+                                                        className="text-[#5842aa] hover:text-[#452d9a]"
+                                                        title="Download Contract"
+                                                    >
+                                                        <FaDownload />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDelete(row.original)}
+                                                        className="text-[#5842aa] hover:text-[#452d9a]"
+                                                        title="Delete Contract"
+                                                    >
+                                                        <FaTrash />
+                                                    </button>
+                                                </div>
+                                            )
+                                        }
 
 
-                        ]}
-                        data={signedBusinesses}
-                        pageSize={5}
-                        checkbox={false}
-                        totalPages={Math.ceil(signedBusinesses.length / 5)} // ✅ Add this line
-                    />
+                                    ]}
+                                    data={signedBusinesses}
+                                    pageSize={5}
+                                    checkbox={false}
+                                    totalPages={Math.ceil(signedBusinesses.length / 5)} // ✅ Add this line
+                                />
+                            )
+                    }
+
                 </div>
             )}
 

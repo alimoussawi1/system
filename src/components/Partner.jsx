@@ -35,9 +35,10 @@ const Partner = () => {
   const [resendClicked, setResendClicked] = useState(false);
 
   const isStrongPassword = (pwd) => {
-    const regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+    const regex = /^(?=.*\d)[A-Za-z\d]{6}$/;
     return regex.test(pwd);
   };
+
   const handleResendCode = async () => {
     if (resendClicked || !businessEmail) return;
 
@@ -79,9 +80,10 @@ const Partner = () => {
       return;
     }
     if (!isStrongPassword(password)) {
-      toast.error("Password must be at least 8 characters long, contain 1 uppercase letter and 1 number.");
+      toast.error("Password must be at least 6 characters long, containing at least 1 number.");
       return;
     }
+
 
     setLoading(true);
     try {
@@ -108,6 +110,7 @@ const Partner = () => {
             lastName,
             ownerPhoneNumber,
             businessType,
+            password
           },
         });
 
@@ -152,6 +155,7 @@ const Partner = () => {
             ownerPhoneNumber: fullInfo.ownerPhoneNumber,
             businessType: fullInfo.businessType,
             isBusinessAccount: true,
+            password: fullInfo.password,
             access: false,
             createdAt: serverTimestamp(),
           });
