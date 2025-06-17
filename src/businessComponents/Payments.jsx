@@ -4,6 +4,7 @@ import { db } from "../firebase";
 import Table from "../components/Tabel";
 import { getAuth } from "firebase/auth";
 import Select from "react-select";
+import logoImg from '../assets/swblogo.png';
 import { jsPDF } from "jspdf";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import Modal from "react-modal";
@@ -95,44 +96,118 @@ const Payments = () => {
         }
     };
     const downloadReceipt = (payment) => {
-        console.log(payment);
         const doc = new jsPDF();
 
-        // Set the document title and format the first section
-        doc.setFontSize(18);
-        doc.text('Official Receipt', 20, 20);
+        // Add Logo (assumes base64 or URL, see below)
+        const imgProps = doc.getImageProperties(logoImg);
+        const imgWidth = 40;
+        const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+        doc.addImage(logoImg, 'PNG', 160, 10, imgWidth, imgHeight);
+
+        // Title
+        doc.setFontSize(22);
+        doc.setTextColor('#5842aa');
+        doc.text('Official Receipt', 20, 30);
+
+        // Subtitle
+        doc.setFontSize(14);
+        doc.setTextColor('#10758B');
+        doc.text('SWB Business Plus', 20, 40);
+
+        // Business Info
         doc.setFontSize(12);
-        doc.text('SWB Business Plus', 20, 30);
-        doc.text(`Business Name: ${payment.businessName}`, 20, 60);
-        doc.text(`Contact Email: ${payment.businessEmail}`, 20, 70);
+        doc.setTextColor('#000000');
+        doc.text(`Business Name: ${payment.businessName || '-'}`, 20, 55);
+        doc.text(`Contact Email: ${payment.businessEmail || '-'}`, 20, 65);
 
-        // Package Details
-        doc.text('Package Details:', 20, 110);
-        doc.text(`• Package Purchased: 1 Year`, 20, 120);  // Example, can be dynamic if necessary
-        doc.text(`• Start Date: ${new Date(payment.createdAt.seconds * 1000).toLocaleDateString()}`, 20, 130);
-        doc.text(`• End Date: ${new Date(payment.endDate.seconds * 1000).toLocaleDateString()}`, 20, 140);
-        doc.text(`• Payment Method: ${payment.type}`, 20, 150);  // Adjust this based on actual data
+        // Draw a line
+        doc.setDrawColor('#5842aa');
+        doc.setLineWidth(0.8);
+        doc.line(20, 70, 190, 70);
 
-        // What's Included in the Package
-        doc.text("What's Included in the Package:", 20, 170);
-        doc.text("1. Offer Listing: Your business will be listed in our exclusive SWB offers directory.", 20, 180);
-        doc.text("2. Full Analytics on SWB Website: Access to detailed website analytics.", 20, 190);
-        doc.text("3. Social Media Promotion on SWB Page: Promotion of your business.", 20, 200);
-        doc.text("4. Top Ranking in Related Category: Your business will receive top ranking.", 20, 210);
-        doc.text("5. Virtual/In-Person Staff Training: Our team will provide training.", 20, 220);
-        doc.text("6. Priority 24/7 Customer Support: Access to customer support anytime.", 20, 230);
-        doc.text("7. Push Notifications: Based on your package, you'll get push notifications.", 20, 240);
-        doc.text("8. SWB WhatsApp Channel Exposure: Exposure to more users via WhatsApp.", 20, 250);
+        // Payment Details Table
+        const startDate = payment.createdAt?.seconds
+            ? new Date(payment.createdAt.seconds * 1000).toLocaleDateString()
+            : '-';
+        const endDate = payment.endDate?.seconds
+            ? new Date(payment.endDate.seconds * 1000).toLocaleDateString()
+            : '-';
 
-        // Contact Information
-        doc.text('Contact Information:', 20, 270);
-        doc.text('Website: www.studentwithbenefits.com', 20, 280);
-        doc.text('Email: studentwithbenefits@gmail.com', 20, 290);
-        doc.text('Phone: +961 70009879', 20, 300);
+        const tableColumnX = 20;
+        let tableRowY = 80;
+        const lineHeight = 10;
 
-        // Save the PDF
-        doc.save(`receipt_${payment.id}.pdf`);
+        const addRow = (label, value) => {
+            doc.setFont(undefined, 'bold');
+            doc.text(label, tableColumnX, tableRowY);
+            doc.setFont(undefined, 'normal');
+            doc.text(String(value), tableColumnX + 70, tableRowY);
+            tableRowY += lineHeight;
+        };
+
+        addRow('Package Purchased:', '1 Year');
+        addRow('Start Date:', startDate);
+        addRow('End Date:', endDate);
+        addRow('Payment Method:', payment.type || '-');
+        addRow('Amount Paid:', `${payment.amount ?? '-'} ${payment.currency ?? ''}`);
+
+        // Another line before next section
+        doc.setDrawColor('#10758B');
+        doc.setLineWidth(0.6);
+        doc.line(20, tableRowY + 2, 190, tableRowY + 2);
+
+        tableRowY += 15;
+
+        // Included Features Heading
+        doc.setFontSize(14);
+        doc.setTextColor('#5842aa');
+        doc.setFont(undefined, 'bold');
+        doc.text("What's Included in the Package:", 20, tableRowY);
+        tableRowY += 10;
+
+        doc.setFontSize(11);
+        doc.setFont(undefined, 'normal');
+        const features = [
+            "Offer Listing: Your business will be listed in our exclusive SWB offers directory.",
+            "Full Analytics on SWB Website: Access to detailed website analytics.",
+            "Social Media Promotion on SWB Page: Promotion of your business.",
+            "Top Ranking in Related Category: Your business will receive top ranking.",
+            "Virtual/In-Person Staff Training: Our team will provide training.",
+            "Priority 24/7 Customer Support: Access to customer support anytime.",
+            "Push Notifications: Based on your package, you'll get push notifications.",
+            "SWB WhatsApp Channel Exposure: Exposure to more users via WhatsApp."
+        ];
+
+        features.forEach((feature) => {
+            const splitText = doc.splitTextToSize(feature, 170);
+            doc.text(splitText, 20, tableRowY);
+            tableRowY += splitText.length * 7;
+        });
+
+        tableRowY += 10;
+
+        // Contact Info
+        doc.setFont(undefined, 'bold');
+        doc.setTextColor('#10758B');
+        doc.text('Contact Information:', 20, tableRowY);
+        tableRowY += 8;
+
+        doc.setFont(undefined, 'normal');
+        doc.setTextColor('#000000');
+        const contacts = [
+            'Website: www.studentwithbenefits.com',
+            'Email: studentwithbenefits@gmail.com',
+            'Phone: +961 70009879',
+        ];
+        contacts.forEach((line) => {
+            doc.text(line, 20, tableRowY);
+            tableRowY += 8;
+        });
+
+        // Save PDF
+        doc.save(`receipt_${payment.id || 'unknown'}.pdf`);
     };
+
     useEffect(() => {
         fetchBusinessNames(); // Fetch business names when the component mounts
 

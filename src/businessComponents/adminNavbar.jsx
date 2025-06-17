@@ -25,7 +25,7 @@ const AdminNavbar = ({ name, plan, timeLeft, isAdmin }) => {
 
                             {timeLeft ? (
                                 <span className="text-[#ff6347] font-semibold">
-                                    Days Left: {timeLeft}
+                                    Time Left: {timeLeft}
                                 </span>
                             ) : (
                                 <span className="text-[#ff6347]">Subscription Expired</span>

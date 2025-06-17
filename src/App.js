@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer"; // Import Footer component
@@ -34,6 +34,8 @@ import AccessCenter from "./businessComponents/AccessCenter";
 import News from "./components/News";
 import Businesses from "./components/Businesses";
 import Subscriptions from "./components/Subscriptions";
+import Articles from "./components/Articles";
+import { Download, ArrowRight, Target, Eye, MapPin, Sparkles } from 'lucide-react';
 const handleDownload = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -56,34 +58,47 @@ function Careers() {
 }
 function MissionVision() {
   return (
-    <div className="flex flex-col lg:flex-row items-center lg:items-start lg:space-x-8 space-y-8 lg:space-y-0 mt-10 px-4 mb-5">
-      {/* Our Mission Section */}
-      <div
-        className="w-full max-w-lg p-6 rounded-2xl text-white h-auto lg:h-[200px] flex flex-col"
-        style={{ backgroundColor: "#02afde" }}
-      >
-        <h2 className="text-xl font-bold mb-4 text-left">Our Mission</h2>
-        <p className="flex-grow">
-          Simplify student life by offering exclusive opportunities that help students save money, build connections, and make the most of their university years.
-          We strive to create a supportive ecosystem that empowers students to thrive both socially and academically.
-        </p>
-      </div>
+    <div className="w-full max-w-6xl mx-auto px-4 py-16">
+      <div className="grid lg:grid-cols-2 gap-8">
+        {/* Our Mission Section */}
+        <div className="group">
+          <div
+            className="p-8 rounded-2xl text-white h-full flex flex-col transition-transform duration-300 hover:scale-105 shadow-lg"
+            style={{ backgroundColor: "#02afde" }}
+          >
+            <div className="flex items-center mb-6">
+              <Target className="w-8 h-8 mr-3" />
+              <h2 className="text-2xl font-bold">Our Mission</h2>
+            </div>
+            <p className="text-lg leading-relaxed flex-grow">
+              Simplify student life by offering exclusive opportunities that help students save money, build connections, and make the most of their university years.
+              We strive to create a supportive ecosystem that empowers students to thrive both socially and academically.
+            </p>
+          </div>
+        </div>
 
-      {/* Our Vision Section */}
-      <div
-        className="w-full max-w-lg p-6 rounded-2xl text-white h-auto lg:h-[200px] flex flex-col"
-        style={{ backgroundColor: "#5843aa" }}
-      >
-        <h2 className="text-xl font-bold mb-4 text-left">Our Vision</h2>
-        <p className="flex-grow">
-          Become the go-to platform for university students worldwide,
-          fostering a community that bridges the gap between students and
-          businesses, while creating opportunities that extend beyond education.
-        </p>
+        {/* Our Vision Section */}
+        <div className="group">
+          <div
+            className="p-8 rounded-2xl text-white h-full flex flex-col transition-transform duration-300 hover:scale-105 shadow-lg"
+            style={{ backgroundColor: "#5843aa" }}
+          >
+            <div className="flex items-center mb-6">
+              <Eye className="w-8 h-8 mr-3" />
+              <h2 className="text-2xl font-bold">Our Vision</h2>
+            </div>
+            <p className="text-lg leading-relaxed flex-grow">
+              Become the go-to platform for university students worldwide,
+              fostering a community that bridges the gap between students and
+              businesses, while creating opportunities that extend beyond education.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+
 
 function Media() {
   return (
@@ -142,21 +157,62 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="mt-5 flex flex-col items-center justify-center text-center">
-        <h1 className="italic text-lg sm:text-xl mt-5">
+      <div className="mt-16 flex flex-col items-center justify-center text-center px-4">
+        <h2 className="italic text-xl sm:text-2xl text-gray-600 mb-4">
           Student Life Made Easy
+        </h2>
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl text-[#5843aa] font-bold mb-8">
+          About Us
         </h1>
-        <h1 className="text-3xl text-[#5843aa] sm:text-4xl font-bold mt-5">About Us</h1>
-      </div>
 
-      <div className="flex flex-col justify-center items-center w-[90%] sm:w-[80%] md:w-1/2 lg:w-1/2 mt-5 text-center mb-5 text-base sm:text-lg md:text-xl leading-relaxed">
-        At Student with Benefits, we are committed to enhancing the university experience by making student life more connected, convenient, and cost-efficient.
-        <br />
-        <br />
-        More than just an app, we are a community-driven platform that bridges the gap between students and businesses, providing exclusive deals, resources, and opportunities that support students throughout their academic journey.
+        <div className="max-w-4xl text-lg sm:text-xl leading-relaxed text-gray-700 mb-12">
+          <p className="mb-6">
+            At <span className="font-semibold text-[#5843aa]">Student with Benefits</span>, we are committed to enhancing the university experience by making student life more connected, convenient, and cost-efficient.
+          </p>
+          <p>
+            More than just an app, we are a community-driven platform that bridges the gap between students and businesses, providing exclusive deals, resources, and opportunities that support students throughout their academic journey.
+          </p>
+        </div>
       </div>
 
       <MissionVision />
+      <div className="w-full max-w-6xl mx-auto px-4 py-16">
+        <div className="bg-gradient-to-r from-[#cae1fd] to-white rounded-3xl p-8 md:p-12 shadow-xl border border-[#cae1fd]/30">
+          <div className="flex flex-col lg:flex-row items-center gap-8">
+            <div className="flex-1 text-center lg:text-left">
+              <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Our Journey & Impact
+              </h3>
+              <p className="text-lg text-gray-700 mb-6 leading-relaxed">
+                Discover how we've grown from a startup idea to reaching over 10,000 students across Lebanon. Read about our challenges, victories, and the incredible community we've built together.
+              </p>
+              <div className="flex flex-wrap gap-4 justify-center lg:justify-start text-sm text-gray-600">
+                <span className="bg-white px-3 py-1 rounded-full">📊 10,000+ Students</span>
+                <span className="bg-white px-3 py-1 rounded-full">🤝 300+ Business Partners</span>
+                <span className="bg-white px-3 py-1 rounded-full">🎯 Real Impact Stories</span>
+              </div>
+            </div>
+
+            <div className="flex-shrink-0">
+              <Link to='/articles'>
+
+                Read Our Story
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="text-center mb-12">
+        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 flex items-center justify-center gap-3">
+          <Sparkles className="w-10 h-10 text-[#02afde]" />
+          Explore Our Places
+        </h2>
+        <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          Discover the newest and trendiest spots on SWB Mobile App, where exclusive promotions and unforgettable adventures await to elevate your experience.
+        </p>
+      </div>
+
       <BubbleAnimation />
     </div>
   );
@@ -210,6 +266,23 @@ function App() {
                     exit="exit"
                   >
                     <Dashboard />
+                  </motion.div>
+
+                </DefaultLayout>
+
+              }
+            />
+            <Route
+              path="/articles"
+              element={
+                <DefaultLayout>
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <Articles />
                   </motion.div>
 
                 </DefaultLayout>

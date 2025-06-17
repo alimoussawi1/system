@@ -44,8 +44,8 @@ function LoginPage() {
                 if (timeDiff > 0) {
                     const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
                     const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-                    timeLeft = `${days}d ${hours}h ${minutes}m`;
+
+                    timeLeft = `${days}d ${hours}h`;
                 }
 
                 setAccountData(prev => ({

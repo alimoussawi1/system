@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./Navbar";
+import Articles from "./components/Articles";
 
 function Partner() {
   return <h1>Become a Partner Page</h1>;
@@ -29,6 +30,7 @@ function App() {
       <Routes>
         <Route path="/partner" element={<Partner />} />
         <Route path="/deliver" element={<Deliver />} />
+        <Route path="/articles" element={<Articles />} />
         <Route path="/careers" element={<Careers />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/media" element={<Media />} />
