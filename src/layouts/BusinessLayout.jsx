@@ -4,9 +4,11 @@ import Sidebar from '../components/Sidebar';
 import AdminNavbar from '../businessComponents/adminNavbar';
 import { useAccount } from '../context/AccountContext';
 
+
 const BusinessLayout = ({ children }) => {
     const { accountData } = useAccount();
     const { uid, fullName, plan, isAdmin, timeLeft } = accountData || {};
+    console.log(timeLeft)
 
     return (
         <div className="flex flex-col md:flex-row h-screen">

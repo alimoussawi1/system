@@ -43,11 +43,12 @@ function LoginPage() {
 
                 if (timeDiff > 0) {
                     const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 
-                    timeLeft = `${days}d ${hours}h`;
+
+                    timeLeft = `${days}d`;
                 }
 
+                console.log("the time left", timeLeft)
                 setAccountData(prev => ({
                     ...prev,
                     plan: planName,

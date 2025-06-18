@@ -1,167 +1,308 @@
-import React from "react";
+import React, { useState } from "react";
+import { ChevronDown, ChevronUp, Shield, Users, FileText, Lock, Mail, MapPin } from "lucide-react";
 
 const Privacy = () => {
+  const [expandedSections, setExpandedSections] = useState({});
+
+  const toggleSection = (sectionId) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [sectionId]: !prev[sectionId]
+    }));
+  };
+
+  const Section = ({ id, title, icon: Icon, children }) => {
+    const isExpanded = expandedSections[id];
+
+    return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-4 overflow-hidden">
+        <button
+          onClick={() => toggleSection(id)}
+          className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+        >
+          <div className="flex items-center space-x-3">
+            <Icon className="h-5 w-5 text-blue-600" />
+            <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
+          </div>
+          {isExpanded ? (
+            <ChevronUp className="h-5 w-5 text-gray-500" />
+          ) : (
+            <ChevronDown className="h-5 w-5 text-gray-500" />
+          )}
+        </button>
+
+        {isExpanded && (
+          <div className="px-6 pb-6 border-t border-gray-100">
+            <div className="pt-4">
+              {children}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8 text-gray-800">
-      <h1 className="text-2xl font-bold mb-4">Privacy Policy</h1>
-      <p className="text-sm text-gray-600 mb-6">Last Updated: December 30, 2024</p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      <div className="container mx-auto px-4 py-12 max-w-4xl">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
+            <Shield className="h-8 w-8 text-white" />
+          </div>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Privacy Policy</h1>
+          <p className="text-gray-600 text-lg">Student with Benefits</p>
+          <div className="mt-4 inline-flex items-center px-4 py-2 bg-blue-100 rounded-full">
+            <span className="text-sm font-medium text-blue-800">Last Updated: December 30, 2024</span>
+          </div>
+        </div>
 
-      <p className="mb-4">
-        This Privacy Policy (the “Policy”) describes how Student with Benefits
-        (operating as SWB, “we”, “us”, or “our”) collects, uses, and discloses your
-        personal information.
-      </p>
-      <p className="mb-4">This Policy applies to personal information related to:</p>
-      <ul className="list-disc ml-6 mb-4">
-        <li><strong>Users:</strong> Individuals who are registered users or subscribers to the Student with Benefits App.</li>
-        <li>
-          <strong>Non-Users:</strong>
-          <ul className="list-disc ml-6">
-            <li>Individuals who receive offers, deals, or other promotions (the "Offers") from or through the Student with Benefits App.</li>
-            <li>Individuals who receive communications about the services we offer (the “Communications”) as a result of referrals from Users.</li>
-            <li>Individuals who visit our websites, social media pages, or communicate with us.</li>
-          </ul>
-        </li>
-        <li><strong>Partners:</strong> Businesses, institutions, or organizations offering deals and promotions via the Student with Benefits App.</li>
-        <li><strong>Employees and Applicants:</strong> Individuals working with us or interested in applying for a role at Student with Benefits.</li>
-        <li><strong>Service Providers:</strong> Entities contracted to provide technical, marketing, or operational support for Student with Benefits.</li>
-      </ul>
-      <p className="mb-4">
-        If you fall into any of the categories above, you acknowledge that you have
-        read, understood, and agreed to the terms of this Policy.
-      </p>
+        {/* Introduction */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+          <p className="text-gray-700 leading-relaxed mb-4">
+            This Privacy Policy describes how Student with Benefits (operating as SWB, "we", "us", or "our")
+            collects, uses, and discloses your personal information when you use our services.
+          </p>
+          <p className="text-gray-700 leading-relaxed">
+            By using our services, you acknowledge that you have read, understood, and agreed to the terms of this Policy.
+          </p>
+        </div>
 
-      <h2 className="text-xl font-semibold mt-6 mb-4">I. Definitions</h2>
-      <ul className="list-disc ml-6 mb-4">
-        <li><strong>Student with Benefits Account:</strong> Your account on the Student with Benefits App.</li>
-        <li><strong>Student with Benefits App:</strong> The mobile application providing deals, offers, and promotions to university students and eligible users.</li>
-        <li><strong>Partners:</strong> Businesses or organizations offering promotions via the Student with Benefits App.</li>
-        <li><strong>You:</strong> Any individual falling into one of the categories mentioned above.</li>
-      </ul>
+        {/* Definitions */}
+        <Section id="definitions" title="Definitions" icon={FileText}>
+          <div className="space-y-4">
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h4 className="font-semibold text-gray-800">Student with Benefits Account</h4>
+              <p className="text-gray-600">Your account on the Student with Benefits App.</p>
+            </div>
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h4 className="font-semibold text-gray-800">Student with Benefits App</h4>
+              <p className="text-gray-600">The mobile application providing deals, offers, and promotions to university students and eligible users.</p>
+            </div>
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h4 className="font-semibold text-gray-800">Partners</h4>
+              <p className="text-gray-600">Businesses or organizations offering promotions via the Student with Benefits App.</p>
+            </div>
+          </div>
+        </Section>
 
-      <h2 className="text-xl font-semibold mt-6 mb-4">II. Information We Collect and Use</h2>
-      <h3 className="text-lg font-medium mb-2">A. Users</h3>
-      <p className="font-semibold mb-2">1. Information We Collect:</p>
-      <ul className="list-disc ml-6 mb-4">
-        <li>Full name</li>
-        <li>Email address</li>
-        <li>Date of birth</li>
-        <li>University name (if applicable)</li>
-        <li>Phone number</li>
-        <li>Username and password for your account</li>
-        <li>Location data (if enabled on your device)</li>
-        <li>Technical information (e.g., IP address, device identifiers, browser details)</li>
-      </ul>
-      <p className="font-semibold mb-2">2. How We Use Your Information:</p>
-      <ul className="list-disc ml-6 mb-4">
-        <li>Provide the services available on the Student with Benefits App.</li>
-        <li>Offer personalized recommendations and updates.</li>
-        <li>Verify your eligibility for specific promotions or offers.</li>
-        <li>Analyze app usage to improve performance and features.</li>
-        <li>Communicate with you about account updates, offers, and promotions.</li>
-      </ul>
+        {/* Information Collection */}
+        <Section id="information" title="Information We Collect and Use" icon={Users}>
+          <div className="space-y-6">
+            {/* Users */}
+            <div className="bg-gray-50 rounded-lg p-5">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                Users
+              </h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium text-gray-700 mb-3">Information We Collect:</h4>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Full name</li>
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Email address</li>
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Date of birth</li>
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>University name</li>
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Phone number</li>
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Account credentials</li>
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Location data</li>
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Technical information</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-700 mb-3">How We Use Your Information:</h4>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Provide app services</li>
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Personalized recommendations</li>
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Verify eligibility</li>
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Analyze usage</li>
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Communications</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
 
-      <h3 className="text-lg font-medium mb-2">B. Non-Users</h3>
-      <p className="font-semibold mb-2">1. Information We Collect:</p>
-      <ul className="list-disc ml-6 mb-4">
-        <li>Your name and contact information.</li>
-        <li>Information provided to us by Users or Partners when they refer you for an offer or promotion.</li>
-      </ul>
-      <p className="font-semibold mb-2">2. How We Use Your Information:</p>
-      <ul className="list-disc ml-6 mb-4">
-        <li>To deliver Offers or Promotions.</li>
-        <li>To respond to inquiries or feedback.</li>
-      </ul>
+            {/* Non-Users */}
+            <div className="bg-gray-50 rounded-lg p-5">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                Non-Users
+              </h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium text-gray-700 mb-3">Information We Collect:</h4>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Name and contact information</li>
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Referral information</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-700 mb-3">How We Use Your Information:</h4>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Deliver offers and promotions</li>
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Respond to inquiries</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
 
-      <h3 className="text-lg font-medium mb-2">C. Partners and Service Providers</h3>
-      <p className="font-semibold mb-2">1. Information We Collect:</p>
-      <ul className="list-disc ml-6 mb-4">
-        <li>Business name, contact details, and promotional information.</li>
-        <li>Transactional and financial details for payment processing.</li>
-      </ul>
-      <p className="font-semibold mb-2">2. How We Use Your Information:</p>
-      <ul className="list-disc ml-6 mb-4">
-        <li>Facilitate listing of offers on the Student with Benefits App.</li>
-        <li>Analyze and improve partner services.</li>
-        <li>Process payments and manage accounts.</li>
-      </ul>
-      <h3 className="text-lg font-medium mb-2">D.  Employees and Applicants</h3>
-      <p className="font-semibold mb-2">1. Information We Collect:</p>
-      <ul className="list-disc ml-6 mb-4">
-        <li>Full name and contact information.</li>
-        <li>Resumes, CVs, and employment history.</li>
-        <li>Identification documents (if required by law).</li>
-      </ul>
-      <p className="font-semibold mb-2">2. How We Use Your Information:</p>
-      <ul className="list-disc ml-6 mb-4">
-        <li>Facilitate listing of offers on the Student with Benefits App.</li>
-        <li>To process job applications.</li>
-        <li>To manage employment records.</li>
-      </ul>
+            {/* Partners */}
+            <div className="bg-gray-50 rounded-lg p-5">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <div className="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
+                Partners & Service Providers
+              </h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium text-gray-700 mb-3">Information We Collect:</h4>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Business details</li>
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Financial information</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-700 mb-3">How We Use Your Information:</h4>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Facilitate offer listings</li>
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Process payments</li>
+                    <li className="flex items-center"><span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>Analyze services</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Section>
 
-      <h2 className="text-xl font-semibold mt-6 mb-4">III. Legal Basis for Processing</h2>
-      <ul className="list-disc ml-6 mb-4">
-        <li>Consent: Where you explicitly consent to data collection (e.g., signing up for the app or enabling location tracking).</li>
-        <li>Contractual Obligations: To fulfill services or agreements made with you.</li>
-        <li>Legal Compliance: To adhere to applicable laws and regulations.</li>
-        <li>Legitimate Interests: For business purposes, such as improving our services, marketing, and maintaining operational efficiency.</li>
-      </ul>
+        {/* Legal Basis */}
+        <Section id="legal" title="Legal Basis for Processing" icon={FileText}>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-blue-50 rounded-lg p-4">
+              <h4 className="font-semibold text-blue-800 mb-2">Consent</h4>
+              <p className="text-sm text-blue-700">Where you explicitly consent to data collection</p>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4">
+              <h4 className="font-semibold text-green-800 mb-2">Contractual Obligations</h4>
+              <p className="text-sm text-green-700">To fulfill services or agreements made with you</p>
+            </div>
+            <div className="bg-orange-50 rounded-lg p-4">
+              <h4 className="font-semibold text-orange-800 mb-2">Legal Compliance</h4>
+              <p className="text-sm text-orange-700">To adhere to applicable laws and regulations</p>
+            </div>
+            <div className="bg-purple-50 rounded-lg p-4">
+              <h4 className="font-semibold text-purple-800 mb-2">Legitimate Interests</h4>
+              <p className="text-sm text-purple-700">For business purposes and operational efficiency</p>
+            </div>
+          </div>
+        </Section>
 
-       
-      <h2 className="text-xl font-semibold mt-6 mb-4">IV. Data Retention</h2>
-      <p className="mb-4">We retain personal data only as long as necessary for the purposes outlined in this Policy or to comply with legal obligations. Once the retention period expires, your data will be securely deleted.
-</p>
+        {/* Data Retention */}
+        <Section id="retention" title="Data Retention" icon={FileText}>
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+            <p className="text-gray-700">
+              We retain personal data only as long as necessary for the purposes outlined in this Policy
+              or to comply with legal obligations. Once the retention period expires, your data will be securely deleted.
+            </p>
+          </div>
+        </Section>
 
+        {/* Data Sharing */}
+        <Section id="sharing" title="Data Sharing" icon={Users}>
+          <div className="space-y-4">
+            <p className="text-gray-700 mb-4">We may share your personal information with:</p>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="bg-blue-50 rounded-lg p-4">
+                <h4 className="font-semibold text-blue-800 mb-2">Service Providers</h4>
+                <p className="text-sm text-blue-700">For data analysis, payment processing, or marketing</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4">
+                <h4 className="font-semibold text-green-800 mb-2">Partners</h4>
+                <p className="text-sm text-green-700">To provide offers and promotions</p>
+              </div>
+              <div className="bg-red-50 rounded-lg p-4">
+                <h4 className="font-semibold text-red-800 mb-2">Legal Authorities</h4>
+                <p className="text-sm text-red-700">If required by law or to protect rights and safety</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4">
+                <h4 className="font-semibold text-purple-800 mb-2">Third Parties</h4>
+                <p className="text-sm text-purple-700">With your explicit consent</p>
+              </div>
+            </div>
+          </div>
+        </Section>
 
-      <h2 className="text-xl font-semibold mt-6 mb-4">V. Data Sharing</h2>
-      <p className="mb-4">We may share your personal information with:</p>
-      <ul className="list-disc ml-6 mb-4">
-        <li><strong>Service Providers:</strong> For data analysis, payment processing, or marketing.</li>
-        <li><strong>Partners:</strong> To provide offers and promotions.</li>
-        <li>
-          <strong>Legal Authorities:</strong> If required by law or to protect the rights and safety of Student with Benefits and its users.
-        </li>
-        <li><strong>Third Parties:</strong> With your explicit consent.</li>
-      </ul>
+        {/* Data Security */}
+        <Section id="security" title="Data Security" icon={Lock}>
+          <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+            <div className="flex items-start space-x-3">
+              <Lock className="h-6 w-6 text-green-600 mt-1" />
+              <div>
+                <h4 className="font-semibold text-green-800 mb-2">Security Measures</h4>
+                <p className="text-gray-700 leading-relaxed">
+                  We take reasonable measures to protect your personal information, including encryption and secure storage.
+                  However, no system is entirely secure, and we cannot guarantee absolute data protection.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Section>
 
-      <h2 className="text-xl font-semibold mt-6 mb-4">VI. Data Security</h2>
-      <p className="mb-4">
-        We take reasonable measures to protect your personal information,
-        including encryption and secure storage. However, no system is entirely
-        secure, and we cannot guarantee absolute data protection.
-      </p>
+        {/* Your Rights */}
+        <Section id="rights" title="Your Rights" icon={Shield}>
+          <div className="space-y-4">
+            <p className="text-gray-700">Under applicable data protection laws, you have the right to:</p>
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="bg-blue-50 rounded-lg p-4 text-center">
+                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <FileText className="h-6 w-6 text-white" />
+                </div>
+                <h4 className="font-semibold text-blue-800 mb-2">Access & Correct</h4>
+                <p className="text-sm text-blue-700">Access, correct, or delete your personal data</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 text-center">
+                <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Shield className="h-6 w-6 text-white" />
+                </div>
+                <h4 className="font-semibold text-green-800 mb-2">Withdraw Consent</h4>
+                <p className="text-sm text-green-700">Withdraw your consent at any time</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 text-center">
+                <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <h4 className="font-semibold text-purple-800 mb-2">Object Processing</h4>
+                <p className="text-sm text-purple-700">Object to processing for legitimate interests</p>
+              </div>
+            </div>
+          </div>
+        </Section>
 
-      <h2 className="text-xl font-semibold mt-6 mb-4">VII. Your Rights</h2>
-      <p className="mb-4">Under applicable data protection laws, you have the right to:</p>
-      <ul className="list-disc ml-6 mb-4">
-        <li>Access, correct, or delete your personal data.</li>
-        <li>Withdraw your consent at any time.</li>
-        <li>Object to the processing of your data for legitimate interests.</li>
-      </ul>
-      <p className="mb-4">
-        To exercise these rights, contact us at <a href="mailto:studentwithbenefits@gmail.com" className="text-blue-600 underline">studentwithbenefits@gmail.com</a>.
-      </p>
-
-      <h2 className="text-xl font-semibold mt-6 mb-4">VIII. Cookies and Tracking Technologies</h2>
-      <p className="mb-4">
-        We use cookies and similar technologies to enhance user experience and collect
-        non-personal data. You may disable cookies through your browser or device settings,
-        though this may limit app functionality.
-      </p>
-
-      <h2 className="text-xl font-semibold mt-6 mb-4">IX. Changes to this Policy</h2>
-      <p className="mb-4">
-        We may update this Policy from time to time. The latest version will be posted on
-        the Student with Benefits App, and significant changes will be communicated to you
-        directly.
-      </p>
-
-      <h2 className="text-xl font-semibold mt-6 mb-4">X. Contact Us</h2>
-      <p className="mb-4">For any questions or concerns regarding this Policy, please contact:</p>
-      <ul className="list-disc ml-6 mb-4">
-        <li>Email: studentwithbenefits@gmail.com</li>
-        <li>Address: Beirut, Lebanon</li>
-      </ul>
+        {/* Contact Information */}
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-8 text-white">
+          <h2 className="text-2xl font-bold mb-6 text-center">Contact Us</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                <Mail className="h-6 w-6" />
+              </div>
+              <div>
+                <h3 className="font-semibold">Email</h3>
+                <a href="mailto:studentwithbenefits@gmail.com" className="text-blue-100 hover:text-white transition-colors">
+                  studentwithbenefits@gmail.com
+                </a>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                <MapPin className="h-6 w-6" />
+              </div>
+              <div>
+                <h3 className="font-semibold">Address</h3>
+                <p className="text-blue-100">Beirut, Lebanon</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

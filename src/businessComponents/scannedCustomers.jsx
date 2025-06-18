@@ -4,6 +4,7 @@ import SelectInput from '../components/SelectInput';
 import { Link } from 'react-router-dom';
 import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { useAccount } from '../context/AccountContext';
+import { Search } from 'lucide-react';
 
 const ScannedCustomers = () => {
     const { accountData } = useAccount();
@@ -11,14 +12,30 @@ const ScannedCustomers = () => {
 
     const [scanBusiness, setScanBusiness] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
 
-    // Filters
+    // Filtersconst [searchTerm, setSearchTerm] = useState('');
+    const filteredData = useMemo(() => {
+        if (!searchTerm) return scanBusiness;
+
+        return scanBusiness.filter(item =>
+            Object.values(item)
+                .join(' ')
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase())
+        );
+    }, [searchTerm, scanBusiness]);
+
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [university, setUniversity] = useState('');
 
     const pageSize = 5;
-    const totalPages = Math.ceil(scanBusiness.length / pageSize);
+    const totalPages = useMemo(() => {
+        return Math.ceil(filteredData.length / pageSize);
+    }, [filteredData]);
+
+
 
     const universities = [
         { value: "", label: "ALL" },
@@ -151,42 +168,88 @@ const ScannedCustomers = () => {
         <div>
             {access || isAdmin ? (
                 <>
-                    <div className="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 bg-white p-4 rounded-lg">
-                        <div className="col-span-1">
-                            <label htmlFor="start-date" className="text-sm font-medium mb-1 block">
-                                Start Date
-                            </label>
-                            <input
-                                type="date"
-                                id="start-date"
-                                value={startDate}
-                                onChange={(e) => setStartDate(e.target.value)}
-                                className="border p-2 rounded w-full"
-                            />
-                        </div>
+                    <div className="mb-8">
+                        <div className="bg-gradient-to-br from-white to-gray-50 backdrop-blur-xl rounded-3xl p-8 border border-gray-200 shadow-xl">
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="p-2 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl">
+                                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                                    </svg>
+                                </div>
+                                <h3 className="text-lg font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                                    Filter Options
+                                </h3>
+                            </div>
+                            <div className="flex justify-end mt-6 pt-4 border-t border-gray-100">
+                                <button
+                                    onClick={() => {
+                                        setStartDate('');
+                                        setEndDate('');
+                                        setUniversity('');
+                                    }}
+                                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all duration-200"
+                                >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    Clear Filters
+                                </button>
+                            </div>
 
-                        <div className="col-span-1">
-                            <label htmlFor="end-date" className="text-sm font-medium mb-1 block">
-                                End Date
-                            </label>
-                            <input
-                                type="date"
-                                id="end-date"
-                                value={endDate}
-                                onChange={(e) => setEndDate(e.target.value)}
-                                className="border p-2 rounded w-full"
-                            />
-                        </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="space-y-2">
+                                    <label htmlFor="start-date" className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                                        <svg className="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        Start Date
+                                    </label>
+                                    <input
+                                        type="date"
+                                        id="start-date"
+                                        value={startDate}
+                                        onChange={(e) => setStartDate(e.target.value)}
+                                        className="w-full px-4 py-3 bg-gradient-to-r from-white to-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm transition-all duration-300 hover:shadow-md font-medium"
+                                    />
+                                </div>
 
-                        <div className="col-span-1">
-                            <SelectInput
-                                id="university"
-                                label="University"
-                                value={university}
-                                onChange={(selectedValue) => setUniversity(selectedValue)}
-                                options={universities}
-                                className="w-full"
-                            />
+                                <div className="space-y-2">
+                                    <label htmlFor="end-date" className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                                        <svg className="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        End Date
+                                    </label>
+                                    <input
+                                        type="date"
+                                        id="end-date"
+                                        value={endDate}
+                                        onChange={(e) => setEndDate(e.target.value)}
+                                        className="w-full px-4 py-3 bg-gradient-to-r from-white to-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm transition-all duration-300 hover:shadow-md font-medium"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                                        <svg className="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                        </svg>
+                                        University
+                                    </label>
+                                    <div className="relative">
+                                        <SelectInput
+                                            id="university"
+                                            value={university}
+                                            onChange={(selectedValue) => setUniversity(selectedValue)}
+                                            options={universities}
+                                            className="w-full"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Optional: Add a clear filters button */}
+
                         </div>
                     </div>
 
@@ -202,13 +265,28 @@ const ScannedCustomers = () => {
 
                         </div>
                     ) : (
-                        <Table
-                            columns={scannedBusiness}
-                            data={scanBusiness}
-                            pageSize={pageSize}
-                            checkbox={false}
-                            totalPages={totalPages}
-                        />
+                        <>
+
+                            <div className="relative flex-1 max-w-md">
+                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                                <input
+                                    type="text"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    placeholder="Search across all fields..."
+                                    className="w-full pl-10 pr-4 py-3 bg-gradient-to-r from-white to-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm transition-all duration-300 hover:shadow-md"
+                                />
+                            </div>
+
+                            <Table
+                                columns={scannedBusiness}
+                                data={filteredData}
+                                pageSize={pageSize}
+                                checkbox={false}
+                                totalPages={totalPages}
+                                search={false}
+                            />
+                        </>
                     )}
                 </>
             ) : (

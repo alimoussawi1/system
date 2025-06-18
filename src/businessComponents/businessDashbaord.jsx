@@ -24,10 +24,20 @@ const BusinessDashboard = () => {
 
     return (
         <div className="p-2">
-            <div>
-                <h1 className="text-xl font-bold">
-                    Hello <span className="text-[#5842aa]">{fullName}</span>!
-                </h1>
+            <div className="mb-8">
+                <div className="flex items-center gap-4">
+                    {/* <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-lg">
+                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div> */}
+                    <div>
+                        <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                            Welcome back, <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">{fullName}</span>!
+                        </h1>
+                        <p className="text-gray-500 text-sm mt-1">Here's your business overview</p>
+                    </div>
+                </div>
             </div>
 
             {access || isAdmin ? (

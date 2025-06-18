@@ -8,10 +8,18 @@ import logoImg from '../assets/swblogo.png';
 import { jsPDF } from "jspdf";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import Modal from "react-modal";
-import { FaDownload, FaRegTimesCircle, FaTrash } from "react-icons/fa";
+import { FaDownload, FaRegTimesCircle } from "react-icons/fa";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { confirmAlert } from 'react-confirm-alert';
 import { useAccount } from "../context/AccountContext";
+import {
+    FaCheck,      // For approve action
+    FaTimes,      // For decline action  
+    // For download action
+    FaTrash,      // For delete action
+    FaUndo,       // For revert/undo action
+    FaBan         // For decline from success state
+} from 'react-icons/fa';
 const Payments = () => {
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -314,7 +322,6 @@ const Payments = () => {
                 Cell: ({ cell: { value } }) =>
                     value?.seconds ? new Date(value.seconds * 1000).toLocaleString() : "-",
             },
-
         ];
 
         if (isAdmin) {
@@ -322,46 +329,60 @@ const Payments = () => {
                 Header: "Business Name",
                 accessor: "businessName",
             });
-
         }
 
         baseColumns.push({
-            Header: "Action",
+            Header: "Actions",
             Cell: ({ row }) => {
                 const status = row.original.status;
 
-                // Conditionally render "Dislike" button only for Admins
+                // Admin actions for different statuses
                 if (isAdmin) {
                     if (status === 'Pending') {
                         return (
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center justify-center">
                                 <button
                                     onClick={() => updatePaymentStatus(row.original.id, "Success")}
-                                    className="text-green-500"
-                                    title="Approve"
+                                    className="group relative p-2 rounded-lg bg-green-50 hover:bg-green-100 text-green-600 hover:text-green-700 transition-all duration-200 hover:scale-105"
+                                    title="Approve Payment"
                                 >
-                                    <AiFillLike />
+                                    <FaCheck className="w-4 h-4" />
+                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                        Approve
+                                    </span>
                                 </button>
+
                                 <button
                                     onClick={() => updatePaymentStatus(row.original.id, "Declined")}
-                                    className="text-green-500"
-                                    title="Decline"
+                                    className="group relative p-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 transition-all duration-200 hover:scale-105"
+                                    title="Decline Payment"
                                 >
-                                    <IoIosCloseCircleOutline />
+                                    <FaTimes className="w-4 h-4" />
+                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                        Decline
+                                    </span>
                                 </button>
+
                                 <button
                                     onClick={() => downloadReceipt(row.original)}
-                                    className="text-[#0a5f73]"
-                                    title="Download"
+                                    className="group relative p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 transition-all duration-200 hover:scale-105"
+                                    title="Download Receipt"
                                 >
-                                    <FaDownload />
+                                    <FaDownload className="w-4 h-4" />
+                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                        Download
+                                    </span>
                                 </button>
+
                                 <button
                                     onClick={() => handleDelete(row.original)}
-                                    className="text-red-500"
-                                    title="Delete"
+                                    className="group relative p-2 rounded-lg bg-gray-50 hover:bg-gray-100 text-gray-600 hover:text-red-600 transition-all duration-200 hover:scale-105"
+                                    title="Delete Payment"
                                 >
-                                    <FaTrash />
+                                    <FaTrash className="w-4 h-4" />
+                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                        Delete
+                                    </span>
                                 </button>
                             </div>
                         );
@@ -369,69 +390,109 @@ const Payments = () => {
 
                     else if (status === 'Success') {
                         return (
-                            <>
-                                <div className="flex items-center gap-2">
-                                    <button
-                                        onClick={() => updatePaymentStatus(row.original.id, "Pending")}
-                                        className=" text-red-500 rounded"
-                                    >
-                                        <AiFillDislike />
-                                    </button>
-                                    <button
-                                        onClick={() => updatePaymentStatus(row.original.id, "Declined")}
-                                        className=" text-green-500  rounded"
-                                    >
-                                        <IoIosCloseCircleOutline />
-                                    </button>
-                                    <button
-                                        onClick={() => downloadReceipt(row.original)}
-                                        className=" text-[#0a5f73] rounded"
-                                    >
-                                        <FaDownload />
-                                    </button>
-                                    <button
-                                        onClick={() => handleDelete(row.original)}
-                                        className="text-red-500"
-                                        title="Delete"
-                                    >
-                                        <FaTrash />
-                                    </button>
-                                </div>
-                            </>
+                            <div className="flex items-center justify-center gap-1">
+                                <button
+                                    onClick={() => updatePaymentStatus(row.original.id, "Pending")}
+                                    className="group relative p-2 rounded-lg bg-orange-50 hover:bg-orange-100 text-orange-600 hover:text-orange-700 transition-all duration-200 hover:scale-105"
+                                    title="Move to Pending"
+                                >
+                                    <FaUndo className="w-4 h-4" />
+                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                        Revert
+                                    </span>
+                                </button>
+
+                                <button
+                                    onClick={() => updatePaymentStatus(row.original.id, "Declined")}
+                                    className="group relative p-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 transition-all duration-200 hover:scale-105"
+                                    title="Decline Payment"
+                                >
+                                    <FaBan className="w-4 h-4" />
+                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                        Decline
+                                    </span>
+                                </button>
+
+                                <button
+                                    onClick={() => downloadReceipt(row.original)}
+                                    className="group relative p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 transition-all duration-200 hover:scale-105"
+                                    title="Download Receipt"
+                                >
+                                    <FaDownload className="w-4 h-4" />
+                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                        Download
+                                    </span>
+                                </button>
+
+                                <button
+                                    onClick={() => handleDelete(row.original)}
+                                    className="group relative p-2 rounded-lg bg-gray-50 hover:bg-gray-100 text-gray-600 hover:text-red-600 transition-all duration-200 hover:scale-105"
+                                    title="Delete Payment"
+                                >
+                                    <FaTrash className="w-4 h-4" />
+                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                        Delete
+                                    </span>
+                                </button>
+                            </div>
                         );
-
-                    } else if (status === 'Declined') {
-                        return (
-                            <button
-                                onClick={() => handleDelete(row.original)}
-                                className="text-red-500"
-                                title="Delete"
-                            >
-                                <FaTrash />
-                            </button>
-
-                        )
                     }
 
+                    else if (status === 'Declined') {
+                        return (
+                            <div className="flex items-center justify-center gap-1">
+                                <button
+                                    onClick={() => updatePaymentStatus(row.original.id, "Pending")}
+                                    className="group relative p-2 rounded-lg bg-orange-50 hover:bg-orange-100 text-orange-600 hover:text-orange-700 transition-all duration-200 hover:scale-105"
+                                    title="Move to Pending"
+                                >
+                                    <FaUndo className="w-4 h-4" />
+                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                        Revert
+                                    </span>
+                                </button>
+
+                                <button
+                                    onClick={() => handleDelete(row.original)}
+                                    className="group relative p-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 transition-all duration-200 hover:scale-105"
+                                    title="Delete Payment"
+                                >
+                                    <FaTrash className="w-4 h-4" />
+                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                        Delete
+                                    </span>
+                                </button>
+                            </div>
+                        );
+                    }
                 }
 
+                // Non-admin actions for successful payments
                 if (status === "Success") {
                     return (
-                        <>
+                        <div className="flex items-center justify-center">
                             <button
                                 onClick={() => downloadReceipt(row.original)}
-                                className="text-[#0a5f73] px-4 py-2 rounded"
+                                className="group relative p-3 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 transition-all duration-200 hover:scale-105 shadow-sm hover:shadow-md"
+                                title="Download Receipt"
                             >
-                                <FaDownload />
+                                <FaDownload className="w-5 h-5" />
+                                <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                    Download Receipt
+                                </span>
                             </button>
-                        </>
+                        </div>
                     );
                 }
 
-                return null;
+                // No actions available
+                return (
+                    <div className="flex items-center justify-center">
+                        <span className="text-gray-400 text-sm italic">No actions</span>
+                    </div>
+                );
             }
         });
-
 
         return baseColumns;
     }, [isAdmin]);

@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Routes, Route, useLocation, Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "./components/Navbar";
@@ -35,6 +35,9 @@ import News from "./components/News";
 import Businesses from "./components/Businesses";
 import Subscriptions from "./components/Subscriptions";
 import Articles from "./components/Articles";
+
+import React, { useState, useEffect } from 'react';
+
 import { Download, ArrowRight, Target, Eye, MapPin, Sparkles } from 'lucide-react';
 const handleDownload = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -129,91 +132,318 @@ function Jobs() {
 }
 
 
+// function Dashboard() {
+//   return (
+//     <div className="flex flex-col items-center">
+//       <div
+//         className="relative w-full bg-cover bg-center h-[300px] sm:h-[400px] lg:h-[500px] xl:h-[600px]"
+//       >
+//         <video
+//           src={Intro}
+//           autoPlay
+
+
+//           muted
+//           playsInline
+//           controls={false}
+
+
+//           className="w-full h-full object-cover"
+//         />
+//         <div
+//           className="absolute bottom-[-10%] left-1/2 transform -translate-x-1/2 bg-[#02afde] text-black rounded-lg px-6 py-3 flex items-center cursor-pointer shadow-lg mb-10
+//           md:px-5 md:py-2.5 md:text-base lg:px-6 lg:py-3 lg:text-lg"
+//           onClick={handleDownload}
+//         >
+//           <FaDownload className="mr-2 text-lg md:text-base sm:text-sm" />
+//           <p className="font-medium md:text-base sm:text-sm">Download Now</p>
+//         </div>
+//       </div>
+
+//       <div className="mt-16 flex flex-col items-center justify-center text-center px-4">
+//         <h2 className="italic text-xl sm:text-2xl text-gray-600 mb-4">
+//           Student Life Made Easy
+//         </h2>
+//         <h1 className="text-4xl sm:text-5xl lg:text-6xl text-[#5843aa] font-bold mb-8">
+//           About Us
+//         </h1>
+
+//         <div className="max-w-4xl text-lg sm:text-xl leading-relaxed text-gray-700 mb-12">
+//           <p className="mb-6">
+//             At <span className="font-semibold text-[#5843aa]">Student with Benefits</span>, we are committed to enhancing the university experience by making student life more connected, convenient, and cost-efficient.
+//           </p>
+//           <p>
+//             More than just an app, we are a community-driven platform that bridges the gap between students and businesses, providing exclusive deals, resources, and opportunities that support students throughout their academic journey.
+//           </p>
+//         </div>
+//       </div>
+
+//       <MissionVision />
+//       <div className="w-full max-w-6xl mx-auto px-4 py-16">
+//         <div className="bg-gradient-to-r from-[#cae1fd] to-white rounded-3xl p-8 md:p-12 shadow-xl border border-[#cae1fd]/30">
+//           <div className="flex flex-col lg:flex-row items-center gap-8">
+//             <div className="flex-1 text-center lg:text-left">
+//               <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+//                 Our Journey & Impact
+//               </h3>
+//               <p className="text-lg text-gray-700 mb-6 leading-relaxed">
+//                 Discover how we've grown from a startup idea to reaching over 10,000 students across Lebanon. Read about our challenges, victories, and the incredible community we've built together.
+//               </p>
+//               <div className="flex flex-wrap gap-4 justify-center lg:justify-start text-sm text-gray-600">
+//                 <span className="bg-white px-3 py-1 rounded-full">📊 10,000+ Students</span>
+//                 <span className="bg-white px-3 py-1 rounded-full">🤝 300+ Business Partners</span>
+//                 <span className="bg-white px-3 py-1 rounded-full">🎯 Real Impact Stories</span>
+//               </div>
+//             </div>
+
+//             <div className="flex-shrink-0">
+//               <Link to='/articles'>
+
+//                 Read Our Story
+//                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+//               </Link>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//       <div className="text-center mb-12">
+//         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 flex items-center justify-center gap-3">
+//           <Sparkles className="w-10 h-10 text-[#02afde]" />
+//           Explore Our Places
+//         </h2>
+//         <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+//           Discover the newest and trendiest spots on SWB Mobile App, where exclusive promotions and unforgettable adventures await to elevate your experience.
+//         </p>
+//       </div>
+
+//       <BubbleAnimation />
+//     </div>
+//   );
+// }
+
+
 function Dashboard() {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  const handleDownload = () => {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    if (/android/i.test(userAgent)) {
+      window.location.href =
+        "https://play.google.com/store/apps/details?id=com.omarnaous.swb";
+    } else if (/iPad|iPhone|iPod|Macintosh/.test(userAgent) && !window.MSStream) {
+      window.location.href =
+        "https://apps.apple.com/lb/app/student-with-benefits/id6590629020";
+    } else {
+      alert("This app is only available for Android and iOS devices.");
+    }
+  };
+
   return (
     <div className="flex flex-col items-center">
-      <div
-        className="relative w-full bg-cover bg-center h-[300px] sm:h-[400px] lg:h-[500px] xl:h-[600px]"
-      >
-        <video
-          src={Intro}
-          autoPlay
+      {/* Hero Section with Dynamic Background */}
+      <div className="relative w-full h-[100vh] min-h-[600px] overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#667eea] via-[#764ba2] to-[#02afde] transition-all duration-1000">
+          {/* Floating Elements */}
+          <div className="absolute inset-0">
+            {[...Array(20)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-1 h-1 sm:w-2 sm:h-2 bg-white/20 rounded-full animate-pulse"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 2}s`,
+                  animationDuration: `${2 + Math.random() * 2}s`
+                }}
+              />
+            ))}
+          </div>
 
-
-          muted
-          playsInline
-          controls={false}
-
-
-          className="w-full h-full object-cover"
-        />
-        <div
-          className="absolute bottom-[-10%] left-1/2 transform -translate-x-1/2 bg-[#02afde] text-black rounded-lg px-6 py-3 flex items-center cursor-pointer shadow-lg mb-10
-          md:px-5 md:py-2.5 md:text-base lg:px-6 lg:py-3 lg:text-lg"
-          onClick={handleDownload}
-        >
-          <FaDownload className="mr-2 text-lg md:text-base sm:text-sm" />
-          <p className="font-medium md:text-base sm:text-sm">Download Now</p>
+          {/* Mouse-following Glow Effect - Hidden on mobile for performance */}
+          <div
+            className="hidden sm:block absolute w-96 h-96 bg-white/10 rounded-full blur-3xl transition-all duration-300 ease-out pointer-events-none"
+            style={{
+              left: mousePosition.x - 192,
+              top: mousePosition.y - 192,
+            }}
+          />
         </div>
+
+        {/* Content Overlay */}
+        <div className="absolute inset-0 flex items-center justify-center px-4">
+          <div className="text-center w-full max-w-4xl">
+            {/* Main Heading with Animation */}
+            <div className="mb-6 sm:mb-8">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-3 sm:mb-4 animate-fade-in leading-tight">
+                Student Life
+                <span className="block bg-clip-text text-transparent bg-gradient-to-r from-[#cae1fd] to-[#cae1fd] leading-tight pb-1">
+                  Reimagined
+                </span>
+              </h1>
+
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 font-light leading-relaxed mt-3 sm:mt-5 px-2">
+                Connect, Save, and Thrive with Lebanon's Ultimate Student Platform
+              </p>
+            </div>
+
+            {/* Feature Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 md:gap-6 mb-8 sm:mb-12 px-2">
+              {[
+                { icon: '🎓', title: '10,000+', subtitle: 'Active Students' },
+                { icon: '🤝', title: '500+', subtitle: 'Partner Businesses' },
+                { icon: '💰', title: '20%', subtitle: 'Average Savings' }
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  className="bg-white/10 backdrop-blur-lg rounded-xl sm:rounded-2xl p-4 sm:p-6 transform hover:scale-105 transition-all duration-300 hover:bg-white/20"
+                  style={{ animationDelay: `${index * 0.2}s` }}
+                >
+                  <div className="text-2xl sm:text-3xl md:text-4xl mb-1 sm:mb-2">{item.icon}</div>
+                  <div className="text-lg sm:text-xl md:text-2xl font-bold text-white">{item.title}</div>
+                  <div className="text-sm sm:text-base text-white/80">{item.subtitle}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA Button */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center z-50 relative px-4">
+              <button
+                onClick={handleDownload}
+                className="group relative bg-gradient-to-r from-[#02afde] to-[#5843aa] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 flex justify-center items-center gap-2 sm:gap-3 w-full sm:w-auto max-w-xs sm:max-w-none text-center"
+              >
+                <FaDownload className="text-lg sm:text-xl group-hover:animate-bounce" />
+                <span className="whitespace-nowrap">Download Now</span>
+                <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Decorative Elements */}
+        <div className="absolute bottom-0 left-0 w-full h-16 sm:h-32 bg-gradient-to-t from-white to-transparent" />
       </div>
 
-      <div className="mt-16 flex flex-col items-center justify-center text-center px-4">
-        <h2 className="italic text-xl sm:text-2xl text-gray-600 mb-4">
-          Student Life Made Easy
-        </h2>
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl text-[#5843aa] font-bold mb-8">
-          About Us
-        </h1>
+      {/* About Section */}
+      <div className="mt-0 flex flex-col items-center justify-center text-center px-4 py-8 sm:py-12 md:py-16 w-full">
+        <div className="relative mb-6 sm:mb-8">
+          <h2 className="italic text-lg sm:text-xl md:text-2xl text-gray-600 mb-3 sm:mb-4">
+            Student Life Made Easy
+          </h2>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-[#5843aa] font-bold relative">
+            About Us
+            <div className="absolute -top-2 sm:-top-3 md:-top-4 -right-2 sm:-right-3 md:-right-4 w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 bg-gradient-to-r from-[#02afde] to-[#5843aa] rounded-full animate-pulse" />
+          </h1>
+        </div>
 
-        <div className="max-w-4xl text-lg sm:text-xl leading-relaxed text-gray-700 mb-12">
-          <p className="mb-6">
-            At <span className="font-semibold text-[#5843aa]">Student with Benefits</span>, we are committed to enhancing the university experience by making student life more connected, convenient, and cost-efficient.
-          </p>
-          <p>
-            More than just an app, we are a community-driven platform that bridges the gap between students and businesses, providing exclusive deals, resources, and opportunities that support students throughout their academic journey.
-          </p>
+        <div className="max-w-4xl text-base sm:text-lg md:text-xl leading-relaxed text-gray-700 mb-8 sm:mb-12">
+          <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-lg border border-blue-100">
+            <p className="mb-4 sm:mb-6">
+              At <span className="font-semibold text-[#5843aa] bg-gradient-to-r from-[#5843aa] to-[#02afde] bg-clip-text text-transparent">Student with Benefits</span>, we are committed to enhancing the university experience by making student life more connected, convenient, and cost-efficient.
+            </p>
+            <p>
+              More than just an app, we are a community-driven platform that bridges the gap between students and businesses, providing exclusive deals, resources, and opportunities that support students throughout their academic journey.
+            </p>
+          </div>
         </div>
       </div>
 
       <MissionVision />
-      <div className="w-full max-w-6xl mx-auto px-4 py-16">
-        <div className="bg-gradient-to-r from-[#cae1fd] to-white rounded-3xl p-8 md:p-12 shadow-xl border border-[#cae1fd]/30">
-          <div className="flex flex-col lg:flex-row items-center gap-8">
+
+      {/* Journey Section */}
+      <div className="w-full max-w-6xl mx-auto px-4 py-8 sm:py-12 md:py-16">
+        <div className="bg-gradient-to-r from-[#cae1fd] via-white to-[#f0f8ff] rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 shadow-xl border border-[#cae1fd]/30 relative overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#02afde] to-[#5843aa]" style={{
+              backgroundImage: `radial-gradient(circle at 20% 20%, rgba(2, 175, 222, 0.1) 0%, transparent 50%),
+                               radial-gradient(circle at 80% 80%, rgba(88, 67, 170, 0.1) 0%, transparent 50%)`
+            }} />
+          </div>
+
+          <div className="flex flex-col lg:flex-row items-center gap-6 sm:gap-8 relative z-10">
             <div className="flex-1 text-center lg:text-left">
-              <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
                 Our Journey & Impact
               </h3>
-              <p className="text-lg text-gray-700 mb-6 leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-700 mb-4 sm:mb-6 leading-relaxed">
                 Discover how we've grown from a startup idea to reaching over 10,000 students across Lebanon. Read about our challenges, victories, and the incredible community we've built together.
               </p>
-              <div className="flex flex-wrap gap-4 justify-center lg:justify-start text-sm text-gray-600">
-                <span className="bg-white px-3 py-1 rounded-full">📊 10,000+ Students</span>
-                <span className="bg-white px-3 py-1 rounded-full">🤝 300+ Business Partners</span>
-                <span className="bg-white px-3 py-1 rounded-full">🎯 Real Impact Stories</span>
+              <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 justify-center lg:justify-start text-xs sm:text-sm text-gray-600">
+                <span className="bg-white/80 backdrop-blur-sm px-2 sm:px-3 md:px-4 py-1 sm:py-2 rounded-full shadow-sm border border-white/50">📊 10,000+ Students</span>
+                <span className="bg-white/80 backdrop-blur-sm px-2 sm:px-3 md:px-4 py-1 sm:py-2 rounded-full shadow-sm border border-white/50">🤝 500+ Business Partners</span>
+                <span className="bg-white/80 backdrop-blur-sm px-2 sm:px-3 md:px-4 py-1 sm:py-2 rounded-full shadow-sm border border-white/50">🎯 Real Impact Stories</span>
               </div>
             </div>
 
-            <div className="flex-shrink-0">
-              <Link to='/articles'>
-
-                Read Our Story
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <div className="flex-shrink-0 w-full lg:w-auto">
+              <Link to='/articles' className="block w-full lg:w-auto">
+                <button className="group bg-gradient-to-r from-[#02afde] to-[#5843aa] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 sm:gap-3 w-full lg:w-auto">
+                  Read Our Story
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
               </Link>
             </div>
           </div>
         </div>
       </div>
-      <div className="text-center mb-12">
-        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 flex items-center justify-center gap-3">
-          <Sparkles className="w-10 h-10 text-[#02afde]" />
-          Explore Our Places
+
+      {/* Explore Section */}
+      <div className="text-center mb-8 sm:mb-12 px-4 w-full">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center justify-center gap-2 sm:gap-3">
+          <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-[#02afde] animate-spin-slow" />
+          <span className="leading-tight">Explore Our Places</span>
         </h2>
-        <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed px-2">
           Discover the newest and trendiest spots on SWB Mobile App, where exclusive promotions and unforgettable adventures await to elevate your experience.
         </p>
       </div>
 
       <BubbleAnimation />
+
+      <style jsx>{`
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        
+        .animate-fade-in {
+          animation: fade-in 1s ease-out;
+        }
+        
+        .animate-spin-slow {
+          animation: spin-slow 8s linear infinite;
+        }
+        
+        .hover\\:shadow-3xl:hover {
+          box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        @media (max-width: 640px) {
+          .hover\\:shadow-3xl:hover {
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
+          }
+        }
+      `}</style>
     </div>
   );
 }
