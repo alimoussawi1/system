@@ -307,7 +307,9 @@ const Packages = () => {
     const [showZoom, setShowZoom] = useState(false);
     const [hoveredCard, setHoveredCard] = useState(null);
     const { accountData } = useAccount();
-    const { uid } = accountData;
+    const { uid, plan } = accountData;
+    console.log(plan);
+
     const packageOptions = [
         {
             duration: "1 Month",
@@ -586,12 +588,19 @@ const Packages = () => {
                                                 </div>
 
                                                 {/* CTA Button */}
-                                                <button
-                                                    onClick={() => confirmPurchase(pkg)}
-                                                    className="w-full bg-gradient-to-r from-[#5842aa] to-[#02afde] hover:from-[#452d9a] hover:to-[#0288b8] text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg"
-                                                >
-                                                    Subscribe Now
-                                                </button>
+                                                {plan === pkg.name ? (
+                                                    <div className="w-full bg-green-100 text-green-700 font-semibold py-3 px-6 rounded-xl text-center border border-green-300">
+                                                        Subscribed
+                                                    </div>
+                                                ) : (
+                                                    <button
+                                                        onClick={() => confirmPurchase(pkg)}
+                                                        className="w-full bg-gradient-to-r from-[#5842aa] to-[#02afde] hover:from-[#452d9a] hover:to-[#0288b8] text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg"
+                                                    >
+                                                        Subscribe Now
+                                                    </button>
+                                                )}
+
                                             </div>
                                         </div>
                                     </div>

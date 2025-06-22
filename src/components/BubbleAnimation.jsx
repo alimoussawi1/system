@@ -143,7 +143,7 @@ const InfiniteRow = ({ images, speed, direction }) => {
           className="flex items-center justify-center flex-shrink-0 rounded-full shadow-md"
           style={{ width: "120px", height: "120px", overflow: "hidden" }}
         >
-          <img src={image} alt={`Logo ${index}`} className="w-full h-full object-cover" />
+          <img src={image} alt={`Logo ${index}`} draggable="false" className="w-full h-full object-cover" />
         </div>
       ))}
     </motion.div>

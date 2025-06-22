@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { collection, getDocs, query, where, doc, getDoc, updateDoc, deleteDoc, addDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, doc, getDoc, updateDoc, deleteDoc, addDoc, orderBy, limit } from "firebase/firestore";
 import { db } from "../firebase";
 import Table from "../components/Tabel";
 import { getAuth } from "firebase/auth";
@@ -20,10 +20,12 @@ import {
     FaUndo,       // For revert/undo action
     FaBan         // For decline from success state
 } from 'react-icons/fa';
+import { toast } from "react-toastify";
 const Payments = () => {
     const [payments, setPayments] = useState([]);
+
     const [loading, setLoading] = useState(true);
-    const { accountData } = useAccount();
+    const { accountData, showErrorToast, showSuccessToast } = useAccount();
     const [selectedBusinesses, setSelectedBusinesses] = useState([]);
     const { uid, isAdmin } = accountData;
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,6 +45,7 @@ const Payments = () => {
     ]
     const [selectedType, setSelectedType] = useState(typesOptions[0]); // default to Cash
     const [amount, setAmount] = useState("");
+    const [subscription, setSubscriptions] = useState(null)
 
     //add payment manually
     const openModalForAdd = () => {
@@ -103,7 +106,42 @@ const Payments = () => {
             console.error("Error fetching business names: ", error);
         }
     };
-    const downloadReceipt = (payment) => {
+    const fetchActiveSubscription = async (id) => {
+        try {
+            const subscriptionsRef = collection(db, "subscriptions");
+            const q = query(
+                subscriptionsRef,
+                where("businessUid", "==", id),
+                where("status", "==", true),
+                orderBy("endDate", "desc"),
+                limit(1)
+            );
+            const snapshot = await getDocs(q);
+
+            if (!snapshot.empty) {
+                const activeSub = snapshot.docs[0].data();
+                return activeSub; // ✅ Return active subscription
+            } else {
+                console.log("No active subscription found");
+                return null; // Optional: return null if none found
+            }
+        } catch (error) {
+            console.error("Error fetching active subscription:", error);
+            return null; // Optional: return null on error
+        }
+    };
+
+    const downloadReceipt = async (payment) => {
+
+
+        const subscription = await fetchActiveSubscription(payment.userId);
+        if (!subscription) {
+            showErrorToast("No active subscription!");
+            return;
+        }
+
+        console.log(subscription)
+
         const doc = new jsPDF();
 
         // Add Logo (assumes base64 or URL, see below)
@@ -137,9 +175,10 @@ const Payments = () => {
         const startDate = payment.createdAt?.seconds
             ? new Date(payment.createdAt.seconds * 1000).toLocaleDateString()
             : '-';
-        const endDate = payment.endDate?.seconds
-            ? new Date(payment.endDate.seconds * 1000).toLocaleDateString()
+        const endDate = subscription.endDate?.seconds
+            ? new Date(subscription.endDate.seconds * 1000).toLocaleDateString()
             : '-';
+
 
         const tableColumnX = 20;
         let tableRowY = 80;
@@ -153,7 +192,7 @@ const Payments = () => {
             tableRowY += lineHeight;
         };
 
-        addRow('Package Purchased:', '1 Year');
+        addRow('Package Purchased:', subscription.packageName || '-');
         addRow('Start Date:', startDate);
         addRow('End Date:', endDate);
         addRow('Payment Method:', payment.type || '-');
@@ -307,7 +346,7 @@ const Payments = () => {
                     };
 
                     return (
-                        <span className={`px-3 py-1 rounded-full text-sm font-semibold capitalize ${statusColor[value.toLowerCase()] || "bg-gray-100 text-gray-800"}`}>
+                        <span className={`px-3 py-1 rounded-full text-sm font-semibold capitalize ${statusColor[value?.toLowerCase()] || "bg-gray-100 text-gray-800"}`}>
                             {value}
                         </span>
                     );
@@ -330,169 +369,172 @@ const Payments = () => {
                 accessor: "businessName",
             });
         }
+        if (isAdmin) {
 
-        baseColumns.push({
-            Header: "Actions",
-            Cell: ({ row }) => {
-                const status = row.original.status;
+            baseColumns.push({
+                Header: "Actions",
+                Cell: ({ row }) => {
+                    const status = row.original.status;
 
-                // Admin actions for different statuses
-                if (isAdmin) {
-                    if (status === 'Pending') {
+                    // Admin actions for different statuses
+                    if (isAdmin) {
+                        if (status === 'Pending') {
+                            return (
+                                <div className="flex items-center justify-center">
+                                    <button
+                                        onClick={() => updatePaymentStatus(row.original.id, "Success")}
+                                        className="group relative p-2 rounded-lg bg-green-50 hover:bg-green-100 text-green-600 hover:text-green-700 transition-all duration-200 hover:scale-105"
+                                        title="Approve Payment"
+                                    >
+                                        <FaCheck className="w-4 h-4" />
+                                        <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                            Approve
+                                        </span>
+                                    </button>
+
+                                    <button
+                                        onClick={() => updatePaymentStatus(row.original.id, "Declined")}
+                                        className="group relative p-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 transition-all duration-200 hover:scale-105"
+                                        title="Decline Payment"
+                                    >
+                                        <FaTimes className="w-4 h-4" />
+                                        <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                            Decline
+                                        </span>
+                                    </button>
+
+                                    <button
+                                        onClick={() => downloadReceipt(row.original)}
+                                        className="group relative p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 transition-all duration-200 hover:scale-105"
+                                        title="Download Receipt"
+                                    >
+                                        <FaDownload className="w-4 h-4" />
+                                        <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                            Download
+                                        </span>
+                                    </button>
+
+                                    <button
+                                        onClick={() => handleDelete(row.original)}
+                                        className="group relative p-2 rounded-lg bg-gray-50 hover:bg-gray-100 text-gray-600 hover:text-red-600 transition-all duration-200 hover:scale-105"
+                                        title="Delete Payment"
+                                    >
+                                        <FaTrash className="w-4 h-4" />
+                                        <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                            Delete
+                                        </span>
+                                    </button>
+                                </div>
+                            );
+                        }
+
+                        else if (status === 'Success') {
+                            return (
+                                <div className="flex items-center justify-center gap-1">
+                                    <button
+                                        onClick={() => updatePaymentStatus(row.original.id, "Pending")}
+                                        className="group relative p-2 rounded-lg bg-orange-50 hover:bg-orange-100 text-orange-600 hover:text-orange-700 transition-all duration-200 hover:scale-105"
+                                        title="Move to Pending"
+                                    >
+                                        <FaUndo className="w-4 h-4" />
+                                        <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                            Revert
+                                        </span>
+                                    </button>
+
+                                    <button
+                                        onClick={() => updatePaymentStatus(row.original.id, "Declined")}
+                                        className="group relative p-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 transition-all duration-200 hover:scale-105"
+                                        title="Decline Payment"
+                                    >
+                                        <FaBan className="w-4 h-4" />
+                                        <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                            Decline
+                                        </span>
+                                    </button>
+
+                                    <button
+                                        onClick={() => downloadReceipt(row.original)}
+                                        className="group relative p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 transition-all duration-200 hover:scale-105"
+                                        title="Download Receipt"
+                                    >
+                                        <FaDownload className="w-4 h-4" />
+                                        <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                            Download
+                                        </span>
+                                    </button>
+
+                                    <button
+                                        onClick={() => handleDelete(row.original)}
+                                        className="group relative p-2 rounded-lg bg-gray-50 hover:bg-gray-100 text-gray-600 hover:text-red-600 transition-all duration-200 hover:scale-105"
+                                        title="Delete Payment"
+                                    >
+                                        <FaTrash className="w-4 h-4" />
+                                        <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                            Delete
+                                        </span>
+                                    </button>
+                                </div>
+                            );
+                        }
+
+                        else if (status === 'Declined') {
+                            return (
+                                <div className="flex items-center justify-center gap-1">
+                                    <button
+                                        onClick={() => updatePaymentStatus(row.original.id, "Pending")}
+                                        className="group relative p-2 rounded-lg bg-orange-50 hover:bg-orange-100 text-orange-600 hover:text-orange-700 transition-all duration-200 hover:scale-105"
+                                        title="Move to Pending"
+                                    >
+                                        <FaUndo className="w-4 h-4" />
+                                        <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                            Revert
+                                        </span>
+                                    </button>
+
+                                    <button
+                                        onClick={() => handleDelete(row.original)}
+                                        className="group relative p-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 transition-all duration-200 hover:scale-105"
+                                        title="Delete Payment"
+                                    >
+                                        <FaTrash className="w-4 h-4" />
+                                        <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                            Delete
+                                        </span>
+                                    </button>
+                                </div>
+                            );
+                        }
+                    }
+
+                    // Non-admin actions for successful payments
+                    if (status === "Success" && isAdmin) {
                         return (
                             <div className="flex items-center justify-center">
                                 <button
-                                    onClick={() => updatePaymentStatus(row.original.id, "Success")}
-                                    className="group relative p-2 rounded-lg bg-green-50 hover:bg-green-100 text-green-600 hover:text-green-700 transition-all duration-200 hover:scale-105"
-                                    title="Approve Payment"
-                                >
-                                    <FaCheck className="w-4 h-4" />
-                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                        Approve
-                                    </span>
-                                </button>
-
-                                <button
-                                    onClick={() => updatePaymentStatus(row.original.id, "Declined")}
-                                    className="group relative p-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 transition-all duration-200 hover:scale-105"
-                                    title="Decline Payment"
-                                >
-                                    <FaTimes className="w-4 h-4" />
-                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                        Decline
-                                    </span>
-                                </button>
-
-                                <button
                                     onClick={() => downloadReceipt(row.original)}
-                                    className="group relative p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 transition-all duration-200 hover:scale-105"
+                                    className="group relative p-3 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 transition-all duration-200 hover:scale-105 shadow-sm hover:shadow-md"
                                     title="Download Receipt"
                                 >
-                                    <FaDownload className="w-4 h-4" />
+                                    <FaDownload className="w-5 h-5" />
                                     <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                        Download
-                                    </span>
-                                </button>
-
-                                <button
-                                    onClick={() => handleDelete(row.original)}
-                                    className="group relative p-2 rounded-lg bg-gray-50 hover:bg-gray-100 text-gray-600 hover:text-red-600 transition-all duration-200 hover:scale-105"
-                                    title="Delete Payment"
-                                >
-                                    <FaTrash className="w-4 h-4" />
-                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                        Delete
+                                        Download Receipt
                                     </span>
                                 </button>
                             </div>
                         );
                     }
 
-                    else if (status === 'Success') {
-                        return (
-                            <div className="flex items-center justify-center gap-1">
-                                <button
-                                    onClick={() => updatePaymentStatus(row.original.id, "Pending")}
-                                    className="group relative p-2 rounded-lg bg-orange-50 hover:bg-orange-100 text-orange-600 hover:text-orange-700 transition-all duration-200 hover:scale-105"
-                                    title="Move to Pending"
-                                >
-                                    <FaUndo className="w-4 h-4" />
-                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                        Revert
-                                    </span>
-                                </button>
-
-                                <button
-                                    onClick={() => updatePaymentStatus(row.original.id, "Declined")}
-                                    className="group relative p-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 transition-all duration-200 hover:scale-105"
-                                    title="Decline Payment"
-                                >
-                                    <FaBan className="w-4 h-4" />
-                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                        Decline
-                                    </span>
-                                </button>
-
-                                <button
-                                    onClick={() => downloadReceipt(row.original)}
-                                    className="group relative p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 transition-all duration-200 hover:scale-105"
-                                    title="Download Receipt"
-                                >
-                                    <FaDownload className="w-4 h-4" />
-                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                        Download
-                                    </span>
-                                </button>
-
-                                <button
-                                    onClick={() => handleDelete(row.original)}
-                                    className="group relative p-2 rounded-lg bg-gray-50 hover:bg-gray-100 text-gray-600 hover:text-red-600 transition-all duration-200 hover:scale-105"
-                                    title="Delete Payment"
-                                >
-                                    <FaTrash className="w-4 h-4" />
-                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                        Delete
-                                    </span>
-                                </button>
-                            </div>
-                        );
-                    }
-
-                    else if (status === 'Declined') {
-                        return (
-                            <div className="flex items-center justify-center gap-1">
-                                <button
-                                    onClick={() => updatePaymentStatus(row.original.id, "Pending")}
-                                    className="group relative p-2 rounded-lg bg-orange-50 hover:bg-orange-100 text-orange-600 hover:text-orange-700 transition-all duration-200 hover:scale-105"
-                                    title="Move to Pending"
-                                >
-                                    <FaUndo className="w-4 h-4" />
-                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                        Revert
-                                    </span>
-                                </button>
-
-                                <button
-                                    onClick={() => handleDelete(row.original)}
-                                    className="group relative p-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 transition-all duration-200 hover:scale-105"
-                                    title="Delete Payment"
-                                >
-                                    <FaTrash className="w-4 h-4" />
-                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                        Delete
-                                    </span>
-                                </button>
-                            </div>
-                        );
-                    }
-                }
-
-                // Non-admin actions for successful payments
-                if (status === "Success") {
+                    // No actions available
                     return (
                         <div className="flex items-center justify-center">
-                            <button
-                                onClick={() => downloadReceipt(row.original)}
-                                className="group relative p-3 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 transition-all duration-200 hover:scale-105 shadow-sm hover:shadow-md"
-                                title="Download Receipt"
-                            >
-                                <FaDownload className="w-5 h-5" />
-                                <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                    Download Receipt
-                                </span>
-                            </button>
+                            <span className="text-gray-400 text-sm italic">No actions</span>
                         </div>
                     );
                 }
+            });
+        }
 
-                // No actions available
-                return (
-                    <div className="flex items-center justify-center">
-                        <span className="text-gray-400 text-sm italic">No actions</span>
-                    </div>
-                );
-            }
-        });
 
         return baseColumns;
     }, [isAdmin]);
@@ -585,7 +627,7 @@ const Payments = () => {
                 <div>
                     {
                         isAdmin && (
-                            <button onClick={openModalForAdd} className="bg-[#5842aa] text-white p-2 rounded-lg">
+                            <button onClick={openModalForAdd} className="bg-gradient-to-r from-indigo-600 to-purple-600  text-white p-2 rounded-lg">
                                 Add Payment
                             </button>
                         )
@@ -634,11 +676,17 @@ const Payments = () => {
                         top: "50%",
                         left: "50%",
                         transform: "translate(-50%, -50%)",
-                        width: "500px",
-                        padding: "20px",
+                        width: "90vw",
+                        maxWidth: "500px",
+                        height: "fit-content",
+                        maxHeight: "85vh",
+                        padding: "16px",
                         borderRadius: "10px",
-                        height: "400px"
+                        overflow: "hidden"
                     },
+                    overlay: {
+                        backgroundColor: "rgba(0, 0, 0, 0.5)"
+                    }
                 }}
             >
                 <div className="flex justify-between">
@@ -697,7 +745,7 @@ const Payments = () => {
 
 
                     <div className="flex justify-center w-full mt-8">
-                        <button type="submit" className="bg-[#10758B] w-[20%] text-white p-2 rounded-lg hover:bg-[#0a5f73] w-full">
+                        <button type="submit" className="bg-gradient-to-r from-indigo-600 to-purple-600  w-[20%] text-white p-2 rounded-lg hover:bg-[#0a5f73] w-full">
                             Add
                         </button>
                     </div>

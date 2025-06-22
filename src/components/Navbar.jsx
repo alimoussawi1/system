@@ -113,82 +113,143 @@ function Navbar() {
 
   return (
     <div className="bg-white shadow-md h-20 fixed top-0 w-full z-50">
-      <div className="container mx-auto py-2 flex justify-between items-center w-[100%]">
+      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo Section */}
-        <div className="flex flex-row items-center">
-          <Link to="/" className="flex items-center space-x-2">
-            <img src={Swb} alt="Student with Benefits" className="h-14 object-contain" />
-            <p className="font-bold">SWB</p>
+        <div className="flex items-center bg-white p-2 rounded-xl ">
+          <Link
+            to="/"
+            className="flex items-center space-x-3 hover:scale-105 transition-transform duration-200"
+          >
+            <div className="relative">
+              {/* Logo with optional white padding to remove edge shadows */}
+              <img
+                src={Swb}
+                alt="Student with Benefits"
+                className="h-12 object-contain rounded-md"
+              />
+
+              {/* Soft background glow (optional if logo has transparency) */}
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-blue-500/10 rounded-lg blur-md -z-10"></div>
+            </div>
+
+            {/* Text next to logo with gradient */}
+            <span className="font-bold text-xl bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
+              SWB
+            </span>
           </Link>
         </div>
 
+
         {/* Desktop Navigation Links */}
-        <div className="hidden md:flex space-x-6 items-center">
-          <Link to="/" className={`font-medium ${location.pathname === "/" ? "text-[#10758B]" : "text-gray-600"} hover:text-[#10758B]`}>Home</Link>
-          <Link to="/partner" className={`font-medium ${location.pathname === "/partner" ? "text-[#10758B]" : "text-gray-600"} hover:text-[#10758B]`}>Become a Partner</Link>
-          <Link to="/news" className={`font-medium ${location.pathname === "/news" ? "text-[#10758B]" : "text-gray-600"} hover:text-[#10758B]`}> News</Link>
+        <div className="hidden md:flex items-center space-x-8">
+          {[
+            { path: "/", label: "Home" },
+            { path: "/partner", label: "Become a Partner" },
+            { path: "/news", label: "News" }
+          ].map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`relative font-semibold text-lg transition-all duration-300 hover:scale-105 group ${location.pathname === item.path
+                ? "text-purple-600"
+                : "text-gray-700 hover:text-purple-600"
+                }`}
+            >
+              {item.label}
+              {location.pathname === item.path && (
+                <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-600 to-blue-500 rounded-full"></div>
+              )}
+              <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-600 to-blue-500 rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+            </Link>
+          ))}
         </div>
 
         {/* Desktop Buttons */}
-        <div className="hidden md:flex flex-row items-center">
-          <div className="h-10 w-[1px] bg-gray-300"></div>
+        <div className="hidden md:flex items-center space-x-4">
+          <div className="w-px h-8 bg-gradient-to-b from-transparent via-gray-300 to-transparent"></div>
 
-          {/* Pay Now Button */}
           {/* <button
             onClick={() => setShowModal(true)}
-            className="bg-[#5842aa] text-white font-medium rounded-lg px-4 py-2 flex items-center cursor-pointer hover:bg-[#452d9a]"
+            className="bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold px-6 py-2.5 rounded-full hover:from-purple-700 hover:to-blue-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
           >
             Get Started
           </button> */}
 
-          <div className="text-white rounded-lg px-4 py-2 flex items-center cursor-pointer">
-            <Link to="/login" className="text-[#02afde] font-medium">Log in</Link>
-          </div>
-
+          <Link
+            to="/login"
+            className="text-purple-600 font-semibold px-6 py-2.5 rounded-full border-2 border-purple-600 hover:bg-purple-600 hover:text-white transition-all duration-200 hover:scale-105"
+          >
+            Log in
+          </Link>
         </div>
 
         {/* Verification Code Modal */}
         {isVerifying && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-              <h2 className="text-xl font-bold mb-4">Verify Your Business Account</h2>
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50">
+            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
+                    Verify Your Account
+                  </h2>
+                  <button
+                    onClick={() => setIsVerifying(false)}
+                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
 
-              <div className="mb-3">
-                <label className="block font-medium text-sm mb-1">Enter Verification Code</label>
-                <input
-                  type="text"
-                  placeholder="Enter verification code"
-                  value={verificationCode}
-                  onChange={(e) => setVerificationCode(e.target.value)}
-                  className="w-full p-2 border rounded-md"
-                />
-              </div>
+                <div className="mb-6">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Verification Code</label>
+                  <input
+                    type="text"
+                    placeholder="Enter verification code"
+                    value={verificationCode}
+                    onChange={(e) => setVerificationCode(e.target.value)}
+                    className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200 text-center text-lg font-mono tracking-widest"
+                  />
+                </div>
 
-              <div className="flex justify-between">
-                <button
-                  onClick={() => setIsVerifying(false)}
-                  className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500"
-                >
-                  Cancel
-                </button>
-
-                <button
-                  onClick={handleVerifyCode}
-                  className="bg-[#10758B] text-white px-4 py-2 rounded-lg hover:bg-[#0a5f73]"
-                >
-                  Verify
-                </button>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setIsVerifying(false)}
+                    className="flex-1 bg-gray-100 text-gray-700 font-semibold py-3 rounded-lg hover:bg-gray-200 transition-all duration-200"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleVerifyCode}
+                    className="flex-1 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold py-3 rounded-lg hover:from-purple-700 hover:to-blue-600 transition-all duration-200 shadow-lg"
+                  >
+                    Verify
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         )}
 
-
         {/* Hamburger Menu for Mobile */}
         <div className="md:hidden">
-          <button className="text-gray-600 focus:outline-none mr-3" onClick={toggleMenu}>
-            <svg className="w-10 h-10" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+          <button
+            className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+            onClick={toggleMenu}
+          >
+            <svg
+              className={`w-6 h-6 transition-transform duration-300 ${isMenuOpen ? 'rotate-90' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              {isMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              )}
             </svg>
           </button>
         </div>
@@ -196,18 +257,44 @@ function Navbar() {
 
       {/* Mobile Menu */}
       <div className={`fixed top-0 right-0 h-full bg-white shadow-lg z-40 transition-transform transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"} w-64`}>
-        <button className="text-gray-600 p-4 focus:outline-none " onClick={toggleMenu} >
-          <svg className="w-6 h-6 " fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <button className="text-gray-600 p-4 focus:outline-none" onClick={toggleMenu}>
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
         </button>
+
         <nav className="flex flex-col p-4 space-y-4">
-          <Link to="/" className={`font-medium ${location.pathname === "/" ? "text-gray-600" : "text-gray-600"} hover:text-[#10758B]`} onClick={() => setIsMenuOpen(false)}>Home</Link>
-          <Link to="/partner" className={`font-medium ${location.pathname === "/partner" ? "text-gray-600" : "text-gray-600"} hover:text-[#10758B]`} onClick={() => setIsMenuOpen(false)}>Become a Partner</Link>
-          <Link to="/news" className={`font-medium ${location.pathname === "/news" ? "text-gray-600" : "text-gray-600"} hover:text-[#10758B]`} onClick={() => setIsMenuOpen(false)}>News</Link>
+          {[
+            { path: "/", label: "Home" },
+            { path: "/partner", label: "Become a Partner" },
+            { path: "/news", label: "News" }
+          ].map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`relative font-semibold text-lg transition-all duration-300 py-3 px-4 rounded-lg ${location.pathname === item.path
+                ? "text-purple-600 bg-gradient-to-r from-purple-50 to-blue-50"
+                : "text-gray-700 hover:text-purple-600 hover:bg-gray-50"
+                }`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {item.label}
+              {location.pathname === item.path && (
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-600 to-blue-500 rounded-r-full"></div>
+              )}
+              <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-600 to-blue-500 rounded-r-full scale-x-0 hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+            </Link>
+          ))}
 
-          <Link to="/login" className="text-[#02afde] font-medium">Log in</Link>
-
+          <div className="pt-4 border-t border-gray-200">
+            <Link
+              to="/login"
+              className="block text-center text-purple-600 font-semibold py-3 px-4 rounded-full border-2 border-purple-600 hover:bg-purple-600 hover:text-white transition-all duration-200 hover:scale-105"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Log in
+            </Link>
+          </div>
         </nav>
       </div>
 

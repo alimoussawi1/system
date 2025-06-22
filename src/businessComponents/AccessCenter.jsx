@@ -7,8 +7,10 @@ import { FaToggleOn, FaToggleOff } from "react-icons/fa"; // <-- Added react-ico
 import 'react-toastify/dist/ReactToastify.css';
 import { MdToggleOn } from "react-icons/md";
 import { MdToggleOff } from "react-icons/md";
+import { useAccount } from "../context/AccountContext";
 const AccessCenter = () => {
     const [businesses, setBusinesses] = useState([]);
+    const { showSuccessToast, showErrorToast } = useAccount();
 
     useEffect(() => {
         const fetchBusinesses = async () => {
@@ -29,7 +31,7 @@ const AccessCenter = () => {
                 setBusinesses(fetchedBusinesses);
             } catch (error) {
                 console.error("Error fetching businesses:", error);
-                toast.error("Failed to fetch businesses.");
+
             }
         };
 
@@ -54,7 +56,7 @@ const AccessCenter = () => {
             // No success toast (silent update)
         } catch (error) {
             console.error("Error updating access:", error);
-            toast.error("Error updating access.");
+            showErrorToast("Error updating access.");
         }
     };
 

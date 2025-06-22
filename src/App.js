@@ -320,7 +320,7 @@ function Dashboard() {
             </div>
 
             {/* CTA Button */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center z-50 relative px-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center z-0 relative px-4">
               <button
                 onClick={handleDownload}
                 className="group relative bg-gradient-to-r from-[#02afde] to-[#5843aa] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 flex justify-center items-center gap-2 sm:gap-3 w-full sm:w-auto max-w-xs sm:max-w-none text-center"

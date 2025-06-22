@@ -7,6 +7,7 @@ const News = () => {
 
     useEffect(() => {
         const fetchBanners = async () => {
+            setLoading(true);
             try {
                 const db = getFirestore();
                 const bannerDoc = await getDoc(doc(db, "banners", "bannerList"));
@@ -28,7 +29,13 @@ const News = () => {
     }, []);
 
     if (loading) {
-        return <div>Loading banners...</div>;
+        return <div className="flex justify-center items-center mt-20">
+            <div className="flex items-center justify-center gap-3 mt-4">
+                <div className="w-4 h-4 bg-gradient-to-r from-[#10758B] to-[#0D5F73] rounded-full animate-bounce [animation-delay:0ms] shadow-lg" />
+                <div className="w-4 h-4 bg-gradient-to-r from-[#10758B] to-[#0D5F73] rounded-full animate-bounce [animation-delay:150ms] shadow-lg" />
+                <div className="w-4 h-4 bg-gradient-to-r from-[#10758B] to-[#0D5F73] rounded-full animate-bounce [animation-delay:300ms] shadow-lg" />
+            </div>
+        </div>
     }
 
     return (

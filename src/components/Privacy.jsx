@@ -278,7 +278,7 @@ const Privacy = () => {
 
         {/* Contact Information */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-8 text-white">
-          <h2 className="text-2xl font-bold mb-6 text-center">Contact Us</h2>
+          <h2 className="text-2xl font-bold mb-6 ">Contact Us</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">

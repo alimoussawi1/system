@@ -18,7 +18,7 @@ function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
 
     const navigate = useNavigate();
-    const { setAccountData } = useAccount();
+    const { setAccountData, showSuccessToast, showErrorToast } = useAccount();
     const fetchActiveSubscription = async (uid) => {
         try {
             const subscriptionsRef = collection(db, "subscriptions");
@@ -98,7 +98,7 @@ function LoginPage() {
                 }
 
                 if (role === "student") {
-                    toast.error("This is a login for businesses only! Students use your mobile app!");
+                    showErrorToast("This is a login for businesses only! Students use your mobile app!");
                     setLoading(false);
                     return;
                 }
@@ -141,10 +141,10 @@ function LoginPage() {
 
         try {
             await sendPasswordResetEmail(auth, username);
-            toast.success("Password reset email sent! Check your inbox.");
+            showSuccessToast("Password reset email sent! Check your inbox.");
         } catch (err) {
             setError("Failed to send password reset email.");
-            toast.error("Failed to send password reset email.");
+            showErrorToast("Failed to send password reset email.");
         }
     };
 

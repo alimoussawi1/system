@@ -143,6 +143,7 @@ const Businesses = () => {
                         pageSize={pageSize}
                         checkbox={false}
                         totalPages={totalPages}
+                        search={true}
                     />
                     <EditBusinessModal
                         isOpen={isModalOpen}

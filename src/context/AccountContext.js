@@ -2,12 +2,31 @@ import React, { createContext, useState, useEffect, useContext } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc, collection, query, where, orderBy, limit, getDocs } from "firebase/firestore";
 import { auth, db } from "../firebase";
+import toastr from "toastr";
+import "toastr/build/toastr.min.css";
 
 const AccountContext = createContext();
-
+toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    timeOut: 3000,
+    positionClass: "toast-top-right",
+    preventDuplicates: true,
+};
 export const AccountProvider = ({ children }) => {
     const [accountData, setAccountData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const showSuccessToast = (message) => {
+        toastr.success(message, '', {
+            iconClass: 'toast-success custom-success',
+        });
+    };
+
+    const showErrorToast = (message) => {
+        toastr.error(message, '', {
+            iconClass: 'toast-error custom-error',
+        });
+    };
     const fetchActiveSubscription = async (uid) => {
         try {
             const subscriptionsRef = collection(db, "subscriptions");
@@ -109,10 +128,74 @@ export const AccountProvider = ({ children }) => {
     }, []);
 
     return (
-        <AccountContext.Provider value={{ accountData, setAccountData, loading }}>
-            {children}
-        </AccountContext.Provider>
+        <>
+            <style>
+                {`
+  /* SUCCESS TOAST */
+  .toast-success.custom-success {
+    background-color: white !important;
+    color: #5842aa !important;
+    border-left: 6px solid #7e22ce !important;
+    box-shadow: 0 8px 20px rgba(126, 34, 206, 0.15) !important;
+    border-radius: 8px !important;
+    padding: 16px !important;
+    backdrop-filter: none !important;       /* removes any blur */
+    -webkit-backdrop-filter: none !important;
+    opacity: 1 !important;                  /* fully opaque */
+  }
+
+  .toast-success.custom-success .toast-message {
+    color: #7e22ce !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+  }
+
+  .toast-success.custom-success::before {
+    color: #7e22ce !important;
+    font-size: 20px !important;
+  }
+
+  .toast-success .toast-progress {
+    background-color: #7e22ce !important;
+    height: 4px !important;
+  }
+
+  /* ERROR TOAST */
+  .toast-error.custom-error {
+    background-color: white !important;
+    color: #b91c1c !important;
+    border-left: 6px solid #f87171 !important; /* Light red */
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.1) !important;
+    border-radius: 8px !important;
+    padding: 16px !important;
+  }
+
+  .toast-error.custom-error .toast-message {
+    color: #b91c1c !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+  }
+
+  .toast-error.custom-error::before {
+    color: #ef4444 !important;
+    font-size: 20px !important;
+  }
+
+  .toast-error .toast-progress {
+    background-color: #ef4444 !important; /* Red progress bar */
+    height: 4px !important;
+  }
+`}
+            </style>
+
+
+
+            <AccountContext.Provider value={{ accountData, setAccountData, loading, showSuccessToast, showErrorToast }}>
+                {children}
+            </AccountContext.Provider>
+        </>
     );
+
 };
 
 export const useAccount = () => useContext(AccountContext);

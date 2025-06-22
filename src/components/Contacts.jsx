@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import emailjs from "emailjs-com"; // Make sure to install this: npm install emailjs-com
 import { ToastContainer, toast } from "react-toastify"; // Import Toastify
 import "react-toastify/dist/ReactToastify.css"; // Import Toastify styles
+import { useAccount } from "../context/AccountContext";
 const ContactUs = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -11,7 +12,7 @@ const ContactUs = () => {
     subject: "",
     description: "",
   });
-
+  const { showSuccessToast, showErrorToast } = useAccount()
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -30,9 +31,7 @@ const ContactUs = () => {
 
 
     // Show a loading toast
-    const toastId = toast.loading("Sending message...", {
 
-    });
     emailjs
       .send(
         "service_5ihkoqc", // Your Service ID
@@ -44,14 +43,8 @@ const ContactUs = () => {
         console.log("SUCCESS!", response.status, response.text);
 
         // Update loading toast to success
-        toast.update(toastId, {
-          render: "Message sent successfully! ",
-          type: "success",
-          isLoading: false,
-          autoClose: 3000,
-          position: "top-right",
 
-        });
+        showSuccessToast("Message sent successfully! ")
 
         // Reset form after success
         setFormData({
@@ -67,14 +60,7 @@ const ContactUs = () => {
         console.log("FAILED...", error);
 
         // Update loading toast to error
-        toast.update(toastId, {
-          render: "Failed to send message. Please try again.",
-          type: "error",
-          isLoading: false,
-          autoClose: 3000,
-          position: "top-right",
-
-        });
+        showErrorToast("Failed to send message!")
       });
   };
 

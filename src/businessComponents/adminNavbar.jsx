@@ -181,11 +181,11 @@ const AdminNavbar = ({ name, plan, timeLeft, isAdmin }) => {
                                 {name}
                             </span>
                             <span className="text-xs text-gray-500">
-                                {isAdmin ? "Administrator" : "User"}
+                                {isAdmin ? "Administrator" : "Business"}
                             </span>
                         </div>
 
-                        <FaChevronDown className="w-4 h-4 text-gray-400" />
+
                     </div>
                 </div>
             </div>

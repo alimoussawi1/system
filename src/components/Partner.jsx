@@ -389,6 +389,7 @@ import "react-toastify/dist/ReactToastify.css"; // Import Toastify styles
 // export default Partner;
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash, FaTimes, FaCheck, FaSpinner, FaUser, FaBuilding, FaEnvelope, FaPhone, FaLock, FaStar, FaChevronRight, FaChevronLeft, FaShieldAlt } from "react-icons/fa";
+import { useAccount } from "../context/AccountContext";
 
 const Partner = () => {
   const [showModal, setShowModal] = useState(false);
@@ -398,6 +399,7 @@ const Partner = () => {
   const [enteredCode, setEnteredCode] = useState("");
   const [userId, setUserId] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
+  const { showSuccessToast, showErrorToast } = useAccount();
 
   const [businessEmail, setBusinessEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -454,17 +456,17 @@ const Partner = () => {
     if (!canProceedStep3) return;
 
     if (!businessEmail || !businessName || !password || !firstName || !lastName) {
-      toast.error("Please fill all fields");
+      showErrorToast("Please fill all fields");
       return;
     }
 
     if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
+      showErrorToast("Passwords do not match");
       return;
     }
 
     if (!isStrongPassword(password)) {
-      toast.error("Password must be at least 6 characters long, containing at least 1 number.");
+      showErrorToast("Password must be at least 6 characters long, containing at least 1 number.");
       return;
     }
 
@@ -498,17 +500,17 @@ const Partner = () => {
           },
         });
 
-        toast.success("Verification code sent! Check your email.");
+        showSuccessToast("Verification code sent! Check your email.");
         setIsVerifying(true);
         setShowModal(false);
         setCurrentStep(1);
       } else {
         await userCredential.user.delete();
-        toast.error("Failed to send verification email. User deleted.");
+        showErrorToast("Failed to send verification email. User deleted.");
       }
     } catch (error) {
       console.error("Error creating user or sending email:", error);
-      toast.error("Failed to create business account or send verification email.");
+      showErrorToast("Failed to create business account or send verification email.");
     } finally {
       setLoading(false);
     }
@@ -517,7 +519,7 @@ const Partner = () => {
 
   const verifyCode = async () => {
     if (!enteredCode) {
-      toast.error("Enter the verification code");
+      showErrorToast("Enter the verification code");
       return;
     }
 
@@ -547,7 +549,7 @@ const Partner = () => {
 
 
 
-          toast.success("Business account verified and created!");
+          showSuccessToast("Business account verified and created!");
           setIsVerifying(false);
           const templateParams = {
             businessEmail: businessEmail,
@@ -576,14 +578,14 @@ const Partner = () => {
 
 
         } else {
-          toast.error("Incorrect verification code");
+          showErrorToast("Incorrect verification code");
         }
       } else {
-        toast.error("No verification info found");
+        showErrorToast("No verification info found");
       }
     } catch (error) {
       console.error("Verification error:", error);
-      toast.error("Verification failed");
+      showErrorToast("Verification failed");
     }
     finally {
       setVerify(false)
@@ -607,18 +609,18 @@ const Partner = () => {
           verificationCode: newCode,
         }, { merge: true });
 
-        toast.success("Verification code resent!");
+        showSuccessToast("Verification code resent!");
       } else {
-        toast.error("Failed to resend verification code.");
+        showErrorToast("Failed to resend verification code.");
       }
       setTimeout(() => {
-        toast.success("Verification code resent!");
+        showSuccessToast("Verification code resent!");
         setResendClicked(false);
       }, 1000);
     } catch (err) {
       setTimeout(() => setResendClicked(false), 30000);
       console.error("Resend error:", err);
-      toast.error("Error resending verification code.");
+      showErrorToast("Error resending verification code.");
     }
   };
 
@@ -643,10 +645,6 @@ const Partner = () => {
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-20">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium mb-8 shadow-lg" style={{ color: '#5842aa' }}>
-              <FaStar className="mr-2 text-yellow-500" />
-              Join 500+ successful business partners
-            </div>
 
             <h1 className="text-6xl md:text-8xl font-black mb-6 leading-tight">
               <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, #5842aa 0%, #2563eb 100%)` }}>
@@ -681,15 +679,29 @@ const Partner = () => {
             {[
               { number: "500+", label: "Active Partners" },
               { number: "10K+", label: "Monthly Customers" },
-              { number: "98%", label: "Satisfaction Rate" },
+              { number: "98%", label: "Satisfaction Rate", note: "The remaining 2% thought we were Tinder." },
               { number: "24/7", label: "Support Available" }
             ].map((stat, index) => (
-              <div key={index} className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                <div className="text-4xl font-black mb-2" style={{ color: '#5842aa' }}>{stat.number}</div>
+              <div
+                key={index}
+                className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+              >
+                <div className="text-4xl font-black mb-2" style={{ color: '#5842aa' }}>
+                  {stat.number}
+                </div>
                 <div className="text-gray-600 font-medium">{stat.label}</div>
+                {stat.note && (
+                  <div className="mt-2 text-[10px] text-gray-400 italic">
+                    &quot;{stat.note.split("Tinder")[0]}
+                    <span className="text-[#5842aa] font-medium">Tinder</span>&quot;
+                  </div>
+                )}
+
+
               </div>
             ))}
           </div>
+
 
           {/* Features */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

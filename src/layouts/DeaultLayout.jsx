@@ -2,16 +2,13 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { ToastContainer } from 'react-toastify';
-
 
 const DefaultLayout = ({ children }) => {
     return (
-        <div>
+        <div className="min-h-screen flex flex-col">
             <Navbar />
-            <main>{children}</main>
+            <main className="flex-1">{children}</main>
             <Footer />
-
         </div>
     );
 };

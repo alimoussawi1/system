@@ -230,7 +230,7 @@ const Subscriptions = () => {
 
                 </div>
                 <div>
-                    <button onClick={openModalForAdd} className="bg-[#5842aa] text-white p-2 rounded-lg">
+                    <button onClick={openModalForAdd} className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-2 rounded-lg">
                         Add Subscription
                     </button>
                 </div>
@@ -270,72 +270,105 @@ const Subscriptions = () => {
                         top: "50%",
                         left: "50%",
                         transform: "translate(-50%, -50%)",
-                        width: "500px",
-                        padding: "20px",
+                        width: "90vw",
+                        maxWidth: "500px",
+                        height: "fit-content",
+                        maxHeight: "85vh",
+                        padding: "16px",
                         borderRadius: "10px",
-                        height: "500px"
+                        overflow: "hidden"
                     },
+                    overlay: {
+                        backgroundColor: "rgba(0, 0, 0, 0.5)"
+                    }
                 }}
             >
-                <div className="flex justify-between">
-                    <div>
-                        <h2 className="mb-4">{isEditMode ? "Edit Subscription" : "Add Subscription"}</h2>
-                    </div>
-                    <div>
-                        <FaRegTimesCircle onClick={closeModal} />
-                    </div>
+                <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-lg font-semibold">{isEditMode ? "Edit Subscription" : "Add Subscription"}</h2>
+                    <button
+                        onClick={closeModal}
+                        className="text-gray-500 hover:text-gray-700 p-1"
+                        type="button"
+                    >
+                        <FaRegTimesCircle size={20} />
+                    </button>
                 </div>
 
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label className="block mb-1">Business Names</label>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-700">Business Names</label>
                         <Select
                             isMulti
                             options={businessOptions}
                             value={selectedBusinesses}
                             onChange={setSelectedBusinesses}
                             placeholder="Select businesses"
-                            className="text-left"
+                            className="text-left text-sm"
+                            classNamePrefix="select"
                             required
+                            styles={{
+                                control: (base) => ({
+                                    ...base,
+                                    minHeight: '42px',
+                                    fontSize: '14px'
+                                }),
+                                menu: (base) => ({
+                                    ...base,
+                                    fontSize: '14px'
+                                })
+                            }}
                         />
                     </div>
 
-                    <div className="mb-4">
-                        <label className="block mb-1">Start Date</label>
+                    <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-700">Start Date</label>
                         <input
                             type="date"
                             value={startDate ? startDate : ''}
                             onChange={(e) => setStartDate(e.target.value)}
-                            className="border p-2 w-full"
+                            className="border border-gray-300 rounded-lg p-3 w-full text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                             required
                         />
                     </div>
 
-                    <div className="mb-4">
-                        <label className="block mb-1">End Date</label>
+                    <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-700">End Date</label>
                         <input
                             type="date"
                             value={endDate ? endDate : ''}
                             onChange={(e) => setEndDate(e.target.value)}
-                            className="border p-2 w-full"
+                            className="border border-gray-300 rounded-lg p-3 w-full text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                             required
                         />
                     </div>
 
-                    <div className="mb-4">
-                        <label className="block mb-1">Package Name</label>
+                    <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-700">Package Name</label>
                         <Select
                             options={packageOptions}
                             value={selectedPackage}
                             onChange={setSelectedPackage}
                             placeholder="Select package"
-                            className="text-left"
+                            className="text-left text-sm"
+                            classNamePrefix="select"
                             required
+                            styles={{
+                                control: (base) => ({
+                                    ...base,
+                                    minHeight: '42px',
+                                    fontSize: '14px'
+                                }),
+                                menu: (base) => ({
+                                    ...base,
+                                    fontSize: '14px'
+                                })
+                            }}
                         />
                     </div>
+
                     {isEditMode && (
-                        <div className="mb-4 flex items-center gap-4">
-                            <label className="block mb-1 font-semibold text-gray-700">Status</label>
+                        <div className="flex items-center justify-between">
+                            <label className="text-sm font-medium text-gray-700">Status</label>
                             <label className="relative inline-flex items-center cursor-pointer">
                                 <input
                                     type="checkbox"
@@ -344,24 +377,23 @@ const Subscriptions = () => {
                                     className="sr-only"
                                 />
                                 <div
-                                    className={`w-12 h-7 rounded-full transition-colors duration-300 ease-in-out
-          ${selectedStatus ? 'bg-green-500' : 'bg-gray-300'}`}
+                                    className={`w-12 h-6 rounded-full transition-colors duration-300 ease-in-out
+                                        ${selectedStatus ? 'bg-green-500' : 'bg-gray-300'}`}
                                 ></div>
                                 <div
-                                    className={`absolute left-1 top-1 w-5 h-5 rounded-full bg-white border border-gray-300
-          transition-transform duration-300 ease-in-out
-          ${selectedStatus ? 'translate-x-5' : 'translate-x-0'}`}
+                                    className={`absolute left-0.5 top-0.5 w-5 h-5 rounded-full bg-white border border-gray-300
+                                        transition-transform duration-300 ease-in-out
+                                        ${selectedStatus ? 'translate-x-6' : 'translate-x-0'}`}
                                 ></div>
                             </label>
                         </div>
                     )}
 
-
-
-
-
-                    <div className="flex justify-center w-full mt-8">
-                        <button type="submit" className="bg-[#10758B] w-[20%] text-white p-2 rounded-lg hover:bg-[#0a5f73] w-full">
+                    <div className="pt-4">
+                        <button
+                            type="submit"
+                            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white p-3 rounded-lg w-full font-medium transition-all duration-200"
+                        >
                             {isEditMode ? "Update" : "Submit"}
                         </button>
                     </div>
