@@ -43,6 +43,7 @@ const Table = ({
             columns,
             data: filteredData,
             initialState: { pageIndex: 0, pageSize },
+            autoResetPage: false,
         },
         usePagination
     );

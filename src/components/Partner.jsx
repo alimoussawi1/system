@@ -390,6 +390,7 @@ import "react-toastify/dist/ReactToastify.css"; // Import Toastify styles
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash, FaTimes, FaCheck, FaSpinner, FaUser, FaBuilding, FaEnvelope, FaPhone, FaLock, FaStar, FaChevronRight, FaChevronLeft, FaShieldAlt } from "react-icons/fa";
 import { useAccount } from "../context/AccountContext";
+import WebsiteDiscoverySection from "./discover";
 
 const Partner = () => {
   const [showModal, setShowModal] = useState(false);
@@ -421,9 +422,12 @@ const Partner = () => {
   ];
 
   const isStrongPassword = (pwd) => {
-    const regex = /^(?=.*\d)[A-Za-z\d]{6}$/;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
     return regex.test(pwd);
   };
+
+
+
 
   const getPasswordStrength = (pwd) => {
     if (!pwd) return { strength: 0, text: "", color: "" };
@@ -630,6 +634,7 @@ const Partner = () => {
     { number: 3, title: "Security", icon: FaShieldAlt }
   ];
 
+
   return (
 
     <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-blue-50" style={{ background: 'linear-gradient(135deg, #cae1fd 0%, #ffffff 50%, #f8fafc 100%)' }}>
@@ -736,6 +741,7 @@ const Partner = () => {
             ))}
           </div>
         </div>
+        <WebsiteDiscoverySection />
       </div>
 
       {/* Multi-Step Registration Modal */}
@@ -932,6 +938,12 @@ const Partner = () => {
                         {showPassword ? <FaEyeSlash /> : <FaEye />}
                       </button>
                     </div>
+
+                    <p className="text-sm text-gray-500 mt-1 italic">
+                      Password must be at least 6 characters long and contain at least one <span className="text-purple-600 font-medium">uppercase</span> letter, one <span className="text-purple-600 font-medium">lowercase</span> letter, and one <span className="text-purple-600 font-medium">digit</span>.
+                    </p>
+
+
                     {password && (
                       <div className="mt-3">
                         <div className="flex items-center justify-between mb-2">

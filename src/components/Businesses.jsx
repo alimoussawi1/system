@@ -98,13 +98,19 @@ const Businesses = () => {
             const db = getFirestore();
             const docRef = doc(db, "users", updatedData.uid);
             await updateDoc(docRef, updatedData);
+
+            // Update the specific business in state instead of re-fetching all
+            setBusinesses(prev =>
+                prev.map(b => (b.uid === updatedData.uid ? updatedData : b))
+            );
+
             setIsModalOpen(false);
             setSelectedBusiness(null);
-            fetchBusinesses();
         } catch (error) {
             console.error("Error updating business:", error);
         }
     };
+
 
     const columns = useMemo(() => [
         { Header: "Business Name", accessor: "businessName" },
@@ -126,7 +132,6 @@ const Businesses = () => {
 
     return (
         <div className="p-4">
-            <h2 className="text-2xl font-semibold mb-4">Businesses</h2>
             {loading ? (
 
                 <div className="flex items-center justify-center gap-2 mt-4">

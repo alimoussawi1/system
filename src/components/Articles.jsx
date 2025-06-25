@@ -15,7 +15,7 @@ const Articles = () => {
                         A Year of Growth and Resilience
                     </h1>
                     <p className="text-xl text-blue-100 max-w-3xl leading-relaxed">
-                        Since our launch in August 2024, SWB Mobile has reached over 10,000 students and partnered with over 300 businesses across Lebanon. Overcoming startup challenges—even during the nation's conflict—has only strengthened our resolve to deliver real value to university life.
+                        Since our launch in August 2024, SWB Mobile has reached over 10,000 students and partnered with over 500 businesses across Lebanon. Overcoming startup challenges, even during the nation's conflict, has only strengthened our resolve to deliver real value to university life.
                     </p>
                 </div>
             </div>
@@ -126,7 +126,7 @@ const Articles = () => {
                     <div className="grid gap-8">
                         <div className="bg-white rounded-xl p-8 shadow-lg border-l-4 border-blue-500">
                             <blockquote className="text-lg italic text-gray-700 mb-4">
-                                "SWB isn't just an app—it's our campus companion. From exclusive discounts to finding my first student job at my local coffee shop, it's made uni life so much easier."
+                                "SWB isn't just an app, it's our campus companion. From exclusive offers to finding my first student job at my local coffee shop, it's made uni life so much easier."
                             </blockquote>
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
@@ -141,7 +141,7 @@ const Articles = () => {
 
                         <div className="bg-white rounded-xl p-8 shadow-lg border-l-4 border-cyan-500">
                             <blockquote className="text-lg italic text-gray-700 mb-4">
-                                "SWB helped me save money every week. I never realized how many offers were just around the corner until I joined. We definitely need something like this."
+                                "SWB helped me save money every week. I never realized how many deals were just around the corner until I joined. We definitely need something like this."
                             </blockquote>
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold">
@@ -156,7 +156,7 @@ const Articles = () => {
 
                         <div className="bg-white rounded-xl p-8 shadow-lg border-l-4 border-purple-500">
                             <blockquote className="text-lg italic text-gray-700 mb-4">
-                                "SWB turned my city into a student-friendly zone. From gym memberships to groceries, it's helped me stretch every pound."
+                                "SWB turned my city into a student-friendly zone. From gym memberships to food and drinks, it's helped me stretch every dollar."
                             </blockquote>
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">
