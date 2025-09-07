@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { useAccount } from '../context/AccountContext';
 import { Search } from 'lucide-react';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 const ScannedCustomers = () => {
     const { accountData } = useAccount();
@@ -25,6 +27,30 @@ const ScannedCustomers = () => {
                 .includes(searchTerm.toLowerCase())
         );
     }, [searchTerm, scanBusiness]);
+    const exportToExcel = () => {
+        if (!scanBusiness.length) return;
+
+        // Map your data for export (optional: remove unwanted fields)
+        const exportData = scanBusiness.map(item => ({
+            Name: item.fullName,
+            Email: item.email,
+            Phone: item.phone,
+            University: item.university,
+            "Scanned At": item.scannedAt,
+            ...(isAdmin && { "Business Name": item.businessName })
+        }));
+
+        // Create a worksheet
+        const worksheet = XLSX.utils.json_to_sheet(exportData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Scanned Customers");
+
+        // Write workbook and trigger download
+        const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+        const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+        saveAs(data, `Scanned_Customers_${new Date().toLocaleDateString()}.xlsx`);
+    };
+
 
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -267,16 +293,28 @@ const ScannedCustomers = () => {
                     ) : (
                         <>
 
-                            <div className="relative flex-1 max-w-md">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                                <input
-                                    type="text"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    placeholder="Search across all fields..."
-                                    className="w-full pl-10 pr-4 py-3 bg-gradient-to-r from-white to-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm transition-all duration-300 hover:shadow-md"
-                                />
+                            <div className="flex items-center gap-4 max-w-full">
+                                <div className="relative flex-1">
+                                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                                    <input
+                                        type="text"
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        placeholder="Search across all fields..."
+                                        className="w-full pl-10 pr-4 py-3 bg-gradient-to-r from-white to-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm transition-all duration-300 hover:shadow-md"
+                                    />
+                                </div>
+
+                                <button
+                                    onClick={exportToExcel}
+                                    className="px-4 py-3 bg-indigo-600 text-white rounded-2xl hover:bg-indigo-700 transition-all whitespace-nowrap"
+                                >
+                                    Export to Excel
+                                </button>
                             </div>
+
+
+
 
                             <Table
                                 columns={scannedBusiness}

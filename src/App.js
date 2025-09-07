@@ -35,10 +35,15 @@ import News from "./components/News";
 import Businesses from "./components/Businesses";
 import Subscriptions from "./components/Subscriptions";
 import Articles from "./components/Articles";
+import anniversaryImage from "./assets/anniversary.jpeg"
+import { Calendar, Users, Building2, Trophy, Lightbulb, Award, Camera } from 'lucide-react';
+
 
 import React, { useState, useEffect } from 'react';
 
 import { Download, ArrowRight, Target, Eye, MapPin, Sparkles } from 'lucide-react';
+import SWBAnniversaryArticle from "./components/swb1year";
+import SWBEntrepreneurArticle from "./components/EmpowerStudents";
 const handleDownload = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -59,6 +64,224 @@ function Deliver() {
 function Careers() {
   return <h1>Careers Page</h1>;
 }
+
+
+const SWBEntrepreneurSection = () => {
+  return (
+    <div className="w-full max-w-6xl mx-auto px-4 py-8 sm:py-12 md:py-16">
+      <div className="bg-gradient-to-r from-[#cae1fd] via-white to-[#f0f8ff] rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 shadow-xl border border-[#cae1fd]/30 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#02afde] to-[#5843aa]" style={{
+            backgroundImage: `radial-gradient(circle at 20% 20%, rgba(2, 175, 222, 0.1) 0%, transparent 50%),
+                             radial-gradient(circle at 80% 80%, rgba(88, 67, 170, 0.1) 0%, transparent 50%)`
+          }} />
+        </div>
+
+        {/* Entrepreneur Badge */}
+        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
+
+        </div>
+
+        <div className="flex flex-col lg:flex-row items-center gap-6 sm:gap-8 lg:gap-12 relative z-10">
+          {/* Content Section */}
+          <div className="flex-1 text-center lg:text-left">
+            {/* Entrepreneur Header */}
+            <div className="flex items-center justify-center lg:justify-start gap-2 mb-3">
+              <Users className="w-5 h-5 text-[#02afde]" />
+              <span className="text-sm font-medium text-[#02afde] uppercase tracking-wide">
+                Empowering Students
+              </span>
+              <Sparkles className="w-4 h-4 text-yellow-500" />
+            </div>
+
+            <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight">
+              Student Entrepreneurs
+              <span className="block bg-gradient-to-r from-[#02afde] to-[#5843aa] bg-clip-text text-transparent">
+                Empowered to Shine
+              </span>
+            </h3>
+
+            <p className="text-base sm:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              SWB provides a 100% free platform for student entrepreneurs to showcase their businesses, gain expert support, and grow through real partnerships. From creative shoots to strategic guidance, we're here to help your ideas flourish.
+            </p>
+
+            {/* Key Features */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
+              <div className="bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl shadow-sm border border-white/50 flex items-center gap-3">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <div>
+                  <div className="font-bold text-gray-900 text-sm">100% Free</div>
+                  <div className="text-xs text-gray-600">No barriers to growth</div>
+                </div>
+              </div>
+
+              <div className="bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl shadow-sm border border-white/50 flex items-center gap-3">
+                <Camera className="w-4 h-4 text-[#02afde]" />
+                <div>
+                  <div className="font-bold text-gray-900 text-sm">Professional Studio</div>
+                  <div className="text-xs text-gray-600">High-quality content creation</div>
+                </div>
+              </div>
+
+              <div className="bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl shadow-sm border border-white/50 flex items-center gap-3">
+                <Award className="w-4 h-4 text-[#5843aa]" />
+                <div>
+                  <div className="font-bold text-gray-900 text-sm">Expert Support</div>
+                  <div className="text-xs text-gray-600">From idea to impact</div>
+                </div>
+              </div>
+
+              <div className="bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl shadow-sm border border-white/50 flex items-center gap-3">
+                <Users className="w-4 h-4 text-yellow-500" />
+                <div>
+                  <div className="font-bold text-gray-900 text-sm">Real Partnerships</div>
+                  <div className="text-xs text-gray-600">Connect & collaborate</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Call to Action */}
+            <div className="flex-shrink-0">
+              <Link to='/empowering-students'>
+
+                <button className="group bg-gradient-to-r from-[#02afde] to-[#5843aa] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 sm:gap-3 w-full lg:w-auto">
+                  Discover How We Support Students
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </Link>
+            </div>
+          </div>
+
+          {/* Entrepreneur Image */}
+          <div className="flex-shrink-0 w-full lg:w-96 xl:w-[28rem]">
+            <div className="relative">
+              {/* Main Image Container */}
+              <div className="relative bg-white rounded-2xl p-4 shadow-lg border border-[#cae1fd]/30 transform rotate-1 hover:rotate-0 transition-transform duration-300">
+                <div className="rounded-xl flex items-center justify-center overflow-hidden">
+
+                  <div className="w-[24rem] h-[28rem] md:w-[28rem] md:h-[32rem] bg-gradient-to-br from-[#02afde]/10 to-[#5843aa]/10 rounded-xl flex items-center justify-center relative overflow-hidden">
+                    {/* Student Entrepreneur Illustration */}
+                    <div className="text-center">
+                      <div className="text-6xl mb-4">💡</div>
+                      <div className="text-3xl font-bold bg-gradient-to-r from-[#02afde] to-[#5843aa] bg-clip-text text-transparent mb-2">
+                        STUDENT
+                      </div>
+                      <div className="text-2xl font-bold bg-gradient-to-r from-[#02afde] to-[#5843aa] bg-clip-text text-transparent mb-4">
+                        ENTREPRENEURS
+                      </div>
+                      <div className="text-sm text-gray-600 mb-4">
+                        Empowered to Shine
+                      </div>
+                      <div className="flex justify-center gap-3">
+                        <span className="text-2xl">📱</span>
+                        <span className="text-2xl">🎬</span>
+                        <span className="text-2xl">🤝</span>
+                      </div>
+                    </div>
+
+                    {/* Decorative Elements */}
+                    <div className="absolute top-4 right-4 text-yellow-400 animate-bounce">💫</div>
+                    <div className="absolute bottom-4 left-4 text-blue-400 animate-pulse">✨</div>
+                    <div className="absolute top-1/2 left-2 text-purple-400 animate-bounce" style={{ animationDelay: '0.5s' }}>🚀</div>
+                  </div>
+
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  );
+};
+
+
+
+const SWBAnniversarySection = () => {
+  return (
+    <div className="w-full max-w-6xl mx-auto px-4 py-8 sm:py-12 md:py-16">
+      <div className="bg-gradient-to-r from-[#cae1fd] via-white to-[#f0f8ff] rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 shadow-xl border border-[#cae1fd]/30 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#02afde] to-[#5843aa]" style={{
+            backgroundImage: `radial-gradient(circle at 20% 20%, rgba(2, 175, 222, 0.1) 0%, transparent 50%),
+                             radial-gradient(circle at 80% 80%, rgba(88, 67, 170, 0.1) 0%, transparent 50%)`
+          }} />
+        </div>
+
+        {/* Anniversary Badge */}
+        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
+
+        </div>
+
+        <div className="flex flex-col lg:flex-row items-center gap-6 sm:gap-8 lg:gap-12 relative z-10">
+          {/* Content Section */}
+          <div className="flex-1 text-center lg:text-left">
+            {/* Anniversary Header */}
+            <div className="flex items-center justify-center lg:justify-start gap-2 mb-3">
+              <Calendar className="w-5 h-5 text-[#02afde]" />
+              <span className="text-sm font-medium text-[#02afde] uppercase tracking-wide">
+                Celebrating One Year
+              </span>
+              <Sparkles className="w-4 h-4 text-yellow-500" />
+            </div>
+
+            <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight">
+              SWB's Amazing
+              <span className="block bg-gradient-to-r from-[#02afde] to-[#5843aa] bg-clip-text text-transparent">
+                First Year Journey
+              </span>
+            </h3>
+
+            <p className="text-base sm:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              From a startup idea to transforming education across Lebanon. Discover our incredible journey, the challenges we overcame, and the amazing community of students, educators, and partners we've built together.
+            </p>
+
+
+            {/* Call to Action */}
+            <div className="flex-shrink-0">
+              <Link to='/one-year-anniversary'>
+                <button className="group bg-gradient-to-r from-[#02afde] to-[#5843aa] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 sm:gap-3 w-full lg:w-auto">
+                  Read Our Anniversary Story
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </Link>
+            </div>
+
+
+
+          </div>
+
+          {/* Anniversary Image */}
+          <div className="flex-shrink-0 w-full lg:w-96 xl:w-[28rem]">
+            <div className="relative">
+              {/* Main Image Container */}
+              <div className="relative bg-white rounded-2xl p-4 shadow-lg border border-[#cae1fd]/30 transform rotate-1 hover:rotate-0 transition-transform duration-300">
+                <div className="rounded-xl flex items-center justify-center overflow-hidden">
+                  <img
+                    src={anniversaryImage} // imported image or URL
+                    alt="Anniversary Celebration"
+                    className="w-[24rem] h-[28rem] md:w-[28rem] md:h-[32rem] object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+
 function MissionVision() {
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-16">
@@ -363,6 +586,10 @@ function Dashboard() {
       </div>
 
       <MissionVision />
+      {/* entepreneur section*/}
+      <SWBEntrepreneurSection />
+      {/* Swb 1 year annivesary */}
+      <SWBAnniversarySection />
 
       {/* Journey Section */}
       <div className="w-full max-w-6xl mx-auto px-4 py-8 sm:py-12 md:py-16">
@@ -519,6 +746,42 @@ function App() {
 
               }
             />
+            <Route
+              path="/one-year-anniversary"
+              element={
+                <DefaultLayout>
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <SWBAnniversaryArticle />
+                  </motion.div>
+
+                </DefaultLayout>
+
+              }
+            />
+            <Route
+              path="/empowering-students"
+              element={
+                <DefaultLayout>
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <SWBEntrepreneurArticle />
+                  </motion.div>
+
+                </DefaultLayout>
+
+              }
+            />
+
+
             <Route
               path="/partner"
               element={

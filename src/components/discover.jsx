@@ -70,10 +70,10 @@ const WebsiteDiscoverySection = () => {
                                 Explore Our Platform
                             </span>
                             <h2 className="text-5xl md:text-6xl font-black mb-6 leading-tight">
-                                <span className="text-gray-800">Discover Inside</span>
+                                <span className="text-gray-800">Discover </span>
                                 <br />
                                 <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, #5842aa 0%, #2563eb 100%)` }}>
-                                    Our Website
+                                    Our Plus Version
                                 </span>
                             </h2>
                             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
