@@ -87,9 +87,9 @@ const SWBAnniversaryArticle = () => {
                         </p>
 
                         <div className="bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl p-6 text-white">
-                            <div className="flex items-start gap-4">
-                                {/* Left side: icon + text */}
-                                <div className="flex-1">
+                            <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+                                {/* Text */}
+                                <div className="flex-1 order-1">
                                     <MapPin className="w-6 h-6 mb-3" />
                                     <p className="text-blue-100 leading-relaxed">
                                         The owner of <strong>GOU Life</strong>, for example, is not only a host but also an
@@ -98,8 +98,8 @@ const SWBAnniversaryArticle = () => {
                                     </p>
                                 </div>
 
-                                {/* Right side: smaller image */}
-                                <div className="w-32 h-32 flex-shrink-0">
+                                {/* Image */}
+                                <div className="order-2 w-full h-40 md:w-32 md:h-32 md:flex-shrink-0">
                                     <img
                                         src={gouowner}
                                         alt="Owner Gou"
@@ -108,6 +108,7 @@ const SWBAnniversaryArticle = () => {
                                 </div>
                             </div>
                         </div>
+
 
                     </div>
                 </section>

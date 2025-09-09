@@ -65,7 +65,7 @@ const WebsiteDiscoverySection = () => {
                     {/* NEW: Discover Inside Our Website Section */}
                     <div className="relative">
                         {/* Section Header */}
-                        <div className="text-center mb-16">
+                        {/* <div className="text-center mb-16">
                             <span className="inline-block px-6 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-sm font-semibold rounded-full mb-6">
                                 Explore Our Platform
                             </span>
@@ -79,64 +79,13 @@ const WebsiteDiscoverySection = () => {
                             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                                 Unlock the full potential of our platform with these powerful features designed to accelerate your business growth and streamline your operations.
                             </p>
-                        </div>
+                        </div> */}
 
                         {/* Discovery Grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                            {discoveryItems.map((item, index) => (
-                                <div
-                                    key={index}
-                                    className="group relative p-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border border-white/20 overflow-hidden"
-                                >
-                                    {/* Background Gradient on Hover */}
-                                    <div
-                                        className="absolute inset-0 opacity-0 group-hover:opacity-5 transition-all duration-500"
-                                        style={{ background: `linear-gradient(135deg, ${item.color}22 0%, ${item.color}11 100%)` }}
-                                    ></div>
 
-                                    {/* Content */}
-                                    <div className="relative z-10">
-                                        {/* Icon */}
-                                        <div
-                                            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-300"
-                                            style={{
-                                                background: `linear-gradient(135deg, ${item.color}15 0%, ${item.color}25 100%)`,
-                                                color: item.color
-                                            }}
-                                        >
-                                            {item.icon}
-                                        </div>
-
-                                        {/* Title */}
-                                        <h3 className="text-2xl font-bold text-gray-800 mb-4 group-hover:text-gray-900 transition-colors">
-                                            {item.title}
-                                        </h3>
-
-                                        {/* Description */}
-                                        <p className="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors">
-                                            {item.description}
-                                        </p>
-
-                                        {/* Hover Arrow */}
-                                        <div className="mt-6 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-0 group-hover:translate-x-2">
-                                            <FaChevronRight style={{ color: item.color }} className="text-lg" />
-                                        </div>
-                                    </div>
-
-                                    {/* Decorative Corner */}
-                                    <div
-                                        className="absolute top-0 right-0 w-20 h-20 opacity-10 group-hover:opacity-20 transition-opacity duration-300"
-                                        style={{
-                                            background: `radial-gradient(circle at center, ${item.color} 0%, transparent 70%)`,
-                                            clipPath: 'polygon(50% 0%, 100% 0%, 100% 50%)'
-                                        }}
-                                    ></div>
-                                </div>
-                            ))}
-                        </div>
 
                         {/* Call to Action */}
-                        <div className="text-center">
+                        {/* <div className="text-center">
                             <div className="inline-flex items-center space-x-4">
                                 <button
                                     onClick={openModalSend}
@@ -158,7 +107,7 @@ const WebsiteDiscoverySection = () => {
                                     Join 500+ businesses already growing with us
                                 </span>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

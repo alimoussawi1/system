@@ -741,7 +741,7 @@ const Partner = () => {
             ))}
           </div>
         </div>
-        <WebsiteDiscoverySection />
+        {/* <WebsiteDiscoverySection /> */}
       </div>
 
       {/* Multi-Step Registration Modal */}
