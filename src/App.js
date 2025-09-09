@@ -36,6 +36,7 @@ import Businesses from "./components/Businesses";
 import Subscriptions from "./components/Subscriptions";
 import Articles from "./components/Articles";
 import anniversaryImage from "./assets/anniversary.jpeg"
+import aliImage from "./assets/ali.png"
 import { Calendar, Users, Building2, Trophy, Lightbulb, Award, Camera } from 'lucide-react';
 
 
@@ -111,8 +112,8 @@ const SWBEntrepreneurSection = () => {
               <div className="bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl shadow-sm border border-white/50 flex items-center gap-3">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                 <div>
-                  <div className="font-bold text-gray-900 text-sm">100% Free</div>
-                  <div className="text-xs text-gray-600">No barriers to growth</div>
+                  <div className="font-bold text-gray-900 text-sm">Opportunity for All</div>
+                  <div className="text-xs text-gray-600">Students first, always</div>
                 </div>
               </div>
 
@@ -159,39 +160,16 @@ const SWBEntrepreneurSection = () => {
               {/* Main Image Container */}
               <div className="relative bg-white rounded-2xl p-4 shadow-lg border border-[#cae1fd]/30 transform rotate-1 hover:rotate-0 transition-transform duration-300">
                 <div className="rounded-xl flex items-center justify-center overflow-hidden">
-
-                  <div className="w-[24rem] h-[28rem] md:w-[28rem] md:h-[32rem] bg-gradient-to-br from-[#02afde]/10 to-[#5843aa]/10 rounded-xl flex items-center justify-center relative overflow-hidden">
-                    {/* Student Entrepreneur Illustration */}
-                    <div className="text-center">
-                      <div className="text-6xl mb-4">💡</div>
-                      <div className="text-3xl font-bold bg-gradient-to-r from-[#02afde] to-[#5843aa] bg-clip-text text-transparent mb-2">
-                        STUDENT
-                      </div>
-                      <div className="text-2xl font-bold bg-gradient-to-r from-[#02afde] to-[#5843aa] bg-clip-text text-transparent mb-4">
-                        ENTREPRENEURS
-                      </div>
-                      <div className="text-sm text-gray-600 mb-4">
-                        Empowered to Shine
-                      </div>
-                      <div className="flex justify-center gap-3">
-                        <span className="text-2xl">📱</span>
-                        <span className="text-2xl">🎬</span>
-                        <span className="text-2xl">🤝</span>
-                      </div>
-                    </div>
-
-                    {/* Decorative Elements */}
-                    <div className="absolute top-4 right-4 text-yellow-400 animate-bounce">💫</div>
-                    <div className="absolute bottom-4 left-4 text-blue-400 animate-pulse">✨</div>
-                    <div className="absolute top-1/2 left-2 text-purple-400 animate-bounce" style={{ animationDelay: '0.5s' }}>🚀</div>
-                  </div>
-
+                  <img
+                    src={aliImage} // imported image or URL
+                    alt="Anniversary Celebration"
+                    className="w-[24rem] h-[28rem] md:w-[28rem] md:h-[32rem] object-contain"
+                  />
                 </div>
               </div>
-
-
             </div>
           </div>
+
         </div>
 
 
@@ -261,7 +239,7 @@ const SWBAnniversarySection = () => {
           <div className="flex-shrink-0 w-full lg:w-96 xl:w-[28rem]">
             <div className="relative">
               {/* Main Image Container */}
-              <div className="relative bg-white rounded-2xl p-4 shadow-lg border border-[#cae1fd]/30 transform rotate-1 hover:rotate-0 transition-transform duration-300">
+              <div className="relative  rounded-2xl p-4  transform rotate-1 hover:rotate-0 transition-transform duration-300">
                 <div className="rounded-xl flex items-center justify-center overflow-hidden">
                   <img
                     src={anniversaryImage} // imported image or URL

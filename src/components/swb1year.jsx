@@ -1,6 +1,11 @@
 import React from 'react';
 import { Calendar, MapPin, Users, Briefcase, Award, Heart, Cake, Globe, Coffee } from 'lucide-react';
 import hunchies from "../assets/hunchies.gif"
+import image1 from "../assets/localbusiness1.jpeg"
+import image2 from "../assets/localbusiness2.jpeg"
+import image3 from "../assets/localbusiness3.jpeg"
+
+import gouowner from "../assets/gouowner.jpg"
 const SWBAnniversaryArticle = () => {
     return (
         <article className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -82,15 +87,64 @@ const SWBAnniversaryArticle = () => {
                         </p>
 
                         <div className="bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl p-6 text-white">
-                            <MapPin className="w-6 h-6 mb-3" />
-                            <p className="text-blue-100 leading-relaxed">
-                                The owner of <strong>GOU Life</strong>, for example, is not only a host but also an
-                                integral part of the SWB movement, representing the resilience and creativity of
-                                Lebanese entrepreneurs.
-                            </p>
+                            <div className="flex items-start gap-4">
+                                {/* Left side: icon + text */}
+                                <div className="flex-1">
+                                    <MapPin className="w-6 h-6 mb-3" />
+                                    <p className="text-blue-100 leading-relaxed">
+                                        The owner of <strong>GOU Life</strong>, for example, is not only a host but also an
+                                        integral part of the SWB movement, representing the resilience and creativity of
+                                        Lebanese entrepreneurs.
+                                    </p>
+                                </div>
+
+                                {/* Right side: smaller image */}
+                                <div className="w-32 h-32 flex-shrink-0">
+                                    <img
+                                        src={gouowner}
+                                        alt="Owner Gou"
+                                        className="w-full h-full object-cover rounded-xl"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+                <section className="mb-16">
+                    <div className=" bg-white  shadow-lg rounded-2xl p-8 text-white overflow-hidden">
+                        {/* 220px is just an example; tweak to taste */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:auto-rows-[300px]">
+                            {/* Left: spans 2 rows to equal right column height */}
+                            <div className="md:col-span-2 md:row-span-2">
+                                <img
+                                    src={image1}
+                                    alt="Business 1"
+                                    className="w-full h-full object-contain rounded-xl"
+                                />
+                            </div>
+
+
+                            {/* Right: two equal tiles */}
+                            <div>
+                                <img
+                                    src={image2}
+                                    alt="Business 2"
+                                    className="w-full h-full object-cover rounded-xl"
+                                />
+                            </div>
+                            <div>
+                                <img
+                                    src={image3}
+                                    alt="Business 3"
+                                    className="w-full h-full object-cover rounded-xl"
+                                />
+                            </div>
                         </div>
                     </div>
                 </section>
+
+
 
                 {/* Sweet Highlight */}
                 <section className="mb-16">
@@ -121,12 +175,14 @@ const SWBAnniversaryArticle = () => {
                                     <img
                                         src={hunchies}
                                         alt="Cake GIF"
-                                        className="w-72 h-[32rem] md:w-80 md:h-[40rem] rounded-lg object-cover"
+                                        className="w-64 h-[32rem] md:w-72 md:h-[40rem] rounded-lg object-cover"
                                     />
                                 </div>
                             </div>
                         </div>
                     </div>
+
+
                 </section>
 
 
@@ -173,7 +229,7 @@ const SWBAnniversaryArticle = () => {
                     </div>
                 </section>
             </div>
-        </article>
+        </article >
     );
 };
 
