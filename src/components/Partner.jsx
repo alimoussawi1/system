@@ -391,7 +391,8 @@ import React, { useState } from "react";
 import { FaEye, FaEyeSlash, FaTimes, FaCheck, FaSpinner, FaUser, FaBuilding, FaEnvelope, FaPhone, FaLock, FaStar, FaChevronRight, FaChevronLeft, FaShieldAlt } from "react-icons/fa";
 import { useAccount } from "../context/AccountContext";
 import WebsiteDiscoverySection from "./discover";
-
+import SWBEstimatorModal from "./costEstimator";
+import { Link } from "react-router-dom";
 const Partner = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -413,6 +414,8 @@ const Partner = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [resendClicked, setResendClicked] = useState(false);
+  const [estimatorModal, setEstimatorModal] = useState(false);
+
 
   const businessTypes = [
     { value: "Food & Drinks", icon: "🍕", desc: "Restaurants, cafes, bars" },
@@ -425,6 +428,7 @@ const Partner = () => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
     return regex.test(pwd);
   };
+
 
 
 
@@ -443,6 +447,13 @@ const Partner = () => {
     setShowModal(true);
     setCurrentStep(1);
   };
+  const opencostestimator = () => {
+    setEstimatorModal(true);
+  }
+  const closeCostEstimator = () => {
+    setEstimatorModal(false);
+
+  }
 
   const nextStep = () => {
     if (currentStep < 3) setCurrentStep(currentStep + 1);
@@ -662,21 +673,50 @@ const Partner = () => {
             <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
               Partner with us to unlock unlimited growth potential, reach thousands of new customers, and revolutionize your business operations.
             </p>
+            <div className="flex flex-row gap-2 justify-center">
 
-            <button
-              onClick={openModalSend}
-              className="group relative inline-flex items-center px-12 py-6 text-xl font-bold text-white rounded-2xl shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden"
-              style={{
-                background: `linear-gradient(135deg, #5842aa 0%, #3730a3 100%)`,
-                boxShadow: '0 25px 50px -12px rgba(88, 66, 170, 0.25)'
-              }}
-            >
-              <span className="relative z-10 flex items-center">
-                Start Your Journey
-                <FaChevronRight className="ml-3 group-hover:translate-x-1 transition-transform" />
-              </span>
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: `linear-gradient(135deg, #3730a3 0%, #5842aa 100%)` }}></div>
-            </button>
+
+
+
+              <button
+                onClick={openModalSend}
+                className="group relative inline-flex items-center px-12 py-6 text-xl font-bold text-white rounded-2xl shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden"
+                style={{
+                  background: `linear-gradient(135deg, #5842aa 0%, #3730a3 100%)`,
+                  boxShadow: '0 25px 50px -12px rgba(88, 66, 170, 0.25)'
+                }}
+              >
+                <span className="relative z-10 flex items-center">
+                  Start Your Journey
+
+                </span>
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: `linear-gradient(135deg, #3730a3 0%, #5842aa 100%)` }}></div>
+              </button>
+
+              <div>
+
+                <div className="flex flex-row gap-2 justify-center">
+                  <Link
+                    to="/estimator"
+                    className="group relative inline-flex items-center px-10 py-5 text-lg font-bold text-white rounded-2xl shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden"
+                    style={{
+                      background: `linear-gradient(135deg, #5842aa 0%, #3730a3 100%)`,
+                      boxShadow: '0 25px 50px -12px rgba(88, 66, 170, 0.25)',
+                    }}
+                  >
+                    <span className="relative z-10 flex items-center">
+                      Estimate My Cost
+                    </span>
+                    <div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      style={{
+                        background: `linear-gradient(135deg, #3730a3 0%, #5842aa 100%)`,
+                      }}
+                    />
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Stats */}
@@ -1062,6 +1102,11 @@ const Partner = () => {
           </div>
         </div>
       )}
+
+
+
+
+
 
 
       {/* Verification Modal */}

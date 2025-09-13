@@ -28,18 +28,20 @@ const Packages = () => {
             shadowColor: "rgba(59, 130, 246, 0.3)",
             details: [
                 "Offer Listing",
+                "Business Listing 1 Branch",
                 "Full Analytics on SWB Website",
                 "1 Social Media Promotion on SWB Page",
-                "Top 30 Ranking in Related Category (rotated/shuffled)",
+                "Top 35 Ranking in Related Category (shuffled for 2 weeks)",
                 "Virtual or In-Person Staff Training (upon request)",
-                "Priority 24/7 Customer Support"
+                "Priority 24/7 Customer Support",
+                "3 Push Notifications"
             ]
         },
         {
             duration: "3 Months",
             name: "Growth",
-            price: "$100",
-            amount: 100,
+            price: "$120",
+            amount: 120,
             months: 3,
             saving: "You're saving 33%",
             icon: <FaStar className="text-2xl" />,
@@ -47,20 +49,22 @@ const Packages = () => {
             shadowColor: "rgba(139, 92, 246, 0.3)",
             details: [
                 "Offer Listing",
+                "Business Listing 1 Branch",
                 "Full Analytics on SWB Website",
                 "1 Social Media Promotion on SWB Page",
-                "Top 20 Ranking in Related Category (rotated/shuffled)",
+                "Top 25 Ranking in Related Category (shuffled for 2 weeks)",
                 "Virtual or In-Person Staff Training (upon request)",
                 "Priority 24/7 Customer Support",
-                "3 Push Notifications",
-                "1 SWB WhatsApp Channel Exposure"
+                "6 Push Notifications",
+                "In App Banner for 30 days ",
+                "1 SWB WhatsApp Channel Exposure "
             ]
         },
         {
             duration: "6 Months",
-            price: "$150",
+            price: "$180",
             name: "Advance",
-            amount: 150,
+            amount: 180,
             saving: "You're saving 50%",
             months: 6,
             info: 'MOST POPULAR',
@@ -70,18 +74,21 @@ const Packages = () => {
             isPopular: true,
             details: [
                 "Offer Listing",
+                "Business Listing 1 Branch",
                 "Full Analytics on SWB Website",
                 "1 Social Media Promotion on SWB Page",
-                "Top 15 Ranking in Related Category (rotated/shuffled)",
+                "Top 15 Ranking in Related Category (shuffled for 2 weeks)",
                 "Virtual or In-Person Staff Training (upon request)",
                 "Priority 24/7 Customer Support",
-                "6 Push Notifications",
-                "3 SWB WhatsApp Channel Exposures per Month",
+                "12 Push Notifications",
+                "In App Banner for 60 days ",
+                "3 SWB WhatsApp Channel Exposure "
+
             ]
         },
         {
             duration: "1 Year",
-            price: "$250",
+            price: "$300",
             name: "Elite",
             months: 12,
             amount: 250,
@@ -92,13 +99,15 @@ const Packages = () => {
             shadowColor: "rgba(16, 185, 129, 0.3)",
             details: [
                 "Offer Listing",
+                "Business Listing 1 Branch",
                 "Full Analytics on SWB Website",
                 "1 Social Media Promotion on SWB Page",
-                "Top 10 Ranking in Related Category (rotated/shuffled)",
+                "Top 10 Ranking in Related Category (shuffled for 2 weeks)",
                 "Virtual or In-Person Staff Training (upon request)",
                 "Priority 24/7 Customer Support",
                 "15 Push Notifications",
-                "6 SWB WhatsApp Channel Exposures",
+                "In App Banner for 60 days ",
+                "6 SWB WhatsApp Channel Exposure "
             ]
         },
     ];
@@ -210,7 +219,7 @@ const Packages = () => {
                                     </div>
                                     <div>
                                         <p className="text-blue-800 text-sm leading-relaxed">
-                                            <span className="font-semibold">Note:</span> While we maximize your business visibility within the student community, results may vary based on location, pricing, and market factors. All purchases are non-refundable.
+                                            <span className="font-semibold">Note:</span> While we maximize your business visibility within the student community, results may vary based on location, pricing, and market factors and subject to change. All purchases are non-refundable.
                                         </p>
                                     </div>
                                 </div>

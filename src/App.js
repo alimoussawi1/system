@@ -45,6 +45,7 @@ import React, { useState, useEffect } from 'react';
 import { Download, ArrowRight, Target, Eye, MapPin, Sparkles } from 'lucide-react';
 import SWBAnniversaryArticle from "./components/swb1year";
 import SWBEntrepreneurArticle from "./components/EmpowerStudents";
+import EstimatorPage from "./components/estimatorPage";
 const handleDownload = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -701,6 +702,23 @@ function App() {
                     exit="exit"
                   >
                     <Dashboard />
+                  </motion.div>
+
+                </DefaultLayout>
+
+              }
+            />
+            <Route
+              path="/estimator"
+              element={
+                <DefaultLayout>
+                  <motion.div
+                    variants={pageVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <EstimatorPage />
                   </motion.div>
 
                 </DefaultLayout>
